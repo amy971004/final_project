@@ -38,4 +38,5 @@ INSERT INTO users (ACCOUNT_ID, user_id, user_pw, user_nickName, user_name, user_
 현재 시퀀스값 (1 추가됨)
 SELECT USER_SEQ.NEXTVAL FROM DUAL;
 
+// 변경사항 저장
 commit;
