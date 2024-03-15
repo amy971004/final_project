@@ -1,0 +1,150 @@
+
+/* 전체설정 */
+body {
+    margin: 0;
+    padding: 0;
+}
+/* 배경 이미지 */
+#backgroundImg {
+    width: 100vw;
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url("../img/backImg.jpg");
+}
+
+/* 회원가입창 틀*/
+#joinB {
+    position: relative;
+    width: 400px;
+    height: 800px;
+    top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    border: black 2px solid;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.82);
+
+}
+
+/* 회원가입창 내부 */
+#joinS {
+    position: absolute;
+    padding-top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* 회원가입 버튼 */
+#joinBtn {
+    width: 300px;
+    height: 40px;
+    margin-top: 40px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: black solid 2px;
+    background-color: transparent;
+    transition: borer, background-color, 0.3s;
+}
+
+/* 회원가입이 버튼 비활성화 상태일 때 */
+#joinBtn:disabled {
+    border: red 2px solid;
+}
+
+/* 회원가입이 버튼 활성화 상태일 때 */
+#joinBtn:enabled {
+    border: green 2px solid;
+    background-color: rgba(255, 255, 255, 0.66);
+}
+
+/* 입력창 */
+.input {
+    background-color: transparent;
+    border: transparent;
+    width: 260px;
+    height: 40px;
+    font-size: 15px;
+    outline: none;
+}
+
+/* 입력창 테두리 */
+.inputBox {
+    width: 300px;
+    height: 40px;
+    border: black 2px solid;
+    margin-bottom: 3px;
+    text-align: center;
+    border-radius: 15px;
+    background-color: transparent;
+    transition: background-color, border, 0.3s;
+}
+
+/* 입력창에 호버될 때 배경색 조금 더 진하게 */
+.inputBox:hover {
+    background-color: rgba(255, 255, 255, 0.66);
+}
+
+/* 입력창에 포커스 될 때 파란색 테두리 */
+.inputBox-focus {
+    border: blue 2px solid;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+/* 어떤 inputBox인지 이름 표시 */
+h6 {
+    margin: 0;
+    padding-left: 9px;
+    padding-bottom: 3px;
+}
+
+/* 유효성검사 결과 글자 */
+h5 {
+    text-align: left;
+    margin-top: 0;
+    margin-left: 10px;
+    margin-bottom: 0;
+    padding: 0;
+}
+
+/* 유효성 검사 글자 */
+.InputText {
+    display: none;
+    color: red;
+}
+
+/* 닫기 버튼 */
+.close {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 15px;
+    right: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: transparent;
+    transition: background-color, color, 0.2s;
+}
+
+/* 닫기 버튼 호버시 */
+.close:hover {
+    background-color: rgba(224, 23, 23, 0.7);
+    color: white;
+}
+
+
+/* 유효성 검사 결과 실패일 때 빨간색 테두리 */
+.error {
+    border: red 2px solid;
+}
+
+/* 유효성 검사 결과 성공일 때 초록색 테두리 */
+.success {
+    border: green 2px solid;
+}
+
+/* 유효성 검사 실패시 입력값 빨간색으로 - 사용중단중임 */
+.errorText {
+    color: red;
+}
+
+

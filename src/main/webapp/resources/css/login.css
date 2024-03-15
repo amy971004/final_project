@@ -1,0 +1,93 @@
+
+/* 전체설정 */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* 배경 이미지 */
+#backgroundImg {
+    width: 100vw;
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url("../img/backImg.jpg");
+}
+
+/* 로그인창 틀 */
+#a1 {
+    position: relative;
+    width: 400px;
+    height: 230px;
+    top: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    border: black 2px solid;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.82);
+    transform: translateY(-50%);
+}
+
+/* 로그인창 내부 */
+#a2 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* 로그인 버튼 */
+#loginBtn {
+    width: 148px;
+    height: 30px;
+    border-radius: 10px;
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* 로그인 버튼에 호버될 때 */
+#loginBtn:hover {
+    background-color: rgba(255, 255, 255, 0.50);
+}
+
+/* 회원가입 버튼 */
+#joinBtn {
+    width: 148px;
+    height: 30px;
+    border: black 2px solid;
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+/* 회원가입 버튼에 호버될 때 */
+#joinBtn:hover {
+    background-color: rgba(255, 255, 255, 0.50);
+}
+
+/* 입력창 */
+.input {
+    background-color: transparent;
+    border: transparent;
+    width: 260px;
+    height: 50px;
+    font-size: 20px;
+    outline: none;
+}
+
+/* 입력창 테두리 */
+.inputBox {
+    width: 300px;
+    height: 50px;
+    border: black 2px solid;
+    text-align: center;
+    border-radius: 15px;
+    transition: background-color 0.3s;
+}
+
+/* 입력창에 호버될 때 배경색 조금 더 진하게 */
+.inputBox:hover{
+    background-color: rgba(255, 255, 255, 0.50);
+}

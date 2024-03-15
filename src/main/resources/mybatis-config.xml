@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <typeAliases>
+        <typeAlias type="org.example.member.dto.MemberDTO" alias="memberDTO"/>
+    </typeAliases>
+
+    <mappers>
+        <!-- 매퍼 파일 경로 추가 -->
+        <mapper resource="mappers/member.xml"/>
+    </mappers>
+
+</configuration>
