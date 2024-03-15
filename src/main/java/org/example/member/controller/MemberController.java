@@ -4,11 +4,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.member.dto.MemberDTO;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
+
 // 회원 관리 인터페이스
 public interface MemberController {
+    // 로그인
+    @PostMapping("/login.do")
+    ModelAndView login(@RequestParam("userId") String userId, @RequestParam("userPw") String userPw, HttpServletRequest request);
 
     // 회원가입 페이지로 이동
     public ModelAndView joinMember(

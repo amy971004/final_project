@@ -48,6 +48,12 @@ dependencies {
 // JSON 처리
     implementation("com.googlecode.json-simple:json-simple:1.1.1")
 
+    // SLF4J - 로깅 추상화 레이어
+    implementation ("org.slf4j:slf4j-api:2.0.3")
+
+    // Logback - SLF4J 구현체, 로깅 프레임워크
+    implementation ("ch.qos.logback:logback-classic:1.4.14")
+
 // 주석 처리된 의존성은 프로젝트 요구에 따라 해제하여 사용
 // Thymeleaf 템플릿 엔진
 //implementation("org.thymeleaf:thymeleaf-spring5:3.1.2.RELEASE")

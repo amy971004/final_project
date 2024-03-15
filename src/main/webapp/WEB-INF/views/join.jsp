@@ -14,7 +14,7 @@
         <button class="close" onclick="location.href='http://localhost:8081'">X</button>
         <div id="joinS">
             <!-- 회원가입 폼 -->
-            <form action="http://localhost:8081/member/addMember.do" method="post">
+            <form action="addMember.do" method="post">
                 <!-- 아이디 -->
                 <p><h6>아이디</h6>
                 <div id="idInputBox" class="inputBox">

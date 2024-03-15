@@ -17,23 +17,7 @@ $(document).ready(function() {
         // 비밀번호만 입력하지 않았을 때
         } else if(pwInput.val().length === 0){
             alert("비밀번호를 입력해주세요.");
-            
-        // 아이디와 비밀번호 모두 입력했을 때
-        } else {
-            $.ajax({
-                url: "/member/login.do",
-                type: "post",
-                data: {
-                    userId: idInput.val(),
-                    userPw: pwInput.val()
-                },
-                success: function() {
 
-                },
-                error: function() {
-                    alert("서버 요청 중 오류가 발생했습니다. 다시 시도해 주세요.");
-                }
-            });
         }
     });
 

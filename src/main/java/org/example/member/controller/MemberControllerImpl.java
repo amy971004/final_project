@@ -2,6 +2,7 @@ package org.example.member.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.example.member.dto.MemberDTO;
 import org.example.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,23 @@ import org.springframework.web.servlet.ModelAndView;
 public class MemberControllerImpl implements MemberController{
     @Autowired
     private MemberService service;
+
+    @Override
+    @PostMapping("/login.do")
+    public ModelAndView login(@RequestParam("userId") String userId, @RequestParam("userPw") String userPw, HttpServletRequest request){
+        HttpSession session = request.getSession();
+        MemberDTO memberDTO = service.login(userId, userPw);
+        if(memberDTO != null) {
+            // 사용자 정보가 존재할 때만 세션에 저장
+            session.setAttribute("RULE", memberDTO.getRULE());
+            session.setAttribute("accountID", memberDTO.getAccountID());
+            // 로그인 성공 시 로그인 성공 테스트 페이지로 리다이렉트
+            return new ModelAndView("redirect:/successTest");
+        } else{
+            // 로그인 실패 시 로그인 실패 테스트 페이지로 리다이렉트
+            return new ModelAndView("redirect:/failTest");
+        }
+    }
 
     // 회원가입 페이지로 이동
     @Override

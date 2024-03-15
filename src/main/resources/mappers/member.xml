@@ -14,8 +14,10 @@
     <!-- 회원 추가 -->
     <insert id="addMember" parameterType="MemberDTO">
         <![CDATA[
-        insert into users (ID, USER_ID, USER_PW, USER_NICKNAME, USER_NAME, USER_EMAIL, USER_BIRTHDAY, USER_PHONENUMBER, USER_JOINDATE)
-        values (USER_SEQ.NEXTVAL, #{userId, jdbcType=VARCHAR}, #{userPw, jdbcType=VARCHAR}, #{userNickname, jdbcType=VARCHAR}, #{userName, jdbcType=VARCHAR}, #{userEmail, jdbcType=VARCHAR}, #{userBirthday, jdbcType=VARCHAR}, #{userPhoneNumber, jdbcType=VARCHAR}, sysdate)
+        insert into users (ACCOUNT_ID, USER_ID, USER_PW, USER_NICKNAME, USER_NAME, USER_EMAIL, USER_BIRTHDAY, USER_PHONENUMBER, USER_JOINDATE, USER_RULE)
+        values (USER_SEQ.NEXTVAL,
+                #{userId, jdbcType=VARCHAR}, #{userPw, jdbcType=VARCHAR}, #{userNickname, jdbcType=VARCHAR}, #{userName, jdbcType=VARCHAR},
+                #{userEmail, jdbcType=VARCHAR}, #{userBirthday, jdbcType=VARCHAR}, #{userPhoneNumber, jdbcType=VARCHAR}, sysdate, 'USER')
         ]]>
     </insert>
 
@@ -29,13 +31,9 @@
         SELECT COUNT(*) FROM users WHERE USER_NICKNAME = #{userNickname}
     </select>
 
-    <select id="getUserById" parameterType="String" resultMap="memResult">
-        SELECT * FROM users WHERE USER_ID = #{userId}
+    <!-- 로그인 확인 -->
+    <select id="checkLogin" parameterType="Map" resultMap="memResult">
+        SELECT * FROM users WHERE USER_ID = #{userId} AND USER_PW = #{userPw}
     </select>
-
-    <select id="checkPassword" parameterType="Map" resultType="int">
-        SELECT COUNT(*) FROM users WHERE USER_ID = #{userId} AND USER_PW = #{userPw}
-    </select>
-
 
 </mapper>
