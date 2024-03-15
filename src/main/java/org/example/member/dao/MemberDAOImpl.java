@@ -14,6 +14,16 @@ public class MemberDAOImpl implements MemberDAO{
     @Autowired
     private SqlSession sqlSession;
 
+    // 로그인
+    @Override
+    public MemberDTO checkLogin(String userId, String userPw) {
+        // DB에서 입력받은 아이디와 비밀번호 (userId, userPw) 값이 DB에 저장되어있는 아이디와 비밀번호와 같다면 행 전체(객체) 리턴
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("userPw", userPw);
+        return sqlSession.selectOne("mapper.member.checkLogin", params);
+    }
+
     // 회원 추가
     @Override
     public int addMember(MemberDTO member) {
@@ -30,15 +40,6 @@ public class MemberDAOImpl implements MemberDAO{
     @Override
     public int checkNickname(String userNickname) {
         return sqlSession.selectOne("mapper.member.checkNickname", userNickname);
-    }
-
-    @Override
-    public MemberDTO checkLogin(String userId, String userPw) {
-        // DB에서 입력받은 아이디와 비밀번호 (userId, userPw) 값이 DB에 저장되어있는 아이디와 비밀번호와 같다면 행 전체(객체) 리턴
-        Map<String, Object> params = new HashMap<>();
-        params.put("userId", userId);
-        params.put("userPw", userPw);
-        return sqlSession.selectOne("mapper.member.checkLogin", params);
     }
 
 }

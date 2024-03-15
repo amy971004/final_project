@@ -12,16 +12,16 @@ CREATE SEQUENCE user_seq
 
 유저 테이블
 CREATE TABLE users (
-   account_ID NUMBER primary key NOT NULL,
-   user_id VARCHAR2(50) NOT NULL,
-   user_pw VARCHAR2(50) NOT NULL,
-   user_nickName VARCHAR2(50) NOT NULL,
-   user_name VARCHAR2(50) NOT NULL,
-   user_email VARCHAR2(50) NOT NULL,
-   user_birthday number NOT NULL,
-   user_phoneNumber VARCHAR2(50) NOT NULL,
-   user_joinDate DATE DEFAULT SYSDATE  NOT NULL,
-   user_RULE VARCHAR2(50) NOT NULL
+                       account_ID NUMBER primary key NOT NULL,
+                       user_id VARCHAR2(50) NOT NULL unique,
+                       user_pw VARCHAR2(50) NOT NULL,
+                       user_nickName VARCHAR2(50) NOT NULL unique,
+                       user_name VARCHAR2(50) NOT NULL,
+                       user_email VARCHAR2(50) NOT NULL,
+                       user_birthday number NOT NULL,
+                       user_phoneNumber VARCHAR2(50) NOT NULL,
+                       user_joinDate DATE DEFAULT SYSDATE  NOT NULL,
+                       user_ROLE VARCHAR2(50) NOT NULL
 );
 
 예시 데이터 9개

@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.member">
     <resultMap id="memResult" type="memberDTO">
+        <result property="accountID" column="ACCOUNT_ID" />
         <result property="userId" column="USER_ID" />
         <result property="userPw" column="USER_PW" />
         <result property="userNickname" column="USER_NICKNAME" />
@@ -9,12 +10,13 @@
         <result property="userEmail" column="USER_EMAIL" />
         <result property="userBirthday" column="USER_BIRTHDAY" />
         <result property="userPhoneNumber" column="USER_PHONENUMBER" />
+        <result property="ROLE" column="USER_ROLE" />
     </resultMap>
 
     <!-- 회원 추가 -->
     <insert id="addMember" parameterType="MemberDTO">
         <![CDATA[
-        insert into users (ACCOUNT_ID, USER_ID, USER_PW, USER_NICKNAME, USER_NAME, USER_EMAIL, USER_BIRTHDAY, USER_PHONENUMBER, USER_JOINDATE, USER_RULE)
+        insert into users (ACCOUNT_ID, USER_ID, USER_PW, USER_NICKNAME, USER_NAME, USER_EMAIL, USER_BIRTHDAY, USER_PHONENUMBER, USER_JOINDATE, USER_ROLE)
         values (USER_SEQ.NEXTVAL,
                 #{userId, jdbcType=VARCHAR}, #{userPw, jdbcType=VARCHAR}, #{userNickname, jdbcType=VARCHAR}, #{userName, jdbcType=VARCHAR},
                 #{userEmail, jdbcType=VARCHAR}, #{userBirthday, jdbcType=VARCHAR}, #{userPhoneNumber, jdbcType=VARCHAR}, sysdate, 'USER')

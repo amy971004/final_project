@@ -12,6 +12,12 @@ public class MemberServiceImpl implements MemberService{
     @Autowired
     private MemberDAO dao;
 
+    //로그인
+    @Override
+    public MemberDTO login(String userId, String userPw) {
+        return dao.checkLogin(userId, userPw); // 로그인 성공 시 사용자 정보를 반환, 실패시 null값 반환
+    }
+
     // 회원 추가
     @Override
     public int addMember(MemberDTO member) {
@@ -28,11 +34,6 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public boolean checkNickname(String userNickname) {
         return dao.checkNickname(userNickname) == 0; // 아이디가 존재하지 않으면 true 반환
-    }
-
-    @Override
-    public MemberDTO login(String userId, String userPw) {
-        return dao.checkLogin(userId, userPw); // 로그인 성공 시 사용자 정보를 반환, 실패시 null값 반환
     }
 
 }

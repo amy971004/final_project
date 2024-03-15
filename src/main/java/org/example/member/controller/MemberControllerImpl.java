@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.Console;
+
 // 회원 컨트롤러의 구현체
 @RestController
 public class MemberControllerImpl implements MemberController{
@@ -16,13 +18,13 @@ public class MemberControllerImpl implements MemberController{
     private MemberService service;
 
     @Override
-    @PostMapping("/login.do")
+    @PostMapping(value = {"/login.do","member/login.do"})
     public ModelAndView login(@RequestParam("userId") String userId, @RequestParam("userPw") String userPw, HttpServletRequest request){
         HttpSession session = request.getSession();
         MemberDTO memberDTO = service.login(userId, userPw);
         if(memberDTO != null) {
             // 사용자 정보가 존재할 때만 세션에 저장
-            session.setAttribute("RULE", memberDTO.getRULE());
+            session.setAttribute("RULE", memberDTO.getROLE());
             session.setAttribute("accountID", memberDTO.getAccountID());
             // 로그인 성공 시 로그인 성공 테스트 페이지로 리다이렉트
             return new ModelAndView("redirect:/successTest");
