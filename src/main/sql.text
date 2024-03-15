@@ -4,7 +4,7 @@ create user c##sqluser identified by 1234;
 권한부여
 grant connect, resource, dba to c##sqluser;
 
-유저 테이블
+유저 테이블 (식별자 아이디 - UUID 방식, 비밀번호 - 해싱 & 솔트 암호화 기법)
 CREATE TABLE users (
                        account_ID VARCHAR2(32) DEFAULT RAWTOHEX(SYS_GUID()) primary key NOT NULL,
                        user_id VARCHAR2(50) NOT NULL unique,
