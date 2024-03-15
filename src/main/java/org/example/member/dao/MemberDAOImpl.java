@@ -5,6 +5,7 @@ import org.example.member.dto.MemberDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.io.Console;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +24,12 @@ public class MemberDAOImpl implements MemberDAO{
         params.put("userPw", userPw);
         return sqlSession.selectOne("mapper.member.checkLogin", params);
     }
+
+    @Override
+    public MemberDTO findMemberById(String userId) {
+        return sqlSession.selectOne("mapper.member.findMemberById", userId);
+    }
+
 
     // 회원 추가
     @Override

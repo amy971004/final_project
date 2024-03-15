@@ -6,6 +6,9 @@ public interface MemberDAO {
 
     // 로그인
     MemberDTO checkLogin(String userId, String userPw);
+
+    // 로그인
+    MemberDTO findMemberById(String userId);
     
     // 회원가입
     int addMember(MemberDTO member);

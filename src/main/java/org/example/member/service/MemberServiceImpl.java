@@ -2,6 +2,7 @@ package org.example.member.service;
 
 import org.example.member.dao.MemberDAO;
 import org.example.member.dto.MemberDTO;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,12 +16,19 @@ public class MemberServiceImpl implements MemberService{
     //로그인
     @Override
     public MemberDTO login(String userId, String userPw) {
-        return dao.checkLogin(userId, userPw); // 로그인 성공 시 사용자 정보를 반환, 실패시 null값 반환
+        MemberDTO member = dao.findMemberById(userId); // 사용자 ID로 저장된 사용자 정보 조회
+        if (member != null && BCrypt.checkpw(userPw, member.getUserPw())) {
+            return member; // 로그인 성공 시 사용자 정보 반환
+        }
+        return null; // 로그인 실패 시 null 반환
     }
+
 
     // 회원 추가
     @Override
     public int addMember(MemberDTO member) {
+        String hashedPw = BCrypt.hashpw(member.getUserPw(), BCrypt.gensalt());
+        member.setUserPw(hashedPw); // 해시된 비밀번호로 설정
         return dao.addMember(member);
     }
 

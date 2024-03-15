@@ -4,17 +4,11 @@ create user c##sqluser identified by 1234;
 권한부여
 grant connect, resource, dba to c##sqluser;
 
-회원번호를 위한 유저 시퀀스 생성
-CREATE SEQUENCE user_seq
-    START WITH 1
-    INCREMENT BY 1
-    NOMAXVALUE;
-
 유저 테이블
 CREATE TABLE users (
-                       account_ID NUMBER primary key NOT NULL,
+                       account_ID VARCHAR2(32) DEFAULT RAWTOHEX(SYS_GUID()) primary key NOT NULL,
                        user_id VARCHAR2(50) NOT NULL unique,
-                       user_pw VARCHAR2(50) NOT NULL,
+                       user_pw VARCHAR2(400) NOT NULL,
                        user_nickName VARCHAR2(50) NOT NULL unique,
                        user_name VARCHAR2(50) NOT NULL,
                        user_email VARCHAR2(50) NOT NULL,
@@ -25,17 +19,23 @@ CREATE TABLE users (
 );
 
 예시 데이터 9개
-INSERT INTO users (ACCOUNT_ID, user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_RULE) VALUES (1, 'user01', 'pw01', 'nick01', 'Name01', 'email01@example.com', 19900101, 1012345678, SYSDATE, 'USER');
-INSERT INTO users (ACCOUNT_ID, user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_RULE) VALUES (2, 'user02', 'pw02', 'nick02', 'Name02', 'email02@example.com', 19900202, 2012345678, SYSDATE, 'USER');
-INSERT INTO users (ACCOUNT_ID, user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_RULE) VALUES (3, 'user03', 'pw03', 'nick03', 'Name03', 'email03@example.com', 19900303, 3012345678, SYSDATE, 'USER');
-INSERT INTO users (ACCOUNT_ID, user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_RULE) VALUES (4, 'user04', 'pw04', 'nick04', 'Name04', 'email04@example.com', 19900404, 4012345678, SYSDATE, 'USER');
-INSERT INTO users (ACCOUNT_ID, user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_RULE) VALUES (5, 'user05', 'pw05', 'nick05', 'Name05', 'email05@example.com', 19900505, 5012345678, SYSDATE, 'USER');
-INSERT INTO users (ACCOUNT_ID, user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_RULE) VALUES (6, 'user06', 'pw06', 'nick06', 'Name06', 'email06@example.com', 19900606, 6012345678, SYSDATE, 'USER');
-INSERT INTO users (ACCOUNT_ID, user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_RULE) VALUES (7, 'user07', 'pw07', 'nick07', 'Name07', 'email07@example.com', 19900707, 7012345678, SYSDATE, 'USER');
-INSERT INTO users (ACCOUNT_ID, user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_RULE) VALUES (8, 'user08', 'pw08', 'nick08', 'Name08', 'email08@example.com', 19900808, 8012345678, SYSDATE, 'USER');
-INSERT INTO users (ACCOUNT_ID, user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_RULE) VALUES (9, 'user09', 'pw09', 'nick09', 'Name09', 'email09@example.com', 19900909, 9012345678, SYSDATE, 'USER');
+INSERT INTO users (user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_ROLE) VALUES ('user01', 'pw01', 'nick01', 'Name01', 'email01@example.com', 19900101, 1012345678, SYSDATE, 'USER');
+INSERT INTO users (user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_ROLE) VALUES ('user02', 'pw02', 'nick02', 'Name02', 'email02@example.com', 19900202, 2012345678, SYSDATE, 'USER');
+INSERT INTO users (user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_ROLE) VALUES ('user03', 'pw03', 'nick03', 'Name03', 'email03@example.com', 19900303, 3012345678, SYSDATE, 'USER');
+INSERT INTO users (user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_ROLE) VALUES ('user04', 'pw04', 'nick04', 'Name04', 'email04@example.com', 19900404, 4012345678, SYSDATE, 'USER');
+INSERT INTO users (user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_ROLE) VALUES ('user05', 'pw05', 'nick05', 'Name05', 'email05@example.com', 19900505, 5012345678, SYSDATE, 'USER');
+INSERT INTO users (user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_ROLE) VALUES ('user06', 'pw06', 'nick06', 'Name06', 'email06@example.com', 19900606, 6012345678, SYSDATE, 'USER');
+INSERT INTO users (user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_ROLE) VALUES ('user07', 'pw07', 'nick07', 'Name07', 'email07@example.com', 19900707, 7012345678, SYSDATE, 'USER');
+INSERT INTO users (user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_ROLE) VALUES ('user08', 'pw08', 'nick08', 'Name08', 'email08@example.com', 19900808, 8012345678, SYSDATE, 'USER');
+INSERT INTO users (user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_ROLE) VALUES ('user09', 'pw09', 'nick09', 'Name09', 'email09@example.com', 19900909, 9012345678, SYSDATE, 'USER');
 
-현재 시퀀스값 (1 추가됨)
+회원번호를 위한 유저 시퀀스 생성 <- 필요없어짐 사용 X
+CREATE SEQUENCE user_seq
+    START WITH 1
+    INCREMENT BY 1
+    NOMAXVALUE;
+
+현재 시퀀스값 (1 추가됨) <- 필요없어짐 사용 X
 SELECT USER_SEQ.NEXTVAL FROM DUAL;
 
 // 변경사항 저장

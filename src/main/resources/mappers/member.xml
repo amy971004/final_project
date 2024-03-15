@@ -16,8 +16,8 @@
     <!-- 회원 추가 -->
     <insert id="addMember" parameterType="MemberDTO">
         <![CDATA[
-        insert into users (ACCOUNT_ID, USER_ID, USER_PW, USER_NICKNAME, USER_NAME, USER_EMAIL, USER_BIRTHDAY, USER_PHONENUMBER, USER_JOINDATE, USER_ROLE)
-        values (USER_SEQ.NEXTVAL,
+        insert into users (USER_ID, USER_PW, USER_NICKNAME, USER_NAME, USER_EMAIL, USER_BIRTHDAY, USER_PHONENUMBER, USER_JOINDATE, USER_ROLE)
+        values (
                 #{userId, jdbcType=VARCHAR}, #{userPw, jdbcType=VARCHAR}, #{userNickname, jdbcType=VARCHAR}, #{userName, jdbcType=VARCHAR},
                 #{userEmail, jdbcType=VARCHAR}, #{userBirthday, jdbcType=VARCHAR}, #{userPhoneNumber, jdbcType=VARCHAR}, sysdate, 'USER')
         ]]>
@@ -36,6 +36,11 @@
     <!-- 로그인 확인 -->
     <select id="checkLogin" parameterType="Map" resultMap="memResult">
         SELECT * FROM users WHERE USER_ID = #{userId} AND USER_PW = #{userPw}
+    </select>
+
+    <!-- 사용자 정보 조회 -->
+    <select id="findMemberById" parameterType="String" resultMap="memResult">
+        SELECT * FROM users WHERE USER_ID = #{userId}
     </select>
 
 </mapper>

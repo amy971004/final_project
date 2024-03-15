@@ -18,6 +18,9 @@ $(document).ready(function() {
         } else if(pwInput.val().length === 0){
             alert("비밀번호를 입력해주세요.");
 
+        // 아디이와 비밀번호 모두 입력됐을 때만 폼으 제출
+        } else {
+            $("#loginForm").submit(); // 폼을 제출합니다.
         }
     });
 

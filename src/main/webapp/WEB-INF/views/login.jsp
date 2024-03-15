@@ -11,14 +11,14 @@
 <div id="backgroundImg">
     <div id="a1">
         <div id="a2">
-            <form action="login.do" method="post">
+            <form action="login.do" method="post" id="loginForm">
                 <div class="inputBox" style="margin-bottom: 15px">
                     <input type="text" id="idInput" name="userId" class="input" autofocus maxlength="14" placeholder="ID">
                 </div>
                 <div  class="inputBox">
                     <input type="password" id="pwInput" name="userPw" class="input" maxlength="14" placeholder="Password">
                 </div>
-                <p> <button type="submit" id="loginBtn" class="btn1">로그인</button>
+                <p> <button type="button" id="loginBtn" class="btn1">로그인</button>
                     <button type="button" id="joinBtn" class="btn2" onclick="location.href='http://localhost:8081/member/joinMember.do'">회원가입</button>
             </form>
         </div>
