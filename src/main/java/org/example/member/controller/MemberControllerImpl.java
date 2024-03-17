@@ -27,10 +27,12 @@ public class MemberControllerImpl implements MemberController{
             session.setAttribute("RULE", memberDTO.getROLE());
             session.setAttribute("accountID", memberDTO.getAccountID());
             // 로그인 성공 시 로그인 성공 테스트 페이지로 리다이렉트
-            return new ModelAndView("redirect:/successTest");
+            return new ModelAndView("redirect:/main");
         } else{
-            // 로그인 실패 시 로그인 실패 테스트 페이지로 리다이렉트
-            return new ModelAndView("redirect:/failTest");
+            // 로그인 실패 시, 에러 메시지를 세션에 임시로 저장
+            session.setAttribute("errorMessage", "아이디 혹은 비밀번호가 일치하지 않습니다.");
+            // 홈 페이지로 리다이렉트
+            return new ModelAndView("redirect:/");
         }
     }
 

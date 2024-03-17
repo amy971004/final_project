@@ -1,4 +1,9 @@
+window.onload = function() {
+
+}
+
 $(document).ready(function() {
+
     let loginBtn = $('#loginBtn'); // 로그인 버튼
     let idInput = $('#idInput'); // 아이디 입력창
     let pwInput = $('#pwInput'); // 비밀번호 입력창

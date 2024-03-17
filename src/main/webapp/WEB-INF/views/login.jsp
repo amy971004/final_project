@@ -24,7 +24,23 @@
         </div>
     </div>
 </div>
-
+<% if(session.getAttribute("errorMessage") != null) { %>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // 세션에서 에러 메시지를 가져옴
+        let errorMessage = "<%= session.getAttribute("errorMessage") %>";
+        // 에러 메시지가 있으면 경고창을 띄움
+        if(errorMessage.trim().length > 0) {
+            alert(errorMessage);
+        }
+        <%
+            // JavaScript 코드가 실행된 후 서버 측에서 세션에서 에러 메시지를 삭제
+            // 주의: JSP 코드는 서버에서 처리되므로, 클라이언트의 이벤트와 동기화되지 않음
+            session.removeAttribute("errorMessage");
+        %>
+    });
+</script>
+<% } %>
 <script src="../../resources/js/login.js"></script>
 
 </body>

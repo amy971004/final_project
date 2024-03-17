@@ -1,11 +1,18 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<!--content-->
-<div class="bg-dark text-white p-5">
-    <h1> 나는야 홍석우</h1>
-</div>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<!--site info-->
-<div class="mb-5 container-fluid">
-    <hr>
-    <p>ⓒ CloudStudying | <a href="#">Privacy</a> | <a href="#">Terms</a></p>
-</div>
+<hr style="margin: 0">
+<footer>
+    <nav>
+        <a href='#' target='_blank'>&nbsp;&nbsp;&nbsp;Blog</a> |
+        <a href='#' target='_blank'> Github</a>
+    </nav>
+    <p style="color: #484848">
+        <br>
+        <span>&nbsp;&nbsp;&nbsp;팀 : ITbank - 4Team</span><br/>
+        <span>&nbsp;&nbsp;&nbsp;팀원 : 황선준, 홍석우, 설지연, 이주연</span><br/>
+        <br>
+        <span>&nbsp;&nbsp;&nbsp;Copyright 2024. ITbank - 4Team. All Rights Reserved.</span>
+    </p>
+</footer>
+</body>
+</html>

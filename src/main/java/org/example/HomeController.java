@@ -13,9 +13,14 @@ import org.slf4j.LoggerFactory;
 public class HomeController {
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
-    @RequestMapping(value = {"/", "/main"})
+    @RequestMapping({"/"})
     public String main1(){
         return "login";
+    }
+
+    @RequestMapping({"/main"})
+    public String main2(){
+        return "main";
     }
 
     // 테스트 성공 확인용 페이지
