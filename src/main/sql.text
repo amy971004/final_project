@@ -38,5 +38,27 @@ CREATE SEQUENCE user_seq
 현재 시퀀스값 (1 추가됨) <- 필요없어짐 사용 X
 SELECT USER_SEQ.NEXTVAL FROM DUAL;
 
+게시물 테이블
+CREATE SEQUENCE files_seq START WITH 1 INCREMENT BY 1;
+
+CREATE TABLE files (
+    id INT NOT NULL PRIMARY KEY,
+    content CLOB,
+    fileName VARCHAR2(255),
+    filePath VARCHAR2(4000),
+    fileSize NUMBER(19),
+    uploadTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    mimeType VARCHAR2(50)
+);
+
+CREATE OR REPLACE TRIGGER files_before_insert
+BEFORE INSERT ON files
+FOR EACH ROW
+BEGIN
+    SELECT files_seq.NEXTVAL INTO :new.id FROM dual;
+END;
+/
+
+
 // 변경사항 저장
 commit;

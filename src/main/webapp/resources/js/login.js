@@ -4,6 +4,8 @@ window.onload = function() {
 
 $(document).ready(function() {
 
+    let pwChangeClose = $('#pwChangeClose');
+
     let loginBtn = $('#loginBtn'); // 로그인 버튼
     let idInput = $('#idInput'); // 아이디 입력창
     let pwInput = $('#pwInput'); // 비밀번호 입력창
@@ -63,6 +65,10 @@ $(document).ready(function() {
         findByPwModal.hide();
     });
 
+    pwChangeClose.on("click", function () {
+        pwChangeModal.hide()
+    });
+
     findByIdBtn.on("click", function () {
         let userName = nameInput.val();
         let userBirth = birthInput1.val();
@@ -75,6 +81,7 @@ $(document).ready(function() {
             success: function(response) {
                 if(response !== "not found") {
                     alert("찾으시는 아이디는 " + response + "입니다.");
+                    findByIdModal.hide();
                 } else {
                     alert("일치하는 정보가 없습니다.");
                 }
@@ -130,76 +137,60 @@ $(document).ready(function() {
         pwInputBox.removeClass('inputBox-focus'); // 파란색 테두리 제거
     });
 
-    <!-- 키를 입력했을 때 이벤트 / 글자수, 입력값 일치 유효성 검사 -->
+// 키를 입력했을 때 이벤트 / 글자수, 입력값 일치 유효성 검사
     pwInput1.on("input blur", function () {
-        // 비밀번호 입력창의 값이 비어있을 때
-        if(pwInput1.val().length === 0){
-            pwInputText1.show(); // 비밀번호를 입력해주세요. <- 보이기
-            pwInputText2.hide(); // 비밀번호는 6~16자리로 입력해주세요. <- 숨기기
-            pwInputText3.hide(); // 특수문자를 포함시켜주세요. <- 숨기기
-            pwValid = false; // 유효성 검증 실패
+        const pwLength = pwInput1.val().length;
+        const hasSpecialChar = /[\!@#\$%\^&\*\(\)]/.test(pwInput1.val());
+        const passwordsMatch = pwInput1.val() === pwCInput.val();
 
-            // 비밀번호 입력창의 글자수가 6보다 작을 때
-        } else if (pwInput1.val().length < 6){
-            pwInputText1.hide(); // 비밀번호를 입력해주세요. <- 숨기기
-            pwInputText2.show(); // 비밀번호는 6~16자리로 입력해주세요. <- 보이기
-            pwInputText3.hide(); // 특수문자를 포함시켜주세요. <- 숨기기
-            pwValid = false; // 유효성 검증 실패
+        // 초기 상태 설정
+        pwInputText1.hide();
+        pwInputText2.hide();
+        pwInputText3.hide();
+        pwCInputText3.hide();
 
-            // 비밀번호 입력창의 글자수가 6보다 크거나 같을 때
-        } else if (pwInput1.val().length >= 6) {
-            pwInputText2.hide(); // 비밀번호는 6~16자리로 입력해주세요. <- 숨기기
-            if(/[\!@#\$%\^&\*\(\)]/.test(pwInput1.val())){
-                pwInputText3.hide();  // 특수문자를 포함시켜주세요. <- 숨기기
-                pwValid = true; // 유효성 검증 성공
+        pwValid = false;
+        pwCValid = false;
 
-                // 비밀번호 확인 입력창의 입력값과 비밀번호 확인의 입력값이 같을 때
-                if (pwInput1.val() === pwCInput.val()){
-                    pwCInputText3.hide(); // 비밀번호가 일치하지 않습니다. <- 숨기기
-                    pwValid = true; // 유효성 검증 성공
-                    pwCValid = true; // 유효성 검증 성공
-                } else {
-                    pwCInputText3.show();  // 비밀번호가 일치하지 않습니다. <- 보이기
-                    pwCValid = false; // 유효성 검증 실패
-                }
-
+        if (pwLength === 0) {
+            pwInputText1.show(); // "비밀번호를 입력해주세요." 메시지 보이기
+        } else if (pwLength < 6) {
+            pwInputText2.show(); // "비밀번호는 6~16자리로 입력해주세요." 메시지 보이기
+        } else if (!hasSpecialChar) {
+            pwInputText3.show(); // "특수문자를 포함시켜주세요." 메시지 보이기
+        } else {
+            // 비밀번호 유효성 검증 성공
+            pwValid = true;
+            // 비밀번호와 비밀번호 확인이 일치하는지 검사
+            if (!passwordsMatch) {
+                pwCInputText3.show(); // "비밀번호가 일치하지 않습니다." 메시지 보이기
             } else {
-                pwInputText3.show();  // 특수문자를 포함시켜주세요. <- 보이기
-                pwValid = false; // 유효성 검증 실패
+                // 비밀번호 확인 유효성 검증 성공
+                pwCValid = true;
             }
         }
-        changeChk()
-    });
 
-    // 유효성 검증 결과 시각화
-    pwInput1.on("input blur", function () {
-        changeChk()
-        // 유효성 검증 결과에 따른 입력창 테두리의 시각적인 변화
-        if (pwValid === true){
-            pwInputBox.addClass('success'); // 테두리를 초록색으로
-            pwInputBox.removeClass('error'); // 테두리를 빨간색으로
-            pwInput1.removeClass('errorText'); // font-color - red 제거
-            changeChk()
+        // 변경 사항 적용
+        changeChk();
+
+        // 유효성 검증 결과 시각화
+        if (pwValid) {
+            pwInputBox.removeClass('error').addClass('success');
+            pwInput1.removeClass('errorText');
         } else {
-            pwInputBox.addClass('error'); // 테두리를 빨간색으로
-            pwInputBox.removeClass('success'); // 초록색 테두리 제거
-            pwCInputBox.addClass('error'); // 테두리를 빨간색으로
-            pwCInputBox.removeClass('success'); // 초록색 테두리 제거
-            changeChk()
+            pwInputBox.removeClass('success').addClass('error');
         }
-        if (pwCValid === true){
-            pwCInputBox.addClass('success'); // 테두리를 초록색으로
-            pwCInputBox.removeClass('error'); // 테두리를 빨간색으로
-            pwCInput.removeClass('errorText'); // font-color - red 제거
-            changeChk()
+
+        // 비밀번호 확인 유효성 검증
+        if (pwCValid) {
+            pwCInputBox.removeClass('error').addClass('success');
+            pwCInput.removeClass('errorText');
         } else {
-            pwInputBox.addClass('error'); // 테두리를 빨간색으로
-            pwInputBox.removeClass('success'); // 초록색 테두리 제거
-            pwCInputBox.addClass('error'); // 테두리를 빨간색으로
-            pwCInputBox.removeClass('success'); // 초록색 테두리 제거
-            changeChk()
+            pwCInputBox.removeClass('success').addClass('error');
         }
-        changeChk()
+
+        // 유효성 검증 후 변경 사항 적용을 위한 함수 한 번만 호출
+        changeChk();
     });
 
     <!-- ############################### 비밀번호 확인 ############################### -->
@@ -219,67 +210,56 @@ $(document).ready(function() {
         pwCInputBox.removeClass('inputBox-focus'); // 파란색 테두리 제거
     });
 
-    <!-- 키를 입력했을 때 이벤트 / 글자수, 입력값 일치 유효성 검사 -->
-    // idInput.keydown(function () {
+    // 비밀번호 확인 입력창에 대한 이벤트 핸들러
     pwCInput.on("input blur", function () {
-        // 비밀번호 확인 입력창의 값이 비어있을 때
-        if (pwCInput.val().length === 0){
-            pwCInputText1.show(); // 비밀번호를 입력해주세요. <- 보이기
-            pwCInputText2.hide(); // 비밀번호는 6~16자리로 입력해주세요. <- 숨기기
-            pwCInputText3.hide(); // 비밀번호가 일치하지 않습니다. <- 숨기기
-            pwCValid = false; // 유효성 검증 실패
+        let pwCValue = pwCInput.val(); // 비밀번호 확인 입력창의 값
+        let pwValue = pwInput1.val(); // 비밀번호 입력창의 값
 
-            // 비밀번호 확인 입력창의 글자수가 6보다 작을 때
-        } else if (pwCInput.val().length < 6) {
-            pwCInputText1.hide(); // 비밀번호를 입력해주세요. <- 숨기기
-            pwCInputText2.show(); // 비밀번호는 6~16자리로 입력해주세요. <- 보이기
-            pwCValid = false; // 유효성 검증 실패
+        // 메시지를 초기 상태로 숨깁니다.
+        pwCInputText1.hide();
+        pwCInputText2.hide();
+        pwCInputText3.hide();
 
-            // 비밀번호 확인 입력창의 글자수가 6이상일 때
-        } else if (pwCInput.val().length >= 6) {
-            pwCInputText2.hide(); // 비밀번호는 6~16자리로 입력해주세요. <- 숨기기
+        // 유효성 초기 상태 설정
+        pwCValid = false;
 
-            // 비밀번호 입력창의 입력값과 비밀번호 확인의 입력값이 같을 때
-            if (pwInput.val() === pwCInput.val()) {
-                pwCInputText3.hide(); // 비밀번호가 일치하지 않습니다. <- 숨기기
-                pwCValid = true; // 유효성 검증 성공
-            } else {
-                pwCInputText3.show(); // 비밀번호가 일치하지 않습니다. <- 보이기
-                pwCValid = false; // 유효성 검증 실패
-            }
-        }
-        changeChk()
-    });
-
-    // 유효성 검증 결과 시각화
-    pwCInput.on("input blur", function () {
-        changeChk()
-        // 유효성 검증 결과에 따른 입력창 테두리의 시각적인 변화
-        if (pwValid === true){
-            pwInputBox.addClass('success'); // 테두리를 초록색으로
-            pwInputBox.removeClass('error'); // 테두리를 빨간색으로
-            pwInput.removeClass('errorText'); // font-color - red 제거
-            changeChk()
+        if (pwCValue.length === 0) {
+            // 비밀번호를 입력해주세요.
+            pwCInputText1.show();
+            pwCValid = false;
+        } else if (pwCValue.length < 6) {
+            // 비밀번호는 6~16자리로 입력해주세요.
+            pwCInputText2.show();
+            pwCValid = false;
+        } else if (pwValue !== pwCValue) {
+            // 비밀번호가 일치하지 않습니다.
+            pwCInputText3.show();
+            pwCValid = false;
         } else {
-            pwInputBox.addClass('error'); // 테두리를 빨간색으로
-            pwInputBox.removeClass('success'); // 초록색 테두리 제거
-            pwCInputBox.addClass('error'); // 테두리를 빨간색으로
-            pwCInputBox.removeClass('success'); // 초록색 테두리 제거
-            changeChk()
+            // 비밀번호가 일치하고, 적절한 길이를 가지고 있습니다.
+            pwCValid = true;
         }
-        if (pwCValid === true){
-            pwCInputBox.addClass('success'); // 테두리를 초록색으로
-            pwCInputBox.removeClass('error'); // 테두리를 빨간색으로
-            pwCInput.removeClass('errorText'); // font-color - red 제거
-            changeChk()
+
+        changeChk(); // 유효성 검사 결과에 따른 시각적 변화를 적용하는 함수
+
+        // 유효성 검증 결과에 따른 시각적 변화 적용
+        if (pwValid) {
+            pwInputBox.removeClass('error').addClass('success');
+            pwInput1.removeClass('errorText');
         } else {
-            pwInputBox.addClass('error'); // 테두리를 빨간색으로
-            pwInputBox.removeClass('success'); // 초록색 테두리 제거
-            pwCInputBox.addClass('error'); // 테두리를 빨간색으로
-            pwCInputBox.removeClass('success'); // 초록색 테두리 제거
-            changeChk()
+            pwInputBox.removeClass('success').addClass('error');
         }
-        changeChk()
+
+        if (pwCValid) {
+            pwCInputBox.removeClass('error').addClass('success');
+            pwCInput.removeClass('errorText');
+        } else {
+            pwCInputBox.removeClass('success').addClass('error');
+        }
+
+        // 변경 사항을 체크하는 함수를 한 번만 호출합니다.
+        changeChk();
+
     });
 
     // ############################### 비밀번호 재설정 버튼 ###############################
@@ -287,12 +267,14 @@ $(document).ready(function() {
     function changeChk() {
         // 모든 유효성 검사 성공시 회원가입버튼 활성화
         if (pwValid && pwCValid) {
-            pwChangeBtn.addClass('joinBtn1').removeClass('joinBtn2').prop('disabled', false);
+            pwChangeBtn.prop('disabled', false);
 
             // 유효성 검사가 1개라도 실패시 회원가입 버튼 비활성화
         } else {
-            pwChangeBtn.removeClass('joinBtn1').addClass('joinBtn2').prop('disabled', true);
+            pwChangeBtn.prop('disabled', true);
         }
     }
+
+
 
 });

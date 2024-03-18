@@ -79,12 +79,12 @@
 
                 <!-- 비밀번호 확인 -->
                 <div id="pwCInputBox" class="inputBox1">
-                    <input type="password" name="pwC" id="pwCInput1" class="input" maxlength="14" placeholder="Password" autocomplete="new-password">
+                    <input type="password" name="userPwC" id="pwCInput1" class="input" maxlength="14" placeholder="Password" autocomplete="new-password">
                 </div>
                 <h5 id="pwCInputText1" class="InputText">* 비밀번호 입력해주세요.</h5>
                 <h5 id="pwCInputText2" class="InputText">* 비밀번호는 6~16자리로 입력해주세요.</h5>
                 <h5 id="pwCInputText3" class="InputText">* 비밀번호가 일치하지 않습니다.</h5>
-                <p> <input type="button" value="변경" id="pwChangeBtn" class="btn1">
+                <p> <input type="button" value="변경" id="pwChangeBtn" class="btn1" disabled>
             </form>
         </div>
     </div>

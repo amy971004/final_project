@@ -1,12 +1,18 @@
 package org.example.post.dto;
 
 import lombok.Data;
-import java.sql.Date;
+
+import java.util.Date;
 
 @Data
 public class PostDTO {
-    private int contentNo;
-    private String user_nickName;
-    private String postContent;
-    private Date uploadDate;
+
+    private Long id;
+    private String content;
+    private String fileName;
+    private String filePath;
+    private Long fileSize;
+    private Date uploadTime;
+    private String mimeType;
+
 }
