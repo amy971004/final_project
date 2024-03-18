@@ -2,11 +2,11 @@
 
 <%@ include file="header.jsp"%>
 
-<br>
-<p> 본문 - 로그인 성공</p>
-<p> 식별자ID - ${sessionScope.accountID}</p>
-<p> 권한 - ${sessionScope.RULE}</p>
+<main>
+    <br>
+    <p> 본문 - 로그인 성공</p>
+    <p> 식별자ID - ${sessionScope.accountID}</p>
+    <p> 권한 - ${sessionScope.RULE}</p>
+</main>
 
 <%@ include file="footer.jsp"%>
-</body>
-</html>
