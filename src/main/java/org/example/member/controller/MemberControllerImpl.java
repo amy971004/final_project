@@ -71,4 +71,26 @@ public class MemberControllerImpl implements MemberController{
         return isAvailable ? "OK" : "EXIST";
     }
 
+    // 아이디 찾기
+    @RequestMapping(value = "/findById.do", method = RequestMethod.POST)
+    @ResponseBody
+    public String findById(@RequestParam("userName") String userName, @RequestParam("userBirth") String userBirth, HttpServletRequest request) {
+        String userId = service.findById(userName, userBirth);
+        if(userId != null) {
+            // 아이디 찾기 성공
+            return userId;
+        } else {
+            // 일치하는 사용자가 없음
+            return "not found";
+        }
+    }
+
+    // 비밀번호 찾기
+    @RequestMapping(value = "/findByPw.do", method = RequestMethod.POST)
+    @ResponseBody
+    public String findByPw(@RequestParam("userId") String userId, @RequestParam("userBirth") String userBirth, HttpServletRequest request) {
+        boolean isAvailable = service.findByPw(userId, userBirth);
+        return isAvailable ? "OK" : "FAIL";
+    }
+
 }

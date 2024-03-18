@@ -5,7 +5,6 @@ import org.example.member.dto.MemberDTO;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MemberServiceImpl implements MemberService{
@@ -42,6 +41,14 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public boolean checkNickname(String userNickname) {
         return dao.checkNickname(userNickname) == 0; // 아이디가 존재하지 않으면 true 반환
+    }
+
+    public String findById(String userName, String userBirth){
+        return dao.findById(userName, userBirth);
+    }
+
+    public boolean findByPw(String userId, String userBirth){
+        return dao.findByPw(userId, userBirth) == 1;
     }
 
 }

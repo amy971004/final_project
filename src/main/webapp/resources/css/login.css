@@ -15,10 +15,10 @@ body {
 }
 
 /* 로그인창 틀 */
-#a1 {
+#a1, #b1, #c1, #d1 {
     position: relative;
     width: 400px;
-    height: 230px;
+    height: 240px;
     top: 50%;
     margin-left: auto;
     margin-right: auto;
@@ -29,7 +29,7 @@ body {
 }
 
 /* 로그인창 내부 */
-#a2 {
+#a2, #b2, #c2, #d2 {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -90,4 +90,156 @@ body {
 /* 입력창에 호버될 때 배경색 조금 더 진하게 */
 .inputBox:hover{
     background-color: rgba(255, 255, 255, 0.50);
+}
+
+ /* 아이디 비밀번호 찾기 */
+#find {
+    font-size: 15px;
+    text-align: center;
+}
+#findById,#findByPw {
+    cursor: pointer;
+}
+
+/* 아이디 찾기 버튼 */
+#findByIdBtn {
+    width: 300px;
+    height: 30px;
+    border: black 2px solid;
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+/* 아이디 찾기 버튼에 호버될 때 */
+#findByIdBtn:hover {
+    background-color: rgba(255, 255, 255, 0.50);
+}
+
+/* 아이디 찾기 버튼 */
+#findByPwBtn {
+    width: 300px;
+    height: 30px;
+    border: black 2px solid;
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+/* 아이디 찾기 버튼에 호버될 때 */
+#findByPwBtn:hover {
+    background-color: rgba(255, 255, 255, 0.50);
+}
+
+/* 비밀번호 재설정 버튼 */
+#pwChangeBtn {
+    width: 300px;
+    height: 30px;
+    border: black 2px solid;
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+/* 비밀번호 재성정 버튼에 호버될 때 */
+#pwChangeBtn:hover {
+    background-color: rgba(255, 255, 255, 0.50);
+}
+
+/* 닫기 버튼 */
+.close {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 15px;
+    right: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: transparent;
+    transition: background-color, color, 0.2s;
+}
+
+/* 닫기 버튼 호버시 */
+.close:hover {
+    background-color: rgba(224, 23, 23, 0.7);
+    color: white;
+}
+
+/* 유효성 검사 글자 */
+.InputText {
+    display: none;
+    color: red;
+}
+
+/* 유효성 검사 결과 실패일 때 빨간색 테두리 */
+.error {
+    border: red 2px solid;
+}
+
+/* 유효성 검사 결과 성공일 때 초록색 테두리 */
+.success {
+    border: green 2px solid;
+}
+
+/* 유효성 검사 실패시 입력값 빨간색으로 - 사용중단중임 */
+.errorText {
+    color: red;
+}
+
+/* 입력창 테두리 */
+.inputBox1 {
+    width: 300px;
+    height: 40px;
+    border: black 2px solid;
+    margin-bottom: 3px;
+    text-align: center;
+    border-radius: 15px;
+    background-color: transparent;
+    transition: background-color, border, 0.3s;
+}
+
+/* 입력창에 호버될 때 배경색 조금 더 진하게 */
+.inputBox1:hover {
+    background-color: rgba(255, 255, 255, 0.66);
+}
+
+/* 입력창에 포커스 될 때 파란색 테두리 */
+.inputBox-focus {
+    border: blue 2px solid;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* 유효성검사 결과 글자 */
+h5 {
+    text-align: left;
+    margin-top: 0;
+    margin-left: 10px;
+    margin-bottom: 0;
+    padding: 0;
+}
+
+/* 비밀번호 재설정 버튼 */
+#pwChangeBtn {
+    width: 300px;
+    height: 40px;
+    margin-top: 40px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: black solid 2px;
+    background-color: transparent;
+    transition: borer, background-color, 0.3s;
+}
+
+/* 회원가입이 버튼 비활성화 상태일 때 */
+#pwChangeBtn:disabled {
+    border: red 2px solid;
+}
+
+/* 회원가입이 버튼 활성화 상태일 때 */
+#pwChangeBtn:enabled {
+    border: green 2px solid;
+    background-color: rgba(255, 255, 255, 0.66);
 }

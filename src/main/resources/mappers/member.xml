@@ -43,4 +43,18 @@
         SELECT * FROM users WHERE USER_ID = #{userId}
     </select>
 
+    <!-- 아이디 찾기 -->
+    <select id="findById" parameterType="Map" resultType="String">
+        SELECT USER_ID
+        FROM users
+        WHERE USER_NAME = #{userName} AND USER_BIRTHDAY = #{userBirth}
+    </select>
+
+    <!-- 비밀번호 찾기 -->
+    <select id="findByPw" parameterType="Map" resultType="int">
+        SELECT COUNT(*)
+        FROM users
+        WHERE USER_ID = #{userId} AND USER_BIRTHDAY = #{userBirth}
+    </select>
+
 </mapper>

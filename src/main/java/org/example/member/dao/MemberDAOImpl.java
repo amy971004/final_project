@@ -49,4 +49,18 @@ public class MemberDAOImpl implements MemberDAO{
         return sqlSession.selectOne("mapper.member.checkNickname", userNickname);
     }
 
+    public String findById(String userName, String userBirth){
+        Map<String, Object> params = new HashMap<>();
+        params.put("userName", userName);
+        params.put("userBirth", userBirth);
+        return  sqlSession.selectOne("mapper.member.findById", params);
+    }
+
+    public int findByPw(String userId, String userBirth){
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("userBirth", userBirth);
+        return  sqlSession.selectOne("mapper.member.findByPw", params);
+    }
+
 }

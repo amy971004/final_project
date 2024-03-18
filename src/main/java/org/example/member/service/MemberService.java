@@ -15,4 +15,7 @@ public interface MemberService {
     // 닉네임 중복 검사
     boolean checkNickname(String userNickname);
 
+    String findById(String userName, String userBirth);
+
+    boolean findByPw(String userId, String userBirth);
 }

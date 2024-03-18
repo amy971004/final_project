@@ -23,6 +23,11 @@ public class HomeController {
         return "main";
     }
 
+    @RequestMapping({"/test"})
+    public String test(){
+        return "test";
+    }
+
     // 테스트 성공 확인용 페이지
     @RequestMapping({"/successTest"})
     public String success(HttpServletRequest request){

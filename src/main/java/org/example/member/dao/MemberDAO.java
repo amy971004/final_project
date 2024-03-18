@@ -19,4 +19,7 @@ public interface MemberDAO {
     // 닉네임 중복 검사를 위한 메서드 추가
     int checkNickname(String userNickname);
 
+    String findById(String userName, String userBirth);
+
+    int findByPw(String userId, String userBirth);
 }
