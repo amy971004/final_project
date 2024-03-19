@@ -50,11 +50,26 @@
         WHERE USER_NAME = #{userName} AND USER_BIRTHDAY = #{userBirth}
     </select>
 
+    <!-- 비밀번호 찾기 - 입력받은 아이디로 식별자 아이디 찾기 -->
+    <select id="findByAccountID_useId" parameterType="String" resultType="String">
+        SELECT ACCOUNT_ID
+        FROM users
+        WHERE USER_ID = #{userId}
+    </select>
+
     <!-- 비밀번호 찾기 -->
     <select id="findByPw" parameterType="Map" resultType="int">
         SELECT COUNT(*)
         FROM users
         WHERE USER_ID = #{userId} AND USER_BIRTHDAY = #{userBirth}
     </select>
+
+    <!-- 식별자 아이디와 일치하는 회원의 비밀번호를 변경 -->
+    <update id="changePw" parameterType="map">
+        UPDATE users
+        SET USER_PW = #{changePw}
+        WHERE ACCOUNT_ID = #{accountId}
+    </update>
+
 
 </mapper>

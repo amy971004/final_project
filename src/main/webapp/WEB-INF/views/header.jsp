@@ -1,4 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%--<%@ page import="jakarta.servlet.http.HttpSession" %>--%>
+
+<%--<%--%>
+<%--    HttpSession session = request.getSession(false); // 기존 세션 가져오기, 없으면 null 반환--%>
+<%--    if (session == null || session.getAttribute("RULE") == null) {--%>
+<%--        // 세션이 없거나, 세션에 RULE 속성이 없는 경우 홈으로 리다이렉트--%>
+<%--        response.sendRedirect("/");--%>
+<%--        return; // JSP 더 이상 실행 안 함--%>
+<%--    }--%>
+<%--%>--%>
 
 <html>
 <head>
@@ -28,8 +38,26 @@
     <!-- 내프로필 -->
     <a href="#" class="no-underline"><i class="fa-regular fa-user "></i></a>
     <!-- 로그아웃 -->
-    <a href="#" class="no-underline"><i class="fa-solid fa-arrow-right-from-bracket "></i></a>
+    <a class="no-underline"><i type="button" onclick="location.href='http://localhost:8081/logout.do'" id="logoutBtn" class="fa-solid fa-arrow-right-from-bracket" style="cursor: pointer"></i></a>
     <!-- 더보기 -->
     <a href="#" class="no-underline"><i class="fa-solid fa-bars "></i></a>
 </div>
+<script>
+    $(document).ready(function() {
+        // $('#logoutBtn').on('click', function (){
+        //     $.ajax({
+        //         type: "POST",
+        //         url: "http://localhost:8081/logout.do",
+        //         success: function(response) {
+        //             // 로그아웃 처리 후 홈 페이지로 리다이렉트, 또는 사용자에게 로그아웃되었음을 알림
+        //             window.location.href = 'http://localhost:8081';
+        //         },
+        //         error: function(xhr, status, error) {
+        //             // 에러 처리
+        //             alert("로그아웃 실패");
+        //         }
+        //     });
+        // });
+    });
+</script>
 

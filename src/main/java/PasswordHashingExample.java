@@ -7,5 +7,7 @@ public class PasswordHashingExample {
 
         System.out.println("Original Password: " + originalPassword);
         System.out.println("Hashed Password: " + hashedPassword);
+
+        System.out.println("한글 테스트");
     }
 }

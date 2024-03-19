@@ -4,6 +4,9 @@ window.onload = function() {
 
 $(document).ready(function() {
 
+    let pwValid = false; // 비밀번호 유효성 상태 - 기본값 실패
+    let pwCValid = false; // 비밀번호 확인 유효성 상태 - 기본값 실패
+
     let pwChangeClose = $('#pwChangeClose');
 
     let loginBtn = $('#loginBtn'); // 로그인 버튼
@@ -69,38 +72,45 @@ $(document).ready(function() {
         pwChangeModal.hide()
     });
 
+    // 아이디 찾기 버튼 눌렀을 때
     findByIdBtn.on("click", function () {
         let userName = nameInput.val();
-        let userBirth = birthInput1.val();
+        let userBirth1 = birthInput1.val();
 
         // AJAX 요청을 통해 서버에 아이디 찾기 요청
         $.ajax({
             url: "/findById.do",
             type: "post",
-            data: {userName: userName, userBirth: userBirth},
+            data: {userName: userName, userBirth: userBirth1},
             success: function(response) {
                 if(response !== "not found") {
                     alert("찾으시는 아이디는 " + response + "입니다.");
+                    nameInput.val('');
+                    birthInput1.val('');
                     findByIdModal.hide();
                 } else {
                     alert("일치하는 정보가 없습니다.");
+                    nameInput.val('');
+                    birthInput1.val('');
                 }
             },
             error: function(xhr, status, error) {
                 alert("오류가 발생했습니다.");
+                nameInput.val('');
+                birthInput1.val('');
             }
         });
     });
 
     findByPwBtn.on("click", function () {
         let userId = idInput1.val();
-        let userBirth = birthInput2.val();
+        let userBirth2 = birthInput2.val();
 
         // AJAX 요청을 통해 서버에 아이디 찾기 요청
         $.ajax({
             url: "/findByPw.do",
             type: "post",
-            data: {userId: userId, userBirth: userBirth},
+            data: {userId: userId, userBirth: userBirth2},
             success: function(response) {
                 if(response === "OK") {
                     alert("일치하는 정보 찾기 성공");
@@ -109,16 +119,19 @@ $(document).ready(function() {
                     jQuery("#d1").draggable();
                 } else {
                     alert("일치하는 정보가 없습니다.");
+                    idInput1.val('');
+                    birthInput2.val('');
                 }
             },
             error: function(xhr, status, error) {
                 alert("오류가 발생했습니다.");
+                idInput1.val('');
+                birthInput2.val('');
             }
         });
     });
 
-    let pwValid = false; // 비밀번호 유효성 상태 - 기본값 실패
-    let pwCValid = false; // 비밀번호 확인 유효성 상태 - 기본값 실패
+
 
     <!-- ############################### 비밀번호 ############################### -->
     let pwInput1 = $('#pwInput1'); // 비밀번호 입력창
@@ -275,6 +288,151 @@ $(document).ready(function() {
         }
     }
 
+    pwChangeBtn.on('click', function (){
+        if (pwValid  && pwCValid) {
+            let userId = idInput1.val();
+
+            $.ajax({
+                url: "/findByAccountID_useId",
+                type: "post",
+                data: {userId: userId},
+                success: function (responese) {
+                    if(responese !== null) {
+                        alert("아이디로 식별자 아이디 찾기 완료");
+                        alert("식별자 아이디 : " + responese);
+
+                        let changePw = pwInput1.val();
+
+                        // AJAX 요청을 통해 서버에 비밀번호 변경 요청
+                        $.ajax({
+                            url: "/changePw.do",
+                            type: "post",
+                            data: {accountId: responese, changePw: changePw},
+                            success: function(response) {
+                                if(response === "SUCCESS") {
+                                    alert("비밀번호 변경 완료.");
+                                    pwChangeModal.hide();
+                                    pwInput1.val('');
+                                    pwCInput.val('');
+                                    birthInput2.val('');
+                                    idInput1.val('');
+
+                                    // 비밀번호 변경 입력창 유효성 검증값 초기화
+                                    pwValid = false;
+                                    pwCValid = false;
+
+                                    // 유효성 검증 결과에 따른 시각적 변화 적용
+                                    if (pwValid) {
+                                        pwInputBox.removeClass('error').addClass('success');
+                                        pwInput1.removeClass('errorText');
+                                    } else {
+                                        pwInputBox.removeClass('success').addClass('error');
+                                    }
+
+                                    if (pwCValid) {
+                                        pwCInputBox.removeClass('error').addClass('success');
+                                        pwCInput.removeClass('errorText');
+                                    } else {
+                                        pwCInputBox.removeClass('success').addClass('error');
+                                    }
+
+                                    changeChk()
+
+
+                                } else {
+                                    alert("일치하는 정보가 없습니다.");
+                                    alert("비밀번호 변경 실패");
+                                    pwChangeModal.hide();
+                                    pwInput1.val('');
+                                    pwCInput.val('');
+                                    birthInput2.val('');
+                                    idInput1.val('');
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                alert("오류가 발생했습니다.");
+                                pwInput1.val('');
+                                pwCInput.val('');
+                                birthInput2.val('');
+                                idInput1.val('');
+                            }
+                        });
+
+
+
+                    } else {
+                        alert("식별자 아이디 찾기 실패 - 일치하는 정보가 없습니다.");
+                        idInput1.val('');
+                        birthInput2.val('');
+                    }
+                }
+            })
+
+        }
+    })
+    // 테두리
+    let idInputBox = $('#idInputBox');
+    let pwInputBox1 = $('#pwInputBox1');
+    let nameInputBox = $('#nameInputBox');
+    let birthInputBox = $('#birthInputBox');
+    let idInputBox1 = $('#idInputBox1');
+    let birthInputBox2 = $('#birthInputBox2');
+
+    // 포커스 이벤트
+    
+    // 로그인
+    // 포커스 잡혔을 때 이벤트
+    idInput.focus(function () {
+        idInputBox.addClass('inputBox-focus'); // 테두리를 파란색으로
+    });
+    // 포커스 풀렸을 때 이벤트
+    idInput.blur(function () {
+        idInputBox.removeClass('inputBox-focus'); // 파란색 테두리 제거
+    });
+    // 포커스 잡혔을 때 이벤트
+    pwInput.focus(function () {
+        pwInputBox1.addClass('inputBox-focus'); // 테두리를 파란색으로
+    });
+    // 포커스 풀렸을 때 이벤트
+    pwInput.blur(function () {
+        pwInputBox1.removeClass('inputBox-focus'); // 파란색 테두리 제거
+    });
+
+    // 아이디 찾기
+    // 포커스 잡혔을 때 이벤트
+    nameInput.focus(function () {
+        nameInputBox.addClass('inputBox-focus'); // 테두리를 파란색으로
+    });
+    // 포커스 풀렸을 때 이벤트
+    nameInput.blur(function () {
+        nameInputBox.removeClass('inputBox-focus'); // 파란색 테두리 제거
+    });
+    // 포커스 잡혔을 때 이벤트
+    birthInput1.focus(function () {
+        birthInputBox.addClass('inputBox-focus'); // 테두리를 파란색으로
+    });
+    // 포커스 풀렸을 때 이벤트
+    birthInput1.blur(function () {
+        birthInputBox.removeClass('inputBox-focus'); // 파란색 테두리 제거
+    });
+
+    // 비밀번호 찾기
+    // 포커스 잡혔을 때 이벤트
+    nameInput.focus(function () {
+        idInputBox1.addClass('inputBox-focus'); // 테두리를 파란색으로
+    });
+    // 포커스 풀렸을 때 이벤트
+    nameInput.blur(function () {
+        idInputBox1.removeClass('inputBox-focus'); // 파란색 테두리 제거
+    });
+    // 포커스 잡혔을 때 이벤트
+    birthInput2.focus(function () {
+        birthInputBox2.addClass('inputBox-focus'); // 테두리를 파란색으로
+    });
+    // 포커스 풀렸을 때 이벤트
+    birthInput2.blur(function () {
+        birthInputBox2.removeClass('inputBox-focus'); // 파란색 테두리 제거
+    });
 
 
 });

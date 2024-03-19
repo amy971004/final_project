@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.Console;
-
 // 회원 컨트롤러의 구현체
 @RestController
 public class MemberControllerImpl implements MemberController{
@@ -72,6 +70,7 @@ public class MemberControllerImpl implements MemberController{
     }
 
     // 아이디 찾기
+    @Override
     @RequestMapping(value = "/findById.do", method = RequestMethod.POST)
     @ResponseBody
     public String findById(@RequestParam("userName") String userName, @RequestParam("userBirth") String userBirth, HttpServletRequest request) {
@@ -86,11 +85,50 @@ public class MemberControllerImpl implements MemberController{
     }
 
     // 비밀번호 찾기
+    @Override
     @RequestMapping(value = "/findByPw.do", method = RequestMethod.POST)
     @ResponseBody
     public String findByPw(@RequestParam("userId") String userId, @RequestParam("userBirth") String userBirth, HttpServletRequest request) {
         boolean isAvailable = service.findByPw(userId, userBirth);
         return isAvailable ? "OK" : "FAIL";
+    }
+
+    // 비밀번호 변경 - 입력한 아이디로 식별자 아이디 찾기
+    @Override
+    @RequestMapping(value = "/findByAccountID_useId", method = RequestMethod.POST)
+    @ResponseBody
+    public String findByAccountID_useId(@RequestParam("userId") String userId) {
+        String accountId = service.findByAccountID_useId(userId);
+        if(accountId != null){
+            // 식별자 아이디 찾기 성공 - 식별자 아이디 반환
+            return accountId;
+        } else {
+            // 식별자 아이디 찾기 실패
+            return null;
+        }
+    }
+
+    // 비밀번호 변경
+    @Override
+    @RequestMapping(value = "/changePw.do", method = RequestMethod.POST)
+    @ResponseBody
+    public String changePw(@RequestParam("changePw") String changePw, @RequestParam("accountId") String accountId, HttpServletRequest request) {
+        boolean isAvailable = service.changePw(changePw, accountId);
+        return isAvailable ? "SUCCESS" : "FAIL";
+    }
+
+    // 로그아웃
+    @Override
+    @RequestMapping("/logout.do")
+    public ModelAndView logout(HttpServletRequest request) {
+        // 세션 가져오기
+        HttpSession session = request.getSession(false); // false: 존재하지 않으면 null 반환
+        if (session != null) {
+            // 세션 무효화
+            session.invalidate();
+        }
+        // 홈 페이지로 리다이렉트
+        return new ModelAndView("redirect:/");
     }
 
 }

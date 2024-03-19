@@ -16,8 +16,8 @@ body {
 /* 회원가입창 틀*/
 #joinB {
     position: relative;
-    width: 400px;
-    height: 800px;
+    width: 800px;
+    height: 840px;
     top: 50px;
     margin-left: auto;
     margin-right: auto;
@@ -29,27 +29,41 @@ body {
 
 /* 회원가입창 내부 */
 #joinS {
-    position: absolute;
-    padding-top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+    align-items: center;
+    justify-items: center;
+    /*display: block;*/
+    /*position: fixed;*/
+    /*padding-top: 20px;*/
+    /*left: 50%;*/
+    /*transform: translateX(-50%);*/
+}
+
+#joinS1, #joinS2 {
+    padding-top: 420px;
+    padding-left: 60px;
+    display: inline-block;
+    vertical-align: top; /* 상단 정렬 */
+    width: 300px; /* 너비 설정 */
 }
 
 /* 회원가입 버튼 */
 #joinBtn {
-    width: 300px;
-    height: 40px;
-    margin-top: 40px;
+    position: absolute;
+    left: 680px;
+    top: 320px;
+    width: 80px;
+    height: 80px;
     border-radius: 10px;
     cursor: pointer;
     border: black solid 2px;
-    background-color: transparent;
+    font-size: 35px;
+    background-color: rgba(255, 255, 255, 0.34);
     transition: borer, background-color, 0.3s;
 }
 
 /* 회원가입이 버튼 비활성화 상태일 때 */
 #joinBtn:disabled {
-    border: red 2px solid;
+    border: #ce1b1b 2px solid;
 }
 
 /* 회원가입이 버튼 활성화 상태일 때 */
@@ -87,7 +101,7 @@ body {
 
 /* 입력창에 포커스 될 때 파란색 테두리 */
 .inputBox-focus {
-    border: blue 2px solid;
+    border: #1717bd 2px solid;
     background-color: rgba(255, 255, 255, 0.5);
 }
 /* 어떤 inputBox인지 이름 표시 */
@@ -109,7 +123,7 @@ h5 {
 /* 유효성 검사 글자 */
 .InputText {
     display: none;
-    color: red;
+    color: #ce1b1b;
 }
 
 /* 닫기 버튼 */
@@ -134,7 +148,7 @@ h5 {
 
 /* 유효성 검사 결과 실패일 때 빨간색 테두리 */
 .error {
-    border: red 2px solid;
+    border: #ce1b1b 2px solid;
 }
 
 /* 유효성 검사 결과 성공일 때 초록색 테두리 */
@@ -144,7 +158,49 @@ h5 {
 
 /* 유효성 검사 실패시 입력값 빨간색으로 - 사용중단중임 */
 .errorText {
-    color: red;
+    color: #ce1b1b;
+}
+/* 프로필 */
+#profile {
+    color: #213454;
+    position: absolute;
+    left: 50% ;transform:
+        translateX(-50%);
+    top: 72px;
 }
 
+/* 닉네임 반영 */
+#output {
+    position: absolute;
+    left: 50% ;
+    transform: translateX(-50%);
+    top: 240px;
+    font-size: 25px;
+}
 
+/* 소개글 공간 */
+#e1 {
+    position: absolute;
+    width: 300px;
+    height: 100px;
+    top: 300px;
+    left: 50%;
+    border: #646161 2px solid;
+    border-radius: 10px;
+    transform: translateX(-50%);
+    display: flex; /* Flexbox 레이아웃 적용 */
+    justify-content: center; /* 가로 방향 중앙 정렬 */
+    align-items: center; /* 세로 방향 중앙 정렬 */
+}
+
+/* 소개글 입력창 */
+#aboutMe {
+    width: 270px;
+    height: 70px;
+    resize: none;
+    background-color: transparent;
+    border: transparent;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    outline: none;
+}

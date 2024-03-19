@@ -22,6 +22,8 @@ $(document).ready(function() {
         }
     });
 
+
+
     // ############################### 각 필드의 유효성 상태를 나타내는 변수들 ###############################
     let idValid = false; // 아이디 유효성 상태 - 기본값 실패
     let pwValid = false; // 비밀번호 유효성 상태 - 기본값 실패
@@ -634,6 +636,13 @@ $(document).ready(function() {
             phoneNumberInputBox.removeClass('success'); // 초록색 테두리 제거
         }
         joinChk();
+    });
+
+    // 프로필 및 닉네임 자동갱신
+    // 사용자 입력을 가져와서 출력 요소에 반영하는 함수
+    nicknameInput.on('keyup', function() {
+        let input = $(this).val(); // 입력값 가져오기
+        $('#output').text(input); // 출력 요소에 입력값 반영
     });
 
 });

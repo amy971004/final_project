@@ -25,7 +25,7 @@ public class PostControllerImpl implements PostController{
 
     // 파일 저장 경로를 문자열 상수로 지정합니다.
     // 여기서는 특정 사용자의 디렉토리 아래의 uploaded_files 폴더를 지정하고 있습니다.
-    private final String UPLOAD_DIR = "C:\\Users\\sunzun\\Desktop\\Dev\\WAS\\tomcat_10.1.19\\apache-tomcat-10.1.19\\webapps\\uploaded_files\\";
+    private final String UPLOAD_DIR = "C:\\Users\\wlfjd\\Desktop\\Program\\WAS\\tomcat\\apache-tomcat-10.1.18\\webapps\\uploaded_files\\";
 
     // 파일 업로드 페이지를 보여주는 요청을 처리합니다.
     // @GetMapping 애노테이션을 사용하여 HTTP GET 요청을 "/file-upload" 경로에 매핑합니다.
