@@ -17,7 +17,7 @@
     <!-- 게시물 추가(이미지는 따로 저장) -->
     <insert id="addPost" parameterType="postDTO">
         <![CDATA[
-                INSERT INTO sns_content VALUES (postId_seq.nextval, #{content}, #{userId}, sysdate)
+                INSERT INTO sns_content VALUES (postId_seq.nextval, #{userId}, #{content}, sysdate)
                 ]]>
     </insert>
 

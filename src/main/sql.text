@@ -22,3 +22,27 @@ CREATE TABLE users (
 
 // 변경사항 저장
 commit;
+
+// 게시물 번호 시퀀스
+CREATE SEQUENCE postId_seq START WITH 1 INCREMENT BY 1;
+// 시퀀스 삭제
+drop sequence postId_seq;
+
+// 게시물 테이블
+CREATE TABLE  sns_content(
+        postId number default postId_seq.nextval PRIMARY KEY,
+        userId varchar2(50) not null,
+        content varchar2(2000),
+        uploadDate Date default sysdate not null
+
+);
+// 이미지 테이블
+create table sns_image(
+        postId number,
+        imageNo number primary key,
+        fileName VARCHAR2(255),
+        filePath VARCHAR2(4000),
+        FOREIGN key(postId)
+            REFERENCES sns_content(postId) on DELETE CASCADE
+);
+commit;

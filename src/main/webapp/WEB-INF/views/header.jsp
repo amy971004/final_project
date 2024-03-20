@@ -24,7 +24,7 @@
     <!-- 북마크 -->
     <a href="#" class="no-underline"><i class="fa-regular fa-bookmark "></i></a>
     <!-- 업로드 -->
-    <a href="#" class="no-underline"><i class="fa-solid fa-plus "></i></a>
+    <a onclick="location.href='http://localhost:8081/post/uploadPost.do'" class="no-underline"><i class="fa-solid fa-plus "></i></a>
     <!-- 내프로필 -->
     <a href="#" class="no-underline"><i class="fa-regular fa-user "></i></a>
     <!-- 로그아웃 -->
