@@ -2,14 +2,16 @@ $(document).ready(function() {
 
     // ############################### 회원가입 버튼 ###############################
     let joinBtn = $('#joinBtn'); // 회원가입 버튼
+    let joinChkIcon = $('#joinChkIcon'); // 회원가입 유효성 체크 아이콘
     function joinChk() {
         // 모든 유효성 검사 성공시 회원가입버튼 활성화
         if (idValid && pwValid && pwCValid && nicknameValid && nameValid && emailValid && birthdayValid && phoneNumberValid) {
             joinBtn.addClass('joinBtn1').removeClass('joinBtn2').prop('disabled', false);
-
+            joinChkIcon.css('color', 'green');
         // 유효성 검사가 1개라도 실패시 회원가입 버튼 비활성화
         } else {
             joinBtn.removeClass('joinBtn1').addClass('joinBtn2').prop('disabled', true);
+            joinChkIcon.css('color', '#ce1b1b');
         }
     }
     
@@ -21,6 +23,8 @@ $(document).ready(function() {
             alert("회원정보를 확인해주세요.");
         }
     });
+
+
 
     // ############################### 각 필드의 유효성 상태를 나타내는 변수들 ###############################
     let idValid = false; // 아이디 유효성 상태 - 기본값 실패
@@ -635,5 +639,29 @@ $(document).ready(function() {
         }
         joinChk();
     });
+
+    // 프로필 및 닉네임 자동갱신
+    // 사용자 입력을 가져와서 출력 요소에 반영하는 함수
+    nicknameInput.on('keyup', function() {
+        let input = $(this).val(); // 입력값 가져오기
+        $('#output').text(input); // 출력 요소에 입력값 반영
+    });
+
+    // 프로필 소개
+    let profileInput = $('#aboutMe');
+    let profileInputBox = $('#e1');
+
+    <!-- 포커스 잡혔을 때 이벤트 -->
+    profileInput.focus(function () {
+        profileInputBox.css('border-color', '#213454'); // 테두리를 color: #213454; 색으로
+        profileInputBox.css('background-color', 'rgba(255, 255, 255, 0.5)');
+    });
+
+    <!-- 포커스 풀렸을 때 이벤트 -->
+    profileInput.blur(function () {
+        profileInputBox.css('border-color', '#646161'); // 테두리를 #646161 색으로
+        profileInputBox.css('background-color', 'rgba(255, 255, 255, 0)');
+    });
+
 
 });

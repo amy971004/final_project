@@ -28,8 +28,26 @@
     <!-- 내프로필 -->
     <a href="#" class="no-underline"><i class="fa-regular fa-user "></i></a>
     <!-- 로그아웃 -->
-    <a href="#" class="no-underline"><i class="fa-solid fa-arrow-right-from-bracket "></i></a>
+    <a class="no-underline"><i type="button" onclick="location.href='http://localhost:8081/logout.do'" id="logoutBtn" class="fa-solid fa-arrow-right-from-bracket" style="cursor: pointer"></i></a>
     <!-- 더보기 -->
     <a href="#" class="no-underline"><i class="fa-solid fa-bars "></i></a>
 </div>
+<script>
+    $(document).ready(function() {
+        // $('#logoutBtn').on('click', function (){
+        //     $.ajax({
+        //         type: "POST",
+        //         url: "http://localhost:8081/logout.do",
+        //         success: function(response) {
+        //             // 로그아웃 처리 후 홈 페이지로 리다이렉트, 또는 사용자에게 로그아웃되었음을 알림
+        //             window.location.href = 'http://localhost:8081';
+        //         },
+        //         error: function(xhr, status, error) {
+        //             // 에러 처리
+        //             alert("로그아웃 실패");
+        //         }
+        //     });
+        // });
+    });
+</script>
 

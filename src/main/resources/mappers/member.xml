@@ -10,16 +10,19 @@
         <result property="userEmail" column="USER_EMAIL" />
         <result property="userBirthday" column="USER_BIRTHDAY" />
         <result property="userPhoneNumber" column="USER_PHONENUMBER" />
+        <result property="profileImg" column="PROFILEIMG" />
+        <result property="introduction" column="INTRODUCTION" />
         <result property="ROLE" column="USER_ROLE" />
     </resultMap>
 
     <!-- 회원 추가 -->
     <insert id="addMember" parameterType="MemberDTO">
         <![CDATA[
-        insert into users (USER_ID, USER_PW, USER_NICKNAME, USER_NAME, USER_EMAIL, USER_BIRTHDAY, USER_PHONENUMBER, USER_JOINDATE, USER_ROLE)
+        insert into users (USER_ID, USER_PW, USER_NICKNAME, USER_NAME, USER_EMAIL, USER_BIRTHDAY, USER_PHONENUMBER, USER_JOINDATE, PROFILEIMG, INTRODUCTION, USER_ROLE)
         values (
                 #{userId, jdbcType=VARCHAR}, #{userPw, jdbcType=VARCHAR}, #{userNickname, jdbcType=VARCHAR}, #{userName, jdbcType=VARCHAR},
-                #{userEmail, jdbcType=VARCHAR}, #{userBirthday, jdbcType=VARCHAR}, #{userPhoneNumber, jdbcType=VARCHAR}, sysdate, 'USER')
+                #{userEmail, jdbcType=VARCHAR}, #{userBirthday, jdbcType=VARCHAR}, #{userPhoneNumber, jdbcType=VARCHAR}, sysdate,
+                #{profileImg, jdbcType=VARCHAR}, #{introduction, jdbcType=VARCHAR}, 'USER')
         ]]>
     </insert>
 
@@ -50,11 +53,26 @@
         WHERE USER_NAME = #{userName} AND USER_BIRTHDAY = #{userBirth}
     </select>
 
+    <!-- 비밀번호 찾기 - 입력받은 아이디로 식별자 아이디 찾기 -->
+    <select id="findByAccountID_useId" parameterType="String" resultType="String">
+        SELECT ACCOUNT_ID
+        FROM users
+        WHERE USER_ID = #{userId}
+    </select>
+
     <!-- 비밀번호 찾기 -->
     <select id="findByPw" parameterType="Map" resultType="int">
         SELECT COUNT(*)
         FROM users
         WHERE USER_ID = #{userId} AND USER_BIRTHDAY = #{userBirth}
     </select>
+
+    <!-- 식별자 아이디와 일치하는 회원의 비밀번호를 변경 -->
+    <update id="changePw" parameterType="map">
+        UPDATE users
+        SET USER_PW = #{changePw}
+        WHERE ACCOUNT_ID = #{accountId}
+    </update>
+
 
 </mapper>

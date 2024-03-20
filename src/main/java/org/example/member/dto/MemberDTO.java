@@ -12,5 +12,7 @@ public class MemberDTO {
     private String userEmail;
     private int userBirthday;
     private String userPhoneNumber;
+    private String profileImg;
+    private String introduction;
     private String ROLE;
 }

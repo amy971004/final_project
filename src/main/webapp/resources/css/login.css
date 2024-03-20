@@ -14,11 +14,18 @@ body {
     background-image: url("../img/backImg.jpg");
 }
 
-/* 로그인창 틀 */
-#a1, #b1, #c1, #d1 {
+/* 어떤 inputBox인지 이름 표시 */
+h6 {
+    margin: 0;
+    padding-left: 9px;
+    padding-bottom: 3px;
+}
+
+/* 로그인창 창 */
+#a1 {
     position: relative;
     width: 400px;
-    height: 240px;
+    height: 420px;
     top: 50%;
     margin-left: auto;
     margin-right: auto;
@@ -27,13 +34,55 @@ body {
     background-color: rgba(255, 255, 255, 0.82);
     transform: translateY(-50%);
 }
-
-/* 로그인창 내부 */
-#a2, #b2, #c2, #d2 {
+#a2 {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -40%);
+}
+
+/* 아이디, 비밀번호 찾기 창 */
+#b1, #c1 {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    border: black 2px solid;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.82);
+    top: 0;
+    left: 0;
+    transform: translate(5%,-40%);
+}
+#b2, #c2 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -35%);
+}
+
+/* 비밀번호 재설정 창 */
+#d1 {
+    position: relative;
+    width: 400px;
+    height: 420px;
+    margin-left: auto;
+    margin-right: auto;
+    border: black 2px solid;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.82);
+    top: 0;
+    left: 0;
+    transform: translate(5%,-40%);
+}
+
+/* 비밀번호 재설정창 내부 */
+#d2 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
 }
 
 /* 로그인 버튼 */
@@ -84,7 +133,7 @@ body {
     border: black 2px solid;
     text-align: center;
     border-radius: 15px;
-    transition: background-color 0.3s;
+    transition: border, background-color 0.3s;
 }
 
 /* 입력창에 호버될 때 배경색 조금 더 진하게 */
@@ -92,7 +141,7 @@ body {
     background-color: rgba(255, 255, 255, 0.50);
 }
 
- /* 아이디 비밀번호 찾기 */
+/* 아이디 비밀번호 찾기 */
 #find {
     font-size: 15px;
     text-align: center;
@@ -101,14 +150,15 @@ body {
     cursor: pointer;
 }
 
-/* 아이디 찾기 버튼 */
-#findByIdBtn {
+/* 아이디, 비밀번호 찾기 버튼 */
+#findByIdBtn, #findByPwBtn {
     width: 300px;
-    height: 30px;
+    height: 40px;
     border: black 2px solid;
     background-color: transparent;
     cursor: pointer;
     border-radius: 10px;
+    margin-top: 30px;
     transition: background-color 0.3s;
 }
 
@@ -117,27 +167,20 @@ body {
     background-color: rgba(255, 255, 255, 0.50);
 }
 
-/* 아이디 찾기 버튼 */
-#findByPwBtn {
-    width: 300px;
-    height: 30px;
-    border: black 2px solid;
-    background-color: transparent;
-    cursor: pointer;
-    border-radius: 10px;
-    transition: background-color 0.3s;
-}
-
-/* 아이디 찾기 버튼에 호버될 때 */
+/* 비밀번호 찾기 버튼에 호버될 때 */
 #findByPwBtn:hover {
     background-color: rgba(255, 255, 255, 0.50);
 }
 
 /* 비밀번호 재설정 버튼 */
 #pwChangeBtn {
+    position: absolute;
+    bottom: 30px;
+    left: 50px;
     width: 300px;
-    height: 30px;
+    height: 40px;
     border: black 2px solid;
+    margin-bottom: 5px;
     background-color: transparent;
     cursor: pointer;
     border-radius: 10px;
@@ -171,7 +214,7 @@ body {
 /* 유효성 검사 글자 */
 .InputText {
     display: none;
-    color: red;
+    color: #ce1b1b;
 }
 
 
@@ -179,7 +222,7 @@ body {
 /* 입력창 테두리 */
 .inputBox1 {
     width: 300px;
-    height: 40px;
+    height: 50px;
     border: black 2px solid;
     margin-bottom: 3px;
     text-align: center;
@@ -195,13 +238,13 @@ body {
 
 /* 입력창에 포커스 될 때 파란색 테두리 */
 .inputBox-focus {
-    border: blue 2px solid;
+    border: #1717bd 2px solid;
     background-color: rgba(255, 255, 255, 0.5);
 }
 
 /* 유효성 검사 결과 실패일 때 빨간색 테두리 */
 .error {
-    border: red 2px solid;
+    border: #ce1b1b 2px solid;
 }
 
 /* 유효성 검사 결과 성공일 때 초록색 테두리 */
@@ -213,7 +256,7 @@ body {
 
 /* 유효성 검사 실패시 입력값 빨간색으로 - 사용중단중임 */
 .errorText {
-    color: red;
+    color: #ce1b1b;
 }
 
 /* 유효성검사 결과 글자 */
@@ -225,21 +268,9 @@ h5 {
     padding: 0;
 }
 
-/* 비밀번호 재설정 버튼 */
-#pwChangeBtn {
-    width: 300px;
-    height: 40px;
-    margin-top: 40px;
-    border-radius: 10px;
-    cursor: pointer;
-    border: black solid 2px;
-    background-color: transparent;
-    transition: borer, background-color, 0.3s;
-}
-
 /* 비밀번호 변경이 버튼 비활성화 상태일 때 */
 #pwChangeBtn:disabled {
-    border: red 2px solid;
+    border: #ce1b1b 2px solid;
 }
 
 /* 비밀번호 변경이 버튼 활성화 상태일 때 */

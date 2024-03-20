@@ -15,50 +15,10 @@ CREATE TABLE users (
                        user_birthday number NOT NULL,
                        user_phoneNumber VARCHAR2(50) NOT NULL,
                        user_joinDate DATE DEFAULT SYSDATE  NOT NULL,
+                       ProfileImg varchar2(255),
+                       Introduction varchar2(500),
                        user_ROLE VARCHAR2(50) NOT NULL
 );
-
-예시 데이터 9개
-INSERT INTO users (user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_ROLE) VALUES ('user01', 'pw01', 'nick01', 'Name01', 'email01@example.com', 19900101, 1012345678, SYSDATE, 'USER');
-INSERT INTO users (user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_ROLE) VALUES ('user02', 'pw02', 'nick02', 'Name02', 'email02@example.com', 19900202, 2012345678, SYSDATE, 'USER');
-INSERT INTO users (user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_ROLE) VALUES ('user03', 'pw03', 'nick03', 'Name03', 'email03@example.com', 19900303, 3012345678, SYSDATE, 'USER');
-INSERT INTO users (user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_ROLE) VALUES ('user04', 'pw04', 'nick04', 'Name04', 'email04@example.com', 19900404, 4012345678, SYSDATE, 'USER');
-INSERT INTO users (user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_ROLE) VALUES ('user05', 'pw05', 'nick05', 'Name05', 'email05@example.com', 19900505, 5012345678, SYSDATE, 'USER');
-INSERT INTO users (user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_ROLE) VALUES ('user06', 'pw06', 'nick06', 'Name06', 'email06@example.com', 19900606, 6012345678, SYSDATE, 'USER');
-INSERT INTO users (user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_ROLE) VALUES ('user07', 'pw07', 'nick07', 'Name07', 'email07@example.com', 19900707, 7012345678, SYSDATE, 'USER');
-INSERT INTO users (user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_ROLE) VALUES ('user08', 'pw08', 'nick08', 'Name08', 'email08@example.com', 19900808, 8012345678, SYSDATE, 'USER');
-INSERT INTO users (user_id, user_pw, user_nickName, user_name, user_email, user_birthday, user_phoneNumber, user_joinDate, USER_ROLE) VALUES ('user09', 'pw09', 'nick09', 'Name09', 'email09@example.com', 19900909, 9012345678, SYSDATE, 'USER');
-
-회원번호를 위한 유저 시퀀스 생성 <- 필요없어짐 사용 X
-CREATE SEQUENCE user_seq
-    START WITH 1
-    INCREMENT BY 1
-    NOMAXVALUE;
-
-현재 시퀀스값 (1 추가됨) <- 필요없어짐 사용 X
-SELECT USER_SEQ.NEXTVAL FROM DUAL;
-
-게시물 테이블
-CREATE SEQUENCE files_seq START WITH 1 INCREMENT BY 1;
-
-CREATE TABLE files (
-    id INT NOT NULL PRIMARY KEY,
-    content CLOB,
-    fileName VARCHAR2(255),
-    filePath VARCHAR2(4000),
-    fileSize NUMBER(19),
-    uploadTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    mimeType VARCHAR2(50)
-);
-
-CREATE OR REPLACE TRIGGER files_before_insert
-BEFORE INSERT ON files
-FOR EACH ROW
-BEGIN
-    SELECT files_seq.NEXTVAL INTO :new.id FROM dual;
-END;
-/
-
 
 // 변경사항 저장
 commit;

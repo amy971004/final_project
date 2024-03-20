@@ -42,13 +42,29 @@ public class MemberServiceImpl implements MemberService{
     public boolean checkNickname(String userNickname) {
         return dao.checkNickname(userNickname) == 0; // 아이디가 존재하지 않으면 true 반환
     }
-
+    
+    // 아이디 찾기
     public String findById(String userName, String userBirth){
         return dao.findById(userName, userBirth);
     }
 
+    // 비밀번호 찾기
     public boolean findByPw(String userId, String userBirth){
         return dao.findByPw(userId, userBirth) == 1;
+    }
+
+    // 비밀번호 변경 - 입력받은 아이디로 식별자 아이디 찾기
+    @Override
+    public String findByAccountID_useId(String userId) {
+        return dao.findByAccountID_useId(userId);
+    }
+
+
+    // 비밀번호 변경
+    @Override
+    public boolean changePw(String inputPw, String accountId) {
+        String changePw = BCrypt.hashpw(inputPw, BCrypt.gensalt());
+        return dao.changePw(changePw, accountId);
     }
 
 }

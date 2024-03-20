@@ -5,7 +5,6 @@ import org.example.member.dto.MemberDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.io.Console;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,7 +47,8 @@ public class MemberDAOImpl implements MemberDAO{
     public int checkNickname(String userNickname) {
         return sqlSession.selectOne("mapper.member.checkNickname", userNickname);
     }
-
+    
+    // 아이디 찾기
     public String findById(String userName, String userBirth){
         Map<String, Object> params = new HashMap<>();
         params.put("userName", userName);
@@ -56,11 +56,28 @@ public class MemberDAOImpl implements MemberDAO{
         return  sqlSession.selectOne("mapper.member.findById", params);
     }
 
+    // 비밀번호 찾기
     public int findByPw(String userId, String userBirth){
         Map<String, Object> params = new HashMap<>();
         params.put("userId", userId);
         params.put("userBirth", userBirth);
         return  sqlSession.selectOne("mapper.member.findByPw", params);
+    }
+
+    // 비밀번호 변경
+    @Override
+    public boolean changePw(String changePw, String accountId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("changePw", changePw);
+        params.put("accountId", accountId);
+        return sqlSession.update("mapper.member.changePw", params) > 0;
+    }
+
+
+    // 비밀번호 변경 - 입력받은 아이디로 식별자 아이디 찾기
+    @Override
+    public String findByAccountID_useId(String userId) {
+        return sqlSession.selectOne("mapper.member.findByAccountID_useId", userId);
     }
 
 }
