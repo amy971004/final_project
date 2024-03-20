@@ -1,16 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>로그인</title>
     <link href="../../resources/css/login.css" rel="stylesheet" type="text/css" />
-    <!-- jQuery 라이브러리 추가 -->
+    <!-- jQuery 라이브러리 먼저 추가 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- jQuery UI 라이브러리 추가 -->
+    <!-- 그 다음 jQuery UI 라이브러리 추가 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <!-- jQuery UI CSS 추가 -->
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <%-- 아이콘 js --%>
     <script src="https://kit.fontawesome.com/56a665fb69.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -111,25 +113,49 @@
         <input type="button" value="Go" id="pwChangeBtn" class="btn1" disabled>
     </div>
 
+    <%-- 비회원 오류창 --%>
+    <div id="loginWarningDialog" title="알림" style="display:none;">
+        <p>로그인 후 이용해주세요.</p>
+    </div>
+
 </div>
-<% if(session.getAttribute("errorMessage") != null) { %>
+<script src="../../resources/js/login.js"></script>
+<%-- 경고창을 띄운 후에는 쿼리스트링을 제거하여 그대로 새로고침을 해도 경고창이 재출력되지 않도록 했어요~~--%>
+<%-- 경고창 띄우는 로직에 쿼리 스트링을 확인하는 조건이 서버 측에 이미 존재함--%>
+<%--<% if ("loginRequired".equals(request.getParameter("warning"))) { %>--%>
+<%--<script>--%>
+<%--    // 경고창 표시--%>
+<%--    alert('로그인 후 이용해주세요.');--%>
+<%--    // 쿼리 스트링 제거--%>
+<%--    window.history.replaceState(null, null, window.location.pathname);--%>
+<%--</script>--%>
+<%--<% } %>--%>
+
+<%--<% if ("loginFail".equals(request.getParameter("warning"))) { %>--%>
+<%--<script>--%>
+<%--    // 경고창 표시--%>
+<%--    alert('아이디와 비밀번호가 일치하지 않습니다.');--%>
+<%--    // 쿼리 스트링 제거--%>
+<%--    window.history.replaceState(null, null, window.location.pathname);--%>
+<%--</script>--%>
+<%--<% } %>--%>
+
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // 세션에서 에러 메시지를 가져옴
-        let errorMessage = "<%= session.getAttribute("errorMessage") %>";
-        // 에러 메시지가 있으면 경고창을 띄움
-        if(errorMessage.trim().length > 0) {
-            alert(errorMessage);
-        }
-        <%
-            // JavaScript 코드가 실행된 후 서버 측에서 세션에서 에러 메시지를 삭제
-            // 주의: JSP 코드는 서버에서 처리되므로, 클라이언트의 이벤트와 동기화되지 않음
-            session.removeAttribute("errorMessage");
-        %>
+    $(window).on("load", function() {
+        setTimeout(function() {
+            let warning = new URLSearchParams(window.location.search).get('warning');
+            console.log(warning);
+
+            if (warning === 'loginRequired') {
+                alert('로그인 후 이용해주세요.');
+                window.history.replaceState(null, null, window.location.pathname);
+            } else if (warning === 'loginFail') {
+                alert('아이디와 비밀번호가 일치하지 않습니다.');
+                window.history.replaceState(null, null, window.location.pathname);
+            }
+        }, 10);
     });
 </script>
-<% } %>
-<script src="../../resources/js/login.js"></script>
 
 </body>
 </html>

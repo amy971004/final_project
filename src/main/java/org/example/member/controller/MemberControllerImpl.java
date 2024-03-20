@@ -7,7 +7,16 @@ import org.example.member.dto.MemberDTO;
 import org.example.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 // 회원 컨트롤러의 구현체
 @RestController
@@ -22,17 +31,31 @@ public class MemberControllerImpl implements MemberController{
         MemberDTO memberDTO = service.login(userId, userPw);
         if(memberDTO != null) {
             // 사용자 정보가 존재할 때만 세션에 저장
-            session.setAttribute("RULE", memberDTO.getROLE());
+            session.setAttribute("ROLE", memberDTO.getROLE());
             session.setAttribute("accountID", memberDTO.getAccountID());
             // 로그인 성공 시 로그인 성공 테스트 페이지로 리다이렉트
             return new ModelAndView("redirect:/main");
         } else{
-            // 로그인 실패 시, 에러 메시지를 세션에 임시로 저장
-            session.setAttribute("errorMessage", "아이디 혹은 비밀번호가 일치하지 않습니다.");
             // 홈 페이지로 리다이렉트
-            return new ModelAndView("redirect:/");
+            return new ModelAndView("redirect:/?warning=loginFail");
         }
     }
+//    @PostMapping(value = "/login.do", produces = "application/json")
+//    @ResponseBody
+//    public Map<String, Object> login(@RequestParam("userId") String userId,
+//                                     @RequestParam("userPw") String userPw,
+//                                     HttpSession session) {
+//        Map<String, Object> result = new HashMap<>();
+//        MemberDTO memberDTO = service.login(userId, userPw);
+//        if(memberDTO != null) {
+//            session.setAttribute("ROLE", memberDTO.getROLE());
+//            session.setAttribute("accountID", memberDTO.getAccountID());
+//            result.put("status", "success");
+//        } else {
+//            result.put("status", "fail");
+//        }
+//        return result;
+//    }
 
     // 회원가입 페이지로 이동
     @Override
@@ -41,14 +64,59 @@ public class MemberControllerImpl implements MemberController{
         return new ModelAndView("join");
     }
 
-    // 회원 추가
-    @Override
-    @RequestMapping("/member/addMember.do")
-    public ModelAndView addMember(MemberDTO member, HttpServletRequest request, HttpServletResponse response) throws Exception {
+//    // 회원 추가
+//    @Override
+//    @RequestMapping("/member/addMember.do")
+//    public ModelAndView addMember(MemberDTO member, HttpServletRequest request, HttpServletResponse response) throws Exception {
+//
+//        int result = service.addMember(member);
+//
+//        return new ModelAndView("login");
+//    }
 
+    // 회원 추가 ( 프로필 이미지까지 함께 )
+    @PostMapping("/member/addMember.do")
+    public ModelAndView addMember(@RequestParam("file") MultipartFile file, MemberDTO member, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        // 웹 접근 가능한 경로 내에 이미지 저장 폴더를 설정
+        String saveDirectory = request.getServletContext().getRealPath("/userProfile/");
+
+//        파일명 중복시
+//        String originalFileName = file.getOriginalFilename();
+//        String fileExtension = Objects.requireNonNull(originalFileName).substring(originalFileName.lastIndexOf("."));
+//        String newFileName = UUID.randomUUID().toString() + fileExtension;
+//        String filePath = Paths.get(saveDirectory, newFileName).toString();
+
+        // 폴더 생성 로직을 추가합니다.
+        File directory = new File(saveDirectory);
+        if (!directory.exists()) {
+            boolean isCreated = directory.mkdirs(); // 디렉터리 생성 시도
+            if (!isCreated) {
+                // 디렉터리 생성 실패에 대한 처리
+                // 예: 로깅, 예외 던지기 등
+                throw new IOException("Failed to create directory: " + saveDirectory);
+            }
+        }
+
+        // 파일이 비어있지 않은 경우 처리
+        if (!file.isEmpty()) {
+            String originalFileName = file.getOriginalFilename(); // 원본 파일 이름
+            String filePath = Paths.get(saveDirectory, originalFileName).toString(); // 저장 경로 + 파일 이름
+
+            // 파일 저장
+            File destinationFile = new File(filePath);
+            file.transferTo(destinationFile);
+
+            // 웹 접근 가능한 상대 경로를 데이터베이스에 저장
+            member.setProfileImg(request.getContextPath() + "/userProfile/" + originalFileName);
+
+        }
+
+        // 회원 정보 및 이미지 경로 데이터베이스에 저장
         int result = service.addMember(member);
 
-        return new ModelAndView("login");
+        // 처리 후 리다이렉트 또는 뷰 반환
+        return new ModelAndView("redirect:/");
     }
 
     // 아이디 중복 확인

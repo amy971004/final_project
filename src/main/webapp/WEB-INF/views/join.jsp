@@ -10,19 +10,49 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <body>
 <div id="backgroundImg">
+
+    <%-- 회원가입 프로필 이미지 미리보기 --%>
+    <script>
+        function previewFile() {
+            let preview = document.getElementById('profile'); // 이전 예제와 일치하는 ID로 변경
+            let file    = document.querySelector('input[type=file]').files[0];
+            let reader  = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+                preview.style.display = 'block'; // 이미지가 성공적으로 로드되면 보이도록 설정
+            }
+
+            if (file) {
+                reader.readAsDataURL(file); // 파일이 존재하면 읽기 시작
+            } else {
+                preview.src = "";
+                preview.style.display = 'none'; // 파일이 없으면 미리보기 숨김
+            }
+        }
+
+        // onchange 이벤트 리스너에 함수를 직접 할당하는 대신 아래와 같이 jQuery를 사용해 변경 가능
+        $('#imgUpload').change(function() {
+            previewFile(); // 파일이 변경될 때 함수 호출
+        });
+    </script>
     <div id="joinB">
         <!-- 닫기 버튼 -->
         <button class="close" onclick="location.href='http://localhost:8081'">X</button>
         <div id="joinS">
-            <i id="profile" class="fa-sharp fa-solid fa-circle-user fa-10x" ></i>
-            <div id="output"></div>
-            <div id="e1">
-                <label>
-                    <textarea id="aboutMe"></textarea>
-                </label>
-            </div>
             <!-- 회원가입 폼 -->
-            <form action="addMember.do" method="post">
+            <form action="addMember.do" method="post" enctype="multipart/form-data">
+                <i id="profileIcon" class="fa-sharp fa-solid fa-circle-user fa-10x" ></i>
+                <!-- 이미지 미리보기를 위한 img 태그 추가 -->
+                <img id="profile" src="#" alt="Image Preview">
+                <input id="imgUpload" type="file" name="file" onchange="previewFile()">
+                <p><h5 id="profile1">프로필 소개</h5>
+                <div id="output"></div>
+                <div id="e1" class="e1">
+                    <label>
+                        <textarea name="introduction" id="aboutMe" class="aboutMe"></textarea>
+                    </label>
+                </div>
                 <div id="joinS1">
                     <!-- 아이디 -->
                     <p><h6>아이디</h6>
@@ -112,7 +142,7 @@
                 </div>
 
                 <!-- 회원가입 -->
-                <button type="submit" id="joinBtn" disabled><i class="fa-solid fa-user-plus fa-bounce"></i></button>
+                <button type="submit" id="joinBtn" disabled><i id="joinChkIcon" class="fa-solid fa-user-plus fa-bounce" style="color: #ce1b1b"></i></button>
             </form>
         </div>
     </div>

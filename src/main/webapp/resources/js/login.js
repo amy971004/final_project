@@ -1,8 +1,16 @@
-window.onload = function() {
-
-}
-
 $(document).ready(function() {
+
+    // console.log("jQuery 로드 확인" + $); // jQuery가 제대로 로드되었는지 확인
+    // console.log("jQuery UI 로드 확인" + $.ui); // jQuery UI가 제대로 로드되었는지 확인
+
+    // if (warning === 'loginRequired') {
+    //     alert('로그인 후 이용해주세요.');
+    //     window.history.replaceState(null, null, window.location.pathname);
+    // } else if (warning === 'loginFail') {
+    //     alert('아이디와 비밀번호가 일치하지 않습니다.');
+    //     window.history.replaceState(null, null, window.location.pathname);
+    // }
+
 
     let pwValid = false; // 비밀번호 유효성 상태 - 기본값 실패
     let pwCValid = false; // 비밀번호 확인 유효성 상태 - 기본값 실패
@@ -15,15 +23,15 @@ $(document).ready(function() {
 
     // 로그인 버튼을 눌렀을 때 이벤트
     loginBtn.on("click", function () {
-        
+
         // 아이디와 비밀번호 모두 입력하지 않았을 때
         if(idInput.val().length === 0 && pwInput.val().length === 0){
             alert("정보를 입력해주세요.")
-            
+
         // 아이디만 입력하지 않았을 때
         } else if(idInput.val().length === 0){
             alert("아이디를 입력해주세요.");
-            
+
         // 비밀번호만 입력하지 않았을 때
         } else if(pwInput.val().length === 0){
             alert("비밀번호를 입력해주세요.");
@@ -33,6 +41,43 @@ $(document).ready(function() {
             $("#loginForm").submit(); // 폼을 제출합니다.
         }
     });
+
+    // // 로그인 버튼을 눌렀을 때 이벤트
+    // $("#loginBtn").click(function() {
+    //     let userId = $("#idInput").val();
+    //     let userPw = $("#pwInput").val();
+    //
+    //     if(userId.length === 0 && userPw.length === 0){
+    //         alert("정보를 입력해주세요.");
+    //     } else if(userId.length === 0){
+    //         alert("아이디를 입력해주세요.");
+    //     } else if(userPw.length === 0){
+    //         alert("비밀번호를 입력해주세요.");
+    //     } else {
+    //         $.ajax({
+    //             url: "/login.do",
+    //             type: "POST",
+    //             contentType: "application/json", // 요청 데이터 타입 명시
+    //             accept: "application/json", // 응답 데이터 타입 명시
+    //             data: JSON.stringify({
+    //                 userId: userId,
+    //                 userPw: userPw
+    //             }),
+    //             success: function(response) {
+    //                 if (response.status === "success") {
+    //                     // 로그인 성공 시 리다이렉션
+    //                     window.location.href = "/main";
+    //                 } else {
+    //                     // 로그인 실패 시 경고
+    //                     alert("아이디와 비밀번호가 일치하지 않습니다.");
+    //                 }
+    //             },
+    //             error: function(xhr, status, error) {
+    //                 alert("로그인 처리 중 오류가 발생했습니다.");
+    //             }
+    //         });
+    //     }
+    // });
 
     let loginModal = $('#a1');
     let findById = $('#findById');

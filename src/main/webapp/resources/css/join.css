@@ -161,7 +161,7 @@ h5 {
     color: #ce1b1b;
 }
 /* 프로필 */
-#profile {
+#profileIcon {
     color: #213454;
     position: absolute;
     left: 50% ;transform:
@@ -178,12 +178,12 @@ h5 {
     font-size: 25px;
 }
 
-/* 소개글 공간 */
-#e1 {
+/* 소개글 테두리 */
+.e1 {
     position: absolute;
     width: 300px;
     height: 100px;
-    top: 300px;
+    top: 315px;
     left: 50%;
     border: #646161 2px solid;
     border-radius: 10px;
@@ -191,10 +191,16 @@ h5 {
     display: flex; /* Flexbox 레이아웃 적용 */
     justify-content: center; /* 가로 방향 중앙 정렬 */
     align-items: center; /* 세로 방향 중앙 정렬 */
+    transition: borer, background-color 0.3s;
+}
+
+/* 입력창에 호버될 때 배경색 조금 더 진하게 */
+.e1:hover {
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 /* 소개글 입력창 */
-#aboutMe {
+.aboutMe {
     width: 270px;
     height: 70px;
     resize: none;
@@ -203,4 +209,36 @@ h5 {
     font-size: 16px;
     font-family: Arial, sans-serif;
     outline: none;
+}
+
+/* 프로필 사진 미리보기 공간 */
+#profile {
+    z-index: 999;
+    display: none;
+    width: 160px;
+    height: 160px;
+    border-radius: 85px;
+    position: absolute;
+    left: 50% ;
+    top: 72px;
+    transform: translateX(-50%);
+}
+
+/* 프로필 사진 업로드 버튼 */
+#imgUpload {
+    position: absolute;
+    margin-left: 500px;
+    margin-top: 240px;
+
+}
+
+/* 프로필 소개 설명 텍스트 */
+#profile1 {
+    position: absolute;
+    margin-left: 254px;
+    margin-top: 278px;
+}
+
+#joinChkIcon {
+    transition: color 0.3s;
 }

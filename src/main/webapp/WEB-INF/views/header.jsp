@@ -1,14 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%--<%@ page import="jakarta.servlet.http.HttpSession" %>--%>
-
-<%--<%--%>
-<%--    HttpSession session = request.getSession(false); // 기존 세션 가져오기, 없으면 null 반환--%>
-<%--    if (session == null || session.getAttribute("RULE") == null) {--%>
-<%--        // 세션이 없거나, 세션에 RULE 속성이 없는 경우 홈으로 리다이렉트--%>
-<%--        response.sendRedirect("/");--%>
-<%--        return; // JSP 더 이상 실행 안 함--%>
-<%--    }--%>
-<%--%>--%>
 
 <html>
 <head>

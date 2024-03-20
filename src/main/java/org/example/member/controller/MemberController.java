@@ -18,12 +18,12 @@ public interface MemberController {
             HttpServletResponse response)
             throws Exception;
 
-    // 회원 추가
-    public ModelAndView addMember(
-            @ModelAttribute("dto") MemberDTO member,
-            HttpServletRequest request,
-            HttpServletResponse response
-            )throws Exception;
+//    // 회원 추가
+//    public ModelAndView addMember(
+//            @ModelAttribute("dto") MemberDTO member,
+//            HttpServletRequest request,
+//            HttpServletResponse response
+//            )throws Exception;
 
     // 아이디 중복 확인
     public String checkId(@RequestParam("userId") String userId);
