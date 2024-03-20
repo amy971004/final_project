@@ -37,7 +37,7 @@ public class HomeController {
                 logger.info("################### 관리자 ###################");
                 logger.info("ROLE: " + role);
                 logger.info("accountID: " + accountID);
-                return new ModelAndView("main");
+                return new ModelAndView("admin");
             }
             // 권한이 회원일 때
             else if ("USER".equals(role)) {

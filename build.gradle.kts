@@ -64,7 +64,6 @@ dependencies {
     implementation ("commons-fileupload:commons-fileupload:1.4")
 
 
-
 // 주석 처리된 의존성은 프로젝트 요구에 따라 해제하여 사용
 // Thymeleaf 템플릿 엔진
 //implementation("org.thymeleaf:thymeleaf-spring5:3.1.2.RELEASE")

@@ -142,6 +142,7 @@
 
 <script>
     $(window).on("load", function() {
+
         setTimeout(function() {
             let warning = new URLSearchParams(window.location.search).get('warning');
             console.log(warning);
@@ -153,6 +154,7 @@
                 alert('아이디와 비밀번호가 일치하지 않습니다.');
                 window.history.replaceState(null, null, window.location.pathname);
             }
+
         }, 10);
     });
 </script>
