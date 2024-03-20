@@ -6,6 +6,6 @@
 </head>
 <body>
 <h2>파일 업로드에 실패했습니다.</h2>
-<a href="file-upload.jsp">다시 시도하기</a>
+<a href="/post/uploadPost.do">다시 시도하기</a>
 </body>
 </html>

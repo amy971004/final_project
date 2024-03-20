@@ -1,4 +1,4 @@
-package org.example.post.service;
+package org.example.uploadpost.service;
 
 import java.util.Map;
 
