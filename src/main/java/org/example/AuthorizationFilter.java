@@ -6,6 +6,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+// 필터 기능 ( /main 과, /main 이후의 경로의 요청은 세션에서 권한을 확인
+// 비회원은 / 로 회원은 메인 페이지로, 관리자는 관리 페이지로 이동될 수 있도록
 @WebFilter({"/main/*", "/main"})
 public class AuthorizationFilter implements Filter {
 

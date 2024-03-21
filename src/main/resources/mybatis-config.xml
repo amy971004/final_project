@@ -3,11 +3,25 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
+
     <typeAliases>
         <typeAlias type="org.example.member.dto.MemberDTO" alias="memberDTO"/>
         <typeAlias type="org.example.uploadpost.dto.PostDTO" alias="postDTO"/>
         <typeAlias type="org.example.uploadpost.dto.ImageDTO" alias="imageDTO"/>
     </typeAliases>
+
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
+                <property name="url" value="jdbc:oracle:thin:@localhost:1521:XE"/>
+                <property name="username" value="c##sqluser"/>
+                <property name="password" value="1234"/>
+            </dataSource>
+        </environment>
+    </environments>
 
     <mappers>
         <!-- 회원 관련 매퍼 파일 -->
