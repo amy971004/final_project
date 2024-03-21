@@ -33,7 +33,9 @@ CREATE TABLE  sns_content(
         postId number default postId_seq.nextval PRIMARY KEY,
         userId varchar2(50) not null,
         content varchar2(2000),
-        uploadDate Date default sysdate not null
+        uploadDate Date default sysdate not null,
+        foreign key (userId)
+            references users(account_id) on delete cascade
 
 );
 // 이미지 테이블
