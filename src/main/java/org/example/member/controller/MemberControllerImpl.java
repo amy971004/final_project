@@ -80,6 +80,7 @@ public class MemberControllerImpl implements MemberController{
 
         // 웹 접근 가능한 경로 내에 이미지 저장 폴더를 설정
         String saveDirectory = request.getServletContext().getRealPath("/userProfile/");
+        String saveDirectory2 = saveDirectory.replace("ROOT\\", "userProfile\\");
 
 //        파일명 중복시
 //        String originalFileName = file.getOriginalFilename();
@@ -88,20 +89,20 @@ public class MemberControllerImpl implements MemberController{
 //        String filePath = Paths.get(saveDirectory, newFileName).toString();
 
         // 폴더 생성 로직을 추가합니다.
-        File directory = new File(saveDirectory);
+        File directory = new File(saveDirectory2);
         if (!directory.exists()) {
             boolean isCreated = directory.mkdirs(); // 디렉터리 생성 시도
             if (!isCreated) {
                 // 디렉터리 생성 실패에 대한 처리
                 // 예: 로깅, 예외 던지기 등
-                throw new IOException("Failed to create directory: " + saveDirectory);
+                throw new IOException("Failed to create directory: " + saveDirectory2);
             }
         }
 
         // 파일이 비어있지 않은 경우 처리
         if (!file.isEmpty()) {
             String originalFileName = file.getOriginalFilename(); // 원본 파일 이름
-            String filePath = Paths.get(saveDirectory, originalFileName).toString(); // 저장 경로 + 파일 이름
+            String filePath = Paths.get(saveDirectory2, originalFileName).toString(); // 저장 경로 + 파일 이름
 
             // 파일 저장
             File destinationFile = new File(filePath);

@@ -1,4 +1,4 @@
-package org.example.uploadpost.dto;
+package org.example.post.dto;
 
 import lombok.Data;
 

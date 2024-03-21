@@ -16,7 +16,7 @@
 <div class="logo">
     <a href="#" class="no-underline" style="padding-top: 20px">L</a>
     <!-- 홈 -->
-    <a href="#" class="no-underline"><i class="fa-solid fa-house"></i></a>
+    <a onclick="location.href='http://localhost:8081/post/mainPost.do'" class="no-underline"><i class="fa-solid fa-house"></i></a>
     <!-- 검색 -->
     <a href="#" class="no-underline"><i class="fa-solid fa-magnifying-glass "></i></a>
     <!-- 알림 -->
