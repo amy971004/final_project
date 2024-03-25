@@ -1,5 +1,6 @@
 package org.example.post.service;
 
+import org.example.member.dto.MemberDTO;
 import org.example.post.dao.PostDAO;
 import org.example.post.dto.ImageDTO;
 import org.example.post.dto.CommentDTO;
@@ -20,22 +21,35 @@ public class PostServiceImpl implements PostService {
     public void addPost(Map<String, Object> postInfo) {
         // 게시물 번호 가져오기
         int postId = dao.selectPostId();
-        // 게시물 정보 추가
-        dao.addPost(postInfo);
-        System.out.println(postId);
+        System.out.println("가져온 게시물 번호 : " + postId);
         // 이미지에 대한 정보 가져오기
         List<ImageDTO> imageFileInfo = (List<ImageDTO>) postInfo.get("imageFileInfo");
         // 이미지 번호 가져오기
         int imageNo = dao.selectImageNo();
-        System.out.println("이미지 번호 : "+imageNo);
+        System.out.println("가져온 이미지 번호 : "+ imageNo);
         // 각 이미지에 게시물 번호 / 이미지 번호 저장
         for(ImageDTO imageDTO : imageFileInfo){
             imageDTO.setPostId(postId);
-            imageDTO.setImageNo(++imageNo);
-            System.out.println("이미지 번호" + imageDTO.getImageNo());
+            imageDTO.setImageNo(imageNo++);
+            System.out.println("게시물 번호 : " + imageDTO.getPostId());
+            System.out.println("이미지 번호 : " + imageDTO.getImageNo());
         }
+        // 게시물 정보 추가
+        dao.addPost(postInfo);
         // 이미지 정보 추가
         dao.addImage(imageFileInfo);
+    }
+
+    // 회원 닉네임 가져오기
+    @Override
+    public String selectNickname(String accountID) {
+        return dao.selectNickname(accountID);
+    }
+
+    // 게시물 번호 가져오기
+    @Override
+    public int selectPostId() {
+        return dao.selectPostId();
     }
 
     // 설지연 -------------------------------------------------------

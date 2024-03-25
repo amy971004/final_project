@@ -74,5 +74,4 @@
         WHERE ACCOUNT_ID = #{accountId}
     </update>
 
-
 </mapper>

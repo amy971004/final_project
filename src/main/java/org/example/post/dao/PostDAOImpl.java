@@ -1,6 +1,7 @@
 package org.example.post.dao;
 
 import org.apache.ibatis.session.SqlSession;
+import org.example.member.dto.MemberDTO;
 import org.example.post.dto.ImageDTO;
 import org.example.post.dto.CommentDTO;
 import org.example.post.dto.PostDTO;
@@ -37,6 +38,11 @@ public class PostDAOImpl implements PostDAO {
     @Override
     public int selectImageNo() {
         return sqlSession.selectOne("mapper.post.selectImageNo");
+    }
+
+    @Override
+    public String selectNickname(String accountID) {
+        return sqlSession.selectOne("mapper.post.selectNickname", accountID);
     }
 
 

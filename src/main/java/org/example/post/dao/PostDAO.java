@@ -21,6 +21,9 @@ public interface PostDAO {
     // 이미지 번호 가져오기
     int selectImageNo();
 
+    // 회원 닉네임 가져오기
+    String selectNickname(String accountID);
+
     // 설지연 -----------------------------------------
     List<PostDTO> postList();
 
@@ -39,4 +42,6 @@ public interface PostDAO {
     int pushLike(int postId, String loginNickname);
 
     int selectNewLikeId();
+
+
 }

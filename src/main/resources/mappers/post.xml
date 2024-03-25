@@ -3,7 +3,7 @@
 <mapper namespace="mapper.post">
     <resultMap id="postResult" type="postDTO">
         <result property="postId" column="postId" />
-        <result property="userNickname" column="USERNICKNAME" />
+        <result property="userNickname" column="USER_NICKNAME" />
         <result property="content" column="content" />
         <result property="uploadDate" column="uploadDate" />
     </resultMap>
@@ -45,14 +45,17 @@
 
     <!-- 이미지 번호 -->
     <select id="selectImageNo" resultType="int">
-        <![CDATA[ select nvl(max(imageNo),0) from sns_image]]>
+        <![CDATA[ select nvl(min(imageNo),1) from sns_image]]>
     </select>
 
-
+    <!-- 회원 닉네임 가져오기 -->
+    <select id="selectNickname" resultType="String" parameterType="String">
+        <![CDATA[ select USER_NICKNAME from USERS where ACCOUNT_ID = #{accountID} ]]>
+    </select>
 
     <!-- 설지연  -->
     <!--게시물 가져오기(게시물번호, 닉네임, 게시글, 업로드날짜-->
-    <select id="postList" resultMap="postResult">
+    <!--<select id="postList" resultMap="postResult">
 		<![CDATA[
         select * from SNS_POST order by UPLOADDATE desc
         ]]>
@@ -106,5 +109,5 @@
         <![CDATA[
         insert into SNS_LIKE values (#{newLikeId},#{postId},#{loginNickname},sysdate)
         ]]>
-    </insert>
+    </insert>-->
 </mapper>
