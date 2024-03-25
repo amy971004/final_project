@@ -30,7 +30,7 @@ public class PostControllerImpl implements PostController{
 
     // 게시물 업로드 페이지로 이동
     // @GetMapping 애노테이션을 사용하여 HTTP GET 요청을 "/post/postUpload" 경로에 매핑합니다.
-    @RequestMapping("/post/uploadPost.do")
+    @RequestMapping("/main/post/uploadPost.do")
     public ModelAndView showUploadPost(HttpServletRequest request, HttpServletResponse response) throws Exception{
         // 게시물 업로드 폼이 있는 "uploadPost.jsp" 페이지로 이동
         return new ModelAndView("uploadPost");
@@ -38,7 +38,7 @@ public class PostControllerImpl implements PostController{
 
     // 파일을 업로드하는 요청을 처리합니다.
     // @PostMapping 애노테이션을 사용하여 HTTP POST 요청을 "/upload" 경로에 매핑합니다.
-    @PostMapping("/post/upload.do")
+    @PostMapping("/main/post/upload.do")
     public ModelAndView upload(String content, MultipartFile[] file, HttpServletRequest request) throws Exception{
 
         // 웹 접근 가능한 경로 내에 이미지 저장 폴더를 설정

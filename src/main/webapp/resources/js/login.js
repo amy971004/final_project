@@ -1,3 +1,20 @@
+$(window).on("load", function() {
+
+    setTimeout(function() {
+        let warning = new URLSearchParams(window.location.search).get('warning');
+        console.log(warning);
+
+        if (warning === 'loginRequired') {
+            alert('로그인 후 이용해주세요.');
+            window.history.replaceState(null, null, window.location.pathname);
+        } else if (warning === 'loginFail') {
+            alert('아이디와 비밀번호가 일치하지 않습니다.');
+            window.history.replaceState(null, null, window.location.pathname);
+        }
+
+    }, 10);
+});
+
 $(document).ready(function() {
 
     // console.log("jQuery 로드 확인" + $); // jQuery가 제대로 로드되었는지 확인

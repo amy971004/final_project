@@ -120,43 +120,24 @@
 
 </div>
 <script src="../../resources/js/login.js"></script>
-<%-- 경고창을 띄운 후에는 쿼리스트링을 제거하여 그대로 새로고침을 해도 경고창이 재출력되지 않도록 했어요~~--%>
-<%-- 경고창 띄우는 로직에 쿼리 스트링을 확인하는 조건이 서버 측에 이미 존재함--%>
-<%--<% if ("loginRequired".equals(request.getParameter("warning"))) { %>--%>
-<%--<script>--%>
-<%--    // 경고창 표시--%>
-<%--    alert('로그인 후 이용해주세요.');--%>
-<%--    // 쿼리 스트링 제거--%>
-<%--    window.history.replaceState(null, null, window.location.pathname);--%>
-<%--</script>--%>
-<%--<% } %>--%>
-
-<%--<% if ("loginFail".equals(request.getParameter("warning"))) { %>--%>
-<%--<script>--%>
-<%--    // 경고창 표시--%>
-<%--    alert('아이디와 비밀번호가 일치하지 않습니다.');--%>
-<%--    // 쿼리 스트링 제거--%>
-<%--    window.history.replaceState(null, null, window.location.pathname);--%>
-<%--</script>--%>
-<%--<% } %>--%>
 
 <script>
-    $(window).on("load", function() {
-
-        setTimeout(function() {
-            let warning = new URLSearchParams(window.location.search).get('warning');
-            console.log(warning);
-
-            if (warning === 'loginRequired') {
-                alert('로그인 후 이용해주세요.');
-                window.history.replaceState(null, null, window.location.pathname);
-            } else if (warning === 'loginFail') {
-                alert('아이디와 비밀번호가 일치하지 않습니다.');
-                window.history.replaceState(null, null, window.location.pathname);
-            }
-
-        }, 10);
-    });
+    // $(window).on("load", function() {
+    //
+    //     setTimeout(function() {
+    //         let warning = new URLSearchParams(window.location.search).get('warning');
+    //         console.log(warning);
+    //
+    //         if (warning === 'loginRequired') {
+    //             alert('로그인 후 이용해주세요.');
+    //             window.history.replaceState(null, null, window.location.pathname);
+    //         } else if (warning === 'loginFail') {
+    //             alert('아이디와 비밀번호가 일치하지 않습니다.');
+    //             window.history.replaceState(null, null, window.location.pathname);
+    //         }
+    //
+    //     }, 10);
+    // });
 </script>
 
 </body>

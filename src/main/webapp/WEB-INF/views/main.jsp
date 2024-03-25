@@ -288,7 +288,7 @@
 </section>
 
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<!--<script src="js/main.js"></script>-->
+<script src="../../resources/js/main.js"></script>
 </body>
 </html>
 

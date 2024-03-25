@@ -55,7 +55,7 @@ public class MemberControllerImpl implements MemberController{
     public ModelAndView addMember(@RequestParam("file") MultipartFile file, MemberDTO member, HttpServletRequest request) throws Exception {
 
         // 웹 접근 가능한 경로 내에 이미지 저장 폴더를 설정
-        String saveDirectory = request.getServletContext().getRealPath("/");
+        String saveDirectory = request.getServletContext().getRealPath("/resources/img/user_profile/");
 //        String saveDirectory2 = saveDirectory.replace("ROOT\\", "userProfile\\");
 
 //        파일명 중복시
@@ -85,7 +85,7 @@ public class MemberControllerImpl implements MemberController{
             file.transferTo(destinationFile);
 
             // 웹 접근 가능한 상대 경로를 데이터베이스에 저장
-            member.setProfileImg(request.getContextPath() + "/userProfile/" + originalFileName);
+            member.setProfileImg(request.getContextPath() + "/resources/img/user_profile/" + originalFileName);
 
         }
 

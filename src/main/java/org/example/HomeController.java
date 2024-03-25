@@ -15,7 +15,23 @@ public class HomeController {
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
     @RequestMapping({"/"})
-    public String main1(HttpServletRequest request){return "login";}
+    public ModelAndView main1(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        // 세션이 있다면
+        if (session != null){
+            String role = (String) session.getAttribute("ROLE");
+            if (role != null){
+                return new ModelAndView("redirect:/main?warning=logoutRequest");
+            } else {
+                return new ModelAndView("login");
+            }
+        // 세션이 없다면 ( 비회원이라면 )
+        } else {
+            return new ModelAndView("login");
+        }
+
+        // 세션이 없다면 ( 비회원이라면 )
+    }
 
     // 권한 검증
     @RequestMapping({"/main"})
