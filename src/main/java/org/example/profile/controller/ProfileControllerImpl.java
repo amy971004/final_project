@@ -29,7 +29,7 @@ public class ProfileControllerImpl implements ProfileController{
     @Autowired
     private ProfileService service;
 
-    private static final String BOARD_REPO = "E:\\profile";
+    private static final String BOARD_REPO = "C:\\profile";
 
     // 프로필 정보 띄우기
     @Override
