@@ -56,7 +56,13 @@ public interface ProfileController {
             HttpServletResponse response)
             throws Exception;
 
-    public void download(@RequestParam("imageFileName") String imageFileName,
-                         @RequestParam("accountId") String accountId,
-                         HttpServletResponse response) throws Exception;
+//    public void download(@RequestParam("imageFileName") String imageFileName,
+//                         @RequestParam("accountId") String accountId,
+//                         HttpServletResponse response) throws Exception;
+
+    @RequestMapping("/profile/download.do")
+    void download(String imageFileName,
+                  String accountId,
+                  HttpServletResponse response,
+                  HttpServletRequest request) throws Exception;
 }

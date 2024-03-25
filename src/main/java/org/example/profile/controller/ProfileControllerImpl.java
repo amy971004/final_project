@@ -3,7 +3,6 @@ package org.example.profile.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.apache.commons.io.FileUtils;
 import org.example.profile.dto.ProfileDTO;
 import org.example.profile.service.ProfileService;
 import org.mindrot.jbcrypt.BCrypt;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,8 +21,6 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 
@@ -159,13 +155,14 @@ public class ProfileControllerImpl implements ProfileController{
         return fileName;
     }
 
-    private static final String BOARD_REPO = "E:\\profile";
 
     @Override
     @RequestMapping("/profile/download.do")
     public void download(String imageFileName,
                          String accountId,
-                         HttpServletResponse response) throws Exception{
+                         HttpServletResponse response,
+                         HttpServletRequest request) throws Exception{
+    String BOARD_REPO = request.getServletContext().getRealPath("/resources/img/user_profile/");
         OutputStream out = response.getOutputStream();
         String downFile = BOARD_REPO + "\\" + accountId + "\\" + imageFileName;
         File file = new File(downFile);
