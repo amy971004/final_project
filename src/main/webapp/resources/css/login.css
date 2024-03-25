@@ -1,17 +1,24 @@
 
 /* 전체설정 */
-body {
+* {
     margin: 0;
     padding: 0;
 }
-
+body {
+    background-color: #e8e8e8;
+}
 /* 배경 이미지 */
+/*#backgroundImg {*/
+/*    width: 100vw;*/
+/*    height: 100vh;*/
+/*    background-repeat: no-repeat;*/
+/*    background-size: cover;*/
+/*    background-image: url("../img/backImg.jpg");*/
+/*}*/
 #backgroundImg {
     width: 100vw;
     height: 100vh;
-    background-repeat: no-repeat;
     background-size: cover;
-    background-image: url("../img/backImg.jpg");
 }
 
 /* 어떤 inputBox인지 이름 표시 */
@@ -29,7 +36,8 @@ h6 {
     top: 50%;
     margin-left: auto;
     margin-right: auto;
-    border: black 2px solid;
+    box-shadow:  -6px -20px 35px #ffffff,
+    -6px -10px 15px #ffffff, -20px 0px 30px #ffffff, 6px 20px 25px rgba(0,0,0,0.2);
     border-radius: 20px;
     background-color: rgba(255, 255, 255, 0.82);
     transform: translateY(-50%);
@@ -50,7 +58,7 @@ h6 {
     margin-right: auto;
     border: black 2px solid;
     border-radius: 20px;
-    background-color: rgba(255, 255, 255, 0.82);
+    background-color: rgb(255, 255, 255);
     top: 0;
     left: 0;
     transform: translate(5%,-40%);
@@ -71,7 +79,7 @@ h6 {
     margin-right: auto;
     border: black 2px solid;
     border-radius: 20px;
-    background-color: rgba(255, 255, 255, 0.82);
+    background-color: rgb(255, 255, 255);
     top: 0;
     left: 0;
     transform: translate(5%,-40%);
@@ -92,7 +100,7 @@ h6 {
     border-radius: 10px;
     background: transparent;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: color, background 0.3s;
 }
 
 /* 로그인 버튼에 호버될 때 */
@@ -108,7 +116,7 @@ h6 {
     background-color: transparent;
     cursor: pointer;
     border-radius: 10px;
-    transition: background-color 0.3s;
+    transition: color, background 0.3s;
 }
 
 /* 회원가입 버튼에 호버될 때 */
@@ -278,3 +286,24 @@ h5 {
     border: green 2px solid;
     background-color: rgba(255, 255, 255, 0.66);
 }
+
+#idInput:focus #idInputBox{
+    border: #1717bd;
+}
+#pwInput:focus #pwInputBox1{
+    border: #1717bd;
+}
+#loginBtn:hover, #loginBtn:focus {
+    background-color: #6E8EFBFF;
+    color: white;
+}
+#joinBtn:hover, #joinBtn:focus {
+    background-color: #a777e3;
+    color: white;
+}
+#findByIdBtn:hover, #findByIdBtn:focus,
+#findByPwBtn:hover, #findByPwBtn:focus{
+    background-color: #6E8EFBFF;
+    color: white;
+}
+

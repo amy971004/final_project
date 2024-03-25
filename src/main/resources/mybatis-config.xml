@@ -29,7 +29,8 @@
         <mapper resource="mappers/member.xml"/>
         <!-- 게시물 관련 매퍼 파일 -->
         <mapper resource="mappers/post.xml"/>
-        <mapper resource="mappers/profile.xml" />
+        <!-- 프로필 관련 매퍼 파일 -->
+        <mapper resource="mappers/profile.xml"/>
     </mappers>
 
 </configuration>

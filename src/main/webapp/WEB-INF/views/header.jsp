@@ -24,9 +24,9 @@
     <!-- 북마크 -->
     <a href="#" class="no-underline"><i class="fa-regular fa-bookmark "></i></a>
     <!-- 업로드 -->
-    <a href="#" class="no-underline"><i type="button" onclick="location.href='http://localhost:8081/main/post/uploadPost.do'" id="uploadBtn" class="fa-solid fa-plus" style="cursor: pointer"></i></a>
+    <a class="no-underline"><i type="button" onclick="location.href='http://localhost:8081/main/post/uploadPost.do'" id="uploadBtn" class="fa-solid fa-plus" style="cursor: pointer"></i></a>
     <!-- 내프로필 -->
-    <a href="#" class="no-underline"><i onclick="location.href='http://localhost:8081/profile/profileView.do'" class="fa-regular fa-user "></i></a>
+    <a class="no-underline"><i onclick="location.href='http://localhost:8081/main/profile/profileView.do'" class="fa-regular fa-user "></i></a>
     <!-- 로그아웃 -->
     <a class="no-underline"><i type="button" id="logoutBtn" class="fa-solid fa-arrow-right-from-bracket" style="cursor: pointer"></i></a>
     <!-- 더보기 -->

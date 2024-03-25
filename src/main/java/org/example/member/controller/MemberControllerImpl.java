@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.UUID;
 
 // 회원 컨트롤러의 구현체
 @RestController
@@ -55,10 +54,10 @@ public class MemberControllerImpl implements MemberController{
     // 가입정보를 입력받은 후 회원가입
     @Override
     @PostMapping("/member/addMember.do")
-    public ModelAndView addMember(@RequestParam("file") MultipartFile file, MemberDTO member, HttpServletRequest request) throws Exception {
+    public ModelAndView addMember(@RequestParam("file") MultipartFile file,@RequestParam("userId") String userId, MemberDTO member, HttpServletRequest request) throws Exception {
 
         // 웹 접근 가능한 경로 내에 이미지 저장 폴더를 설정
-        String saveDirectory = "e:\\profile\\" + member.getUserId() + "\\";
+        String saveDirectory = "C:\\profile\\" + member.getUserId() + "\\";
 //        String saveDirectory2 = saveDirectory.replace("ROOT\\", "userProfile\\");
 
 //        파일명 중복시
@@ -90,7 +89,6 @@ public class MemberControllerImpl implements MemberController{
 
     // 회원가입 유효성 검증 (아이디 중복 확인) - javascript - JQuery AJAX
     // 회원 ID중 입력받은 ID와 일치하는 정보가 있으면 (이미 사용중이면) false, 없으면 (사용 가능하면) true
-
     @Override
     @ResponseBody
     @RequestMapping("/member/checkId.do")

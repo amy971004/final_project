@@ -22,7 +22,7 @@ public interface MemberController {
     // 회원가입
     // 가입정보를 입력받은 후 회원가입
     @PostMapping("/member/addMember.do")
-    ModelAndView addMember(@RequestParam("file") MultipartFile file, @ModelAttribute("member") MemberDTO member, HttpServletRequest request) throws Exception;
+    ModelAndView addMember(@RequestParam("file") MultipartFile file, @RequestParam("userId") String userId, MemberDTO member, HttpServletRequest request) throws Exception;
 
     // 회원가입 유효성 검증 (아이디 중복 확인) - javascript - JQuery AJAX
     // 회원 ID중 입력받은 ID와 일치하는 정보가 있으면 (이미 사용중이면) false, 없으면 (사용 가능하면) true
