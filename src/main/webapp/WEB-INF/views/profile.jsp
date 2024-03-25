@@ -2,13 +2,39 @@
 <html lang="en" xmlns:c="http://www.w3.org/1999/XSL/Transform" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <link href="../../resources/css/profile.css" rel="stylesheet" type="text/css" />
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%
     response.setHeader("Pragma","no-cache");
     response.setDateHeader("Expires",0);
     response.setHeader("Cache-Control", "no-cache");
 %>
+<link href="../../resources/css/main.css" rel="stylesheet" type="text/css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="../../resources/css/reset.css">
+<link rel="stylesheet" href="../../resources/css/common.css">
+<link rel="stylesheet" href="../../resources/css/style.css">
 <c:set var="contextPath" value="${pageContext.request.contextPath }" />
 <body>
+<div class="logo">
+    <a href="#" class="no-underline" style="padding-top: 20px">L</a>
+    <!-- 홈 -->
+    <a class="no-underline"><i onclick="location.href='http://localhost:8081/main'" class="fa-solid fa-house" style="cursor: pointer"></i></a>
+    <!-- 검색 -->
+    <a href="#" class="no-underline"><i class="fa-solid fa-magnifying-glass "></i></a>
+    <!-- 알림 -->
+    <a href="#" class="no-underline"><i class="fa-solid fa-bell "></i></a>
+    <!-- 북마크 -->
+    <a href="#" class="no-underline"><i class="fa-regular fa-bookmark "></i></a>
+    <!-- 업로드 -->
+    <a class="no-underline"><i type="button" onclick="location.href='http://localhost:8081/main/post/uploadPost.do'" id="uploadBtn" class="fa-solid fa-plus" style="cursor: pointer"></i></a>
+    <!-- 내프로필 -->
+    <a class="no-underline"><i onclick="location.href='http://localhost:8081/main/profile/profileView.do'" class="fa-regular fa-user" style="cursor: pointer"></i></a>
+    <!-- 로그아웃 -->
+    <a class="no-underline"><i type="button" id="logoutBtn" class="fa-solid fa-arrow-right-from-bracket" style="cursor: pointer"></i></a>
+    <!-- 더보기 -->
+    <a href="#" class="no-underline"><i class="fa-solid fa-bars "></i></a>
+</div>
 <!--프로필 섹션-->
 <header>
 
@@ -22,7 +48,7 @@
                         <img src="/resources/img/profile/defaultProfile.png" alt=""/>
                     </c:when>
                     <c:otherwise>
-                        <img src="${contextPath}/profile/download.do?imageFileName=${profile.profileImg}&userId=${profile.userId}"  alt=""/>
+                        <img src="${contextPath}/main/profile/download.do?imageFileName=${profile.profileImg}&userId=${profile.userId}"  alt=""/>
                     </c:otherwise>
                 </c:choose>
 
@@ -32,8 +58,8 @@
 
                 <h1 class="profile-user-name">${profile.userId} / ${profile.userNickname}</h1>
 
-                <button class="btn profile-edit-btn" onclick="location.href='http://localhost:8081/profile/modprofile.do?id=${profile.userId}'">Edit Profile</button>
-                <button class="btn profile-settings-btn" onclick="location.href='http://localhost:8081/profile/editImg.do'">Edit Image</button>
+                <button class="btn profile-edit-btn" onclick="location.href='http://localhost:8081/main/profile/modprofile.do?id=${profile.userId}'">Edit Profile</button>
+                <button class="btn profile-settings-btn" onclick="location.href='http://localhost:8081/main/profile/editImg.do'">Edit Image</button>
 
             </div>
 
@@ -49,7 +75,7 @@
 
             <div class="profile-bio">
 
-                <p><span class="profile-real-name">${profile.userName}</span>${profile.introduction}</p>
+                <p><span class="profile-real-name">${profile.userName}</span><br>${profile.introduction}</p>
 
             </div>
 
@@ -60,6 +86,8 @@
     <!-- End of container -->
 
 </header>
+
+<hr style=" width: 895px;position: absolute; left: 500px">
 
 <main>
 
@@ -88,5 +116,37 @@
         <!-- End of container -->
     </div>
 </main>
+<script>
+    $(document).ready(function() {
+        let logoutBtn = $('#logoutBtn');
+
+        logoutBtn.on('click', function (){
+            // 로그아웃 여부를 확인하는 경고창 표시
+            let confirmLogout2 = confirm('로그아웃 하시겠습니까?');
+
+            if (confirmLogout2) {
+                // 사용자가 확인을 선택한 경우에만 로그아웃 처리를 수행함
+                $.ajax({
+                    url: '/logout.do',
+                    type: 'GET',
+                    success: function(response) {
+                        // 로그아웃 성공 시 콘솔에 메시지 출력
+                        console.log('로그아웃 성공');
+                        // 로그인 페이지로 리다이렉트
+                        window.location.href = '/';
+                    },
+                    error: function(xhr, status, error) {
+                        // 로그아웃 실패 시 콘솔에 메시지 출력
+                        console.error('로그아웃 실패:', error);
+                    }
+                });
+            } else {
+                // 취소를 눌렀을 때의 동작
+                console.log('사용자가 로그아웃을 취소했습니다.');
+            }
+        });
+
+    });
+</script>
 </body>
 </html>
