@@ -22,7 +22,7 @@
                         <img src="/resources/img/profile/defaultProfile.png" alt=""/>
                     </c:when>
                     <c:otherwise>
-                        <img src="${contextPath}/profile/download.do?imageFileName=${profile.profileImg}&accountId=${profile.accountId}"  alt=""/>
+                        <img src="${contextPath}/profile/download.do?imageFileName=${profile.profileImg}&userId=${profile.userId}"  alt=""/>
                     </c:otherwise>
                 </c:choose>
 

@@ -29,6 +29,8 @@ public class ProfileControllerImpl implements ProfileController{
     @Autowired
     private ProfileService service;
 
+    private static final String BOARD_REPO = "E:\\profile";
+
     // 프로필 정보 띄우기
     @Override
     @RequestMapping("/profile/profileView.do")
@@ -108,13 +110,14 @@ public class ProfileControllerImpl implements ProfileController{
     public ModelAndView upload(String content, MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
         String accountId = (String) session.getAttribute("accountID");
+        String userId = service.profileView(accountId).getUserId();
         String fileName = "";
         ModelAndView mav = new ModelAndView("redirect:/profile/profileView.do");
 
         try {
             // editImg.jsp 에서 선택된 파일이 있다면 메서드 실행
             if (!file.isEmpty()) {
-                fileName = uploadFile(file, accountId);
+                fileName = uploadFile(file, userId);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -136,11 +139,11 @@ public class ProfileControllerImpl implements ProfileController{
         return mav;
     }
 
-    private String uploadFile(MultipartFile file, String accountId) throws IOException {
+    private String uploadFile(MultipartFile file, String userId) throws IOException {
         String fileName = "";
         String originalFilename = file.getOriginalFilename();
         String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
-        String UPLOAD_DIR = "E:\\profile\\" + accountId + "\\";
+        String UPLOAD_DIR = "E:\\profile\\" + userId + "\\";
         Path directory = Paths.get(UPLOAD_DIR);
         // 경로에 사용자의 accountId로 하는 디렉터리가 없다면 디렉터리 생성
         if (!Files.exists(directory)) {
@@ -159,12 +162,11 @@ public class ProfileControllerImpl implements ProfileController{
     @Override
     @RequestMapping("/profile/download.do")
     public void download(String imageFileName,
-                         String accountId,
+                         String userId,
                          HttpServletResponse response,
                          HttpServletRequest request) throws Exception{
-    String BOARD_REPO = request.getServletContext().getRealPath("/resources/img/user_profile/");
         OutputStream out = response.getOutputStream();
-        String downFile = BOARD_REPO + "\\" + accountId + "\\" + imageFileName;
+        String downFile = BOARD_REPO + "\\" + userId + "\\" + imageFileName;
         File file = new File(downFile);
 
         response.setHeader("Cache-Control", "no-cache");

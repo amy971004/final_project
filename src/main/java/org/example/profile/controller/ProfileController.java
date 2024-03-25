@@ -62,7 +62,7 @@ public interface ProfileController {
 
     @RequestMapping("/profile/download.do")
     void download(String imageFileName,
-                  String accountId,
+                  String userId,
                   HttpServletResponse response,
                   HttpServletRequest request) throws Exception;
 }

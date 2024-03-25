@@ -8,6 +8,7 @@
         <typeAlias type="org.example.member.dto.MemberDTO" alias="memberDTO"/>
         <typeAlias type="org.example.uploadpost.dto.PostDTO" alias="postDTO"/>
         <typeAlias type="org.example.uploadpost.dto.ImageDTO" alias="imageDTO"/>
+        <typeAlias type="org.example.profile.dto.ProfileDTO" alias="profileDTO"/>
     </typeAliases>
 
 
@@ -28,6 +29,7 @@
         <mapper resource="mappers/member.xml"/>
         <!-- 게시물 관련 매퍼 파일 -->
         <mapper resource="mappers/post.xml"/>
+        <mapper resource="mappers/profile.xml" />
     </mappers>
 
 </configuration>

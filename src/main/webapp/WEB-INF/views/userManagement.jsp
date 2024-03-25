@@ -57,7 +57,7 @@
     프로필 이미지 경로: ${realPath}
     디비 경로 : ${user.profileImg}
     <tr>
-        <td><img src="${user.profileImg}" alt="프로필 이미지" style="width: 100px; height: 100px;"/></td>
+        <td><img src="${contextPath}/profile/download.do?imageFileName=${user.profileImg}&userId=${user.userId}" alt="프로필 이미지" style="width: 100px; height: 100px;"/></td>
         <td>${user.accountID}</td>
         <td>${user.userId}</td>
 <%--        <td>${user.userPw}</td>--%>
@@ -79,7 +79,7 @@
         const confirmation = confirm('해당 회원을 삭제하시겠습니까?');
         if (confirmation) {
             $.ajax({
-                url: '/deleteUser',
+                url: '/main/deleteUser',
                 type: 'POST',
                 data: {userId: userId},
                 success: function(response) {

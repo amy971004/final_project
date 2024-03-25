@@ -11,7 +11,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 // 회원 컨트롤러의 구현체
 @RestController
@@ -55,7 +58,7 @@ public class MemberControllerImpl implements MemberController{
     public ModelAndView addMember(@RequestParam("file") MultipartFile file, MemberDTO member, HttpServletRequest request) throws Exception {
 
         // 웹 접근 가능한 경로 내에 이미지 저장 폴더를 설정
-        String saveDirectory = request.getServletContext().getRealPath("/resources/img/user_profile/");
+        String saveDirectory = "e:\\profile\\" + member.getUserId() + "\\";
 //        String saveDirectory2 = saveDirectory.replace("ROOT\\", "userProfile\\");
 
 //        파일명 중복시
@@ -65,29 +68,18 @@ public class MemberControllerImpl implements MemberController{
 //        String filePath = Paths.get(saveDirectory, newFileName).toString();
 
         // 폴더 생성 로직을 추가합니다.
-        File directory = new File(saveDirectory);
-        if (!directory.exists()) {
-            boolean isCreated = directory.mkdirs(); // 디렉터리 생성 시도
-            if (!isCreated) {
-                // 디렉터리 생성 실패에 대한 처리
-                // 예: 로깅, 예외 던지기 등
-                throw new IOException("Failed to create directory: " + saveDirectory);
-            }
+        Path directory = Paths.get(saveDirectory);
+        if (!Files.exists(directory)) {
+            Files.createDirectories(directory);
         }
-
-        // 파일이 비어있지 않은 경우 처리
-        if (!file.isEmpty()) {
-            String originalFileName = file.getOriginalFilename(); // 원본 파일 이름
-            String filePath = Paths.get(saveDirectory, originalFileName).toString(); // 저장 경로 + 파일 이름
-
-            // 파일 저장
-            File destinationFile = new File(filePath);
-            file.transferTo(destinationFile);
-
-            // 웹 접근 가능한 상대 경로를 데이터베이스에 저장
-            member.setProfileImg(request.getContextPath() + "/resources/img/user_profile/" + originalFileName);
-
+        String fileName = file.getOriginalFilename();
+        Path path = Paths.get(saveDirectory + fileName);
+        if (Files.exists(path)) {
+            Files.delete(path);
         }
+        Files.write(path, file.getBytes());
+        member.setProfileImg(fileName);
+
 
         // 회원 정보 및 이미지 경로 데이터베이스에 저장
         int result = service.addMember(member);
@@ -98,6 +90,7 @@ public class MemberControllerImpl implements MemberController{
 
     // 회원가입 유효성 검증 (아이디 중복 확인) - javascript - JQuery AJAX
     // 회원 ID중 입력받은 ID와 일치하는 정보가 있으면 (이미 사용중이면) false, 없으면 (사용 가능하면) true
+
     @Override
     @ResponseBody
     @RequestMapping("/member/checkId.do")
