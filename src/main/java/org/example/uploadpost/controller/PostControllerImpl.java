@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.Console;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,10 +28,6 @@ public class PostControllerImpl implements PostController{
     @Autowired
     private PostService service;
 
-    // 파일 저장 경로를 문자열 상수로 지정합니다.
-    // 여기서는 특정 사용자의 디렉토리 아래의 uploaded_files 폴더를 지정하고 있습니다.
-    private final String UPLOAD_DIR = "D:\\apache-tomcat-10.1.19\\webapps\\uploaded_files\\";
-
     // 게시물 업로드 페이지로 이동
     // @GetMapping 애노테이션을 사용하여 HTTP GET 요청을 "/post/postUpload" 경로에 매핑합니다.
     @RequestMapping("/post/uploadPost.do")
@@ -42,10 +41,25 @@ public class PostControllerImpl implements PostController{
     @PostMapping("/post/upload.do")
     public ModelAndView upload(String content, MultipartFile[] file, HttpServletRequest request) throws Exception{
 
+        // 웹 접근 가능한 경로 내에 이미지 저장 폴더를 설정
+        String saveDirectory = request.getServletContext().getRealPath("/");
+        String saveDirectory2 = saveDirectory.replace("ROOT\\", "post\\");
+
         // 게시물 정보 저장
         Map<String, Object> postInfo = new HashMap<String, Object>();
         // 이미지에 대한 정보 저장
         List<ImageDTO> imageFileInfo = new ArrayList<ImageDTO>();
+
+        // 지정 경로에 폴더가 없으면 자동생성.
+        File directory = new File(saveDirectory2);
+        if (!directory.exists()) {
+            boolean isCreated = directory.mkdirs(); // 디렉터리 생성 시도
+            if (!isCreated) {
+                // 디렉터리 생성 실패에 대한 처리
+                // 예: 로깅, 예외 던지기 등
+                throw new IOException("Failed to create directory: " + saveDirectory2);
+            }
+        }
 
         try {
             for (MultipartFile multipartFile : file) {
@@ -55,7 +69,7 @@ public class PostControllerImpl implements PostController{
                 UUID uuid = UUID.randomUUID();
                 fileName = uuid + "_" + fileName;
                 // 파일 저장 경로 정의
-                Path path = Paths.get(UPLOAD_DIR + fileName);
+                Path path = Paths.get(saveDirectory2 + fileName);
                 // 파일에 저장
                 Files.write(path, multipartFile.getBytes());
                 // 이미지 객체 생성 / 정보 저장
@@ -77,7 +91,7 @@ public class PostControllerImpl implements PostController{
             // 예외 발생 시 이미지 파일 삭제
             if(imageFileInfo != null && imageFileInfo.size() != 0){
                 for(ImageDTO imageDTO : imageFileInfo){
-                    Path filePath = Paths.get(UPLOAD_DIR, imageDTO.getFileName());
+                    Path filePath = Paths.get(saveDirectory2, imageDTO.getFileName());
                     Files.delete(filePath);
                     System.out.println(imageDTO.getFileName());
                 }

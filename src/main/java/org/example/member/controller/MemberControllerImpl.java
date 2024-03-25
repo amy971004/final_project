@@ -1,7 +1,6 @@
 package org.example.member.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.example.member.dto.MemberDTO;
 import org.example.member.service.MemberService;
@@ -13,20 +12,23 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
 
 // 회원 컨트롤러의 구현체
 @RestController
 public class MemberControllerImpl implements MemberController{
-    @Autowired
-    private MemberService service;
 
+    private final MemberService service;
+
+    @Autowired
+    public MemberControllerImpl(MemberService service) {
+        this.service = service;
+    }
+
+    // 로그인
+    // 아이디 비밀번호를 입력받아 로그인
     @Override
     @PostMapping(value = {"/login.do","member/login.do"})
-    public ModelAndView login(@RequestParam("userId") String userId, @RequestParam("userPw") String userPw, HttpServletRequest request){
+    public ModelAndView login(@RequestParam("userId") String userId, @RequestParam("userPw") String userPw, HttpServletRequest request) {
         HttpSession session = request.getSession();
         MemberDTO memberDTO = service.login(userId, userPw);
         if(memberDTO != null) {
@@ -40,46 +42,21 @@ public class MemberControllerImpl implements MemberController{
             return new ModelAndView("redirect:/?warning=loginFail");
         }
     }
-//    @PostMapping(value = "/login.do", produces = "application/json")
-//    @ResponseBody
-//    public Map<String, Object> login(@RequestParam("userId") String userId,
-//                                     @RequestParam("userPw") String userPw,
-//                                     HttpSession session) {
-//        Map<String, Object> result = new HashMap<>();
-//        MemberDTO memberDTO = service.login(userId, userPw);
-//        if(memberDTO != null) {
-//            session.setAttribute("ROLE", memberDTO.getROLE());
-//            session.setAttribute("accountID", memberDTO.getAccountID());
-//            result.put("status", "success");
-//        } else {
-//            result.put("status", "fail");
-//        }
-//        return result;
-//    }
 
     // 회원가입 페이지로 이동
     @Override
     @RequestMapping("/member/joinMember.do")
-    public ModelAndView joinMember(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return new ModelAndView("join");
-    }
+    public ModelAndView joinMember(){return new ModelAndView("join");}
 
-//    // 회원 추가
-//    @Override
-//    @RequestMapping("/member/addMember.do")
-//    public ModelAndView addMember(MemberDTO member, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//
-//        int result = service.addMember(member);
-//
-//        return new ModelAndView("login");
-//    }
-
-    // 회원 추가 ( 프로필 이미지까지 함께 )
+    // 회원가입
+    // 가입정보를 입력받은 후 회원가입
+    @Override
     @PostMapping("/member/addMember.do")
-    public ModelAndView addMember(@RequestParam("file") MultipartFile file, MemberDTO member, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView addMember(@RequestParam("file") MultipartFile file, MemberDTO member, HttpServletRequest request) throws Exception {
 
         // 웹 접근 가능한 경로 내에 이미지 저장 폴더를 설정
-        String saveDirectory = request.getServletContext().getRealPath("/userProfile/");
+        String saveDirectory = request.getServletContext().getRealPath("/");
+//        String saveDirectory2 = saveDirectory.replace("ROOT\\", "userProfile\\");
 
 //        파일명 중복시
 //        String originalFileName = file.getOriginalFilename();
@@ -119,16 +96,18 @@ public class MemberControllerImpl implements MemberController{
         return new ModelAndView("redirect:/");
     }
 
-    // 아이디 중복 확인
+    // 회원가입 유효성 검증 (아이디 중복 확인) - javascript - JQuery AJAX
+    // 회원 ID중 입력받은 ID와 일치하는 정보가 있으면 (이미 사용중이면) false, 없으면 (사용 가능하면) true
     @Override
-    @RequestMapping("/member/checkId.do")
     @ResponseBody
+    @RequestMapping("/member/checkId.do")
     public String checkId(@RequestParam("userId") String userId) {
         boolean isAvailable = service.checkId(userId);
         return isAvailable ? "OK" : "EXIST";
     }
 
-    // 닉네임 중복 확인
+    // 닉네임 유효성 검증 (닉네임 중복 확인) - javascript - JQuery AJAX
+    // 회원 닉네임중 입력받은 ID와 일치하는 정보가 있으면 (이미 사용중이면) false, 없으면 (사용 가능하면) true
     @Override
     @RequestMapping("/member/checkNickname.do")
     @ResponseBody
@@ -138,10 +117,11 @@ public class MemberControllerImpl implements MemberController{
     }
 
     // 아이디 찾기
+    // 이름과 생년월일을 입력받고 아이디 찾기
     @Override
-    @RequestMapping(value = "/findById.do", method = RequestMethod.POST)
     @ResponseBody
-    public String findById(@RequestParam("userName") String userName, @RequestParam("userBirth") String userBirth, HttpServletRequest request) {
+    @RequestMapping(value = "/findById.do", method = RequestMethod.POST)
+    public String findById(@RequestParam("userName") String userName, @RequestParam("userBirth") String userBirth) {
         String userId = service.findById(userName, userBirth);
         if(userId != null) {
             // 아이디 찾기 성공
@@ -152,19 +132,21 @@ public class MemberControllerImpl implements MemberController{
         }
     }
 
-    // 비밀번호 찾기
+    // 비밀번호 변경 part1
+    // 비밀번호 찾기 입력창에서 입력한 아이디로 식별자 아이디 찾기
     @Override
-    @RequestMapping(value = "/findByPw.do", method = RequestMethod.POST)
     @ResponseBody
-    public String findByPw(@RequestParam("userId") String userId, @RequestParam("userBirth") String userBirth, HttpServletRequest request) {
+    @RequestMapping(value = "/findByPw.do", method = RequestMethod.POST)
+    public String findByPw(@RequestParam("userId") String userId, @RequestParam("userBirth") String userBirth) {
         boolean isAvailable = service.findByPw(userId, userBirth);
         return isAvailable ? "OK" : "FAIL";
     }
 
-    // 비밀번호 변경 - 입력한 아이디로 식별자 아이디 찾기
+    // 비밀번호 변경 part2
+    // 식별자 아이디로 회원정보를 찾은 후 해당 회원의 비밀번호를 입력받은 비밀번호로 변경
     @Override
-    @RequestMapping(value = "/findByAccountID_useId", method = RequestMethod.POST)
     @ResponseBody
+    @RequestMapping(value = "/findByAccountID_useId", method = RequestMethod.POST)
     public String findByAccountID_useId(@RequestParam("userId") String userId) {
         String accountId = service.findByAccountID_useId(userId);
         if(accountId != null){
@@ -176,16 +158,18 @@ public class MemberControllerImpl implements MemberController{
         }
     }
 
-    // 비밀번호 변경
+    // 비밀번호 변경 part3
+    // 식별자 아이디로 회원정보를 찾은 후 입력받은 비밀번호로 변경
     @Override
     @RequestMapping(value = "/changePw.do", method = RequestMethod.POST)
     @ResponseBody
-    public String changePw(@RequestParam("changePw") String changePw, @RequestParam("accountId") String accountId, HttpServletRequest request) {
+    public String changePw(@RequestParam("changePw") String changePw, @RequestParam("accountId") String accountId) {
         boolean isAvailable = service.changePw(changePw, accountId);
         return isAvailable ? "SUCCESS" : "FAIL";
     }
 
     // 로그아웃
+    // 로그아웃시 로그인 화면으로 리다이렉트되며 세션 초기화
     @Override
     @RequestMapping("/logout.do")
     public ModelAndView logout(HttpServletRequest request) {

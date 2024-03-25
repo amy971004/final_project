@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.member">
-    <resultMap id="memResult" type="memberDTO">
+
+    <resultMap id="memResult" type="org.example.member.dto.MemberDTO">
         <result property="accountID" column="ACCOUNT_ID" />
         <result property="userId" column="USER_ID" />
         <result property="userPw" column="USER_PW" />
@@ -10,6 +11,7 @@
         <result property="userEmail" column="USER_EMAIL" />
         <result property="userBirthday" column="USER_BIRTHDAY" />
         <result property="userPhoneNumber" column="USER_PHONENUMBER" />
+        <result property="userJoinDate" column="USER_JOINDATE" />
         <result property="profileImg" column="PROFILEIMG" />
         <result property="introduction" column="INTRODUCTION" />
         <result property="ROLE" column="USER_ROLE" />
@@ -73,6 +75,16 @@
         SET USER_PW = #{changePw}
         WHERE ACCOUNT_ID = #{accountId}
     </update>
+
+    <!-- 모든 유저정보 -->
+    <select id="selectAllUsers" resultMap="memResult">
+        SELECT * FROM users
+    </select>
+
+    <!-- 사용자 삭제 -->
+    <delete id="deleteUser" parameterType="String">
+        DELETE FROM users WHERE USER_ID = #{userId}
+    </delete>
 
 
 </mapper>
