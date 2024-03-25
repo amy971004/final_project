@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.Console;
-
 // 회원 컨트롤러의 구현체
 @RestController
 public class MemberControllerImpl implements MemberController{

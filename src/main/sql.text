@@ -13,7 +13,8 @@ CREATE TABLE users (
                        user_name VARCHAR2(50) NOT NULL,
                        user_email VARCHAR2(50) NOT NULL,
                        user_birthday number NOT NULL,
-                       user_phoneNumber VARCHAR2(50) NOT NULL,
+                       user_phoneNumber VARCHAR2(50),
+                       user_content varchar2(300),
                        user_joinDate DATE DEFAULT SYSDATE  NOT NULL,
                        user_ROLE VARCHAR2(50) NOT NULL
 );

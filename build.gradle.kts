@@ -23,6 +23,10 @@ dependencies {
     compileOnly("org.projectlombok:lombok:1.18.22")
     annotationProcessor("org.projectlombok:lombok:1.18.22")
 
+    // JSTL
+    implementation ("jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:2.0.0")
+    implementation ("org.glassfish.web:jakarta.servlet.jsp.jstl:2.0.0")
+
     // 서블릿 API - 서블릿 개발 기반
     compileOnly("jakarta.servlet:jakarta.servlet-api:5.0.0") // 최신 버전 사용 권장
     implementation("javax.servlet:javax.servlet-api:4.0.1") // 이전 버전 유지 관리 필요시
@@ -31,9 +35,6 @@ dependencies {
     implementation("org.springframework:spring-context:6.0.11")
     implementation("org.springframework:spring-webmvc:6.0.11")
     implementation("org.springframework:spring-jdbc:6.0.11")
-
-    // JSTL - JSP 페이지에서 사용
-    implementation("javax.servlet:jstl:1.2")
 
     // MyBatis - 데이터베이스 연동
     implementation("org.mybatis:mybatis:3.5.15")
@@ -57,6 +58,9 @@ dependencies {
 
     // jBCrypt 의존성 추가
     implementation ("org.mindrot:jbcrypt:0.4")
+
+    // 멀티파트
+    implementation ("commons-fileupload:commons-fileupload:1.4")
 
 // 주석 처리된 의존성은 프로젝트 요구에 따라 해제하여 사용
 // Thymeleaf 템플릿 엔진
