@@ -14,12 +14,13 @@
 <link rel="stylesheet" href="../../resources/css/reset.css">
 <link rel="stylesheet" href="../../resources/css/common.css">
 <link rel="stylesheet" href="../../resources/css/style.css">
+<link rel="stylesheet" href="../../resources/css/nav.css">
 <c:set var="contextPath" value="${pageContext.request.contextPath }" />
 <body>
 <div class="logo">
-    <a href="#" class="no-underline" style="padding-top: 20px">L</a>
+    <a href="#" class="no-underline" style="padding-top: 20px; font-size: 25px">L</a>
     <!-- 홈 -->
-    <a class="no-underline"><i onclick="location.href='http://localhost:8081/main'" class="fa-solid fa-house" style="cursor: pointer"></i></a>
+    <a class="no-underline"><i onclick="location.href='http://localhost:8081/main'" class="fa-solid fa-house"></i></a>
     <!-- 검색 -->
     <a href="#" class="no-underline"><i class="fa-solid fa-magnifying-glass "></i></a>
     <!-- 알림 -->
@@ -27,13 +28,11 @@
     <!-- 북마크 -->
     <a href="#" class="no-underline"><i class="fa-regular fa-bookmark "></i></a>
     <!-- 업로드 -->
-    <a class="no-underline"><i type="button" onclick="location.href='http://localhost:8081/main/post/uploadPost.do'" id="uploadBtn" class="fa-solid fa-plus" style="cursor: pointer"></i></a>
+    <a class="no-underline"><i onclick="location.href='http://localhost:8081/main/post/uploadPost.do'" id="uploadBtn" class="fa-solid fa-plus"></i></a>
     <!-- 내프로필 -->
-    <a class="no-underline"><i onclick="location.href='http://localhost:8081/main/profile/profileView.do'" class="fa-regular fa-user" style="cursor: pointer"></i></a>
+    <a class="no-underline"><i onclick="location.href='http://localhost:8081/main/profile/profileView.do'" class="fa-regular fa-user"></i></a>
     <!-- 로그아웃 -->
-    <a class="no-underline"><i type="button" id="logoutBtn" class="fa-solid fa-arrow-right-from-bracket" style="cursor: pointer"></i></a>
-    <!-- 더보기 -->
-    <a href="#" class="no-underline"><i class="fa-solid fa-bars "></i></a>
+    <a class="no-underline"><i id="logoutBtn" class="fa-solid fa-arrow-right-from-bracket"></i></a>
 </div>
 <!--프로필 섹션-->
 <header>
@@ -87,9 +86,9 @@
 
 </header>
 
-<hr style=" width: 895px;position: absolute; left: 500px">
+<hr style=" width: 1100px; margin-left: calc(50% + 25px); transform: translateX(-50%)">
 
-<main>
+<main style="margin-top: 10px">
 
     <div class="container">
 
