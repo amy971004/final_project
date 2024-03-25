@@ -4,6 +4,7 @@
 <head>
     <title>사진 및 글 내용 업로드</title>
     <link rel="stylesheet" href="../../resources/css/uploadPost.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
@@ -56,7 +57,8 @@
     /* 업로드 확인 여부 */
     function upload_check(){
         // 이미지 파일 첨부 확인 여부
-        if($('.files').length === 0){
+        let files =  $('.files');
+        if(files.length === 0){
             alert('이미지 1개 이상 업로드 하세요.');
         }
         else{
@@ -88,22 +90,18 @@
         <h2>게시물 업로드</h2>
         <form name="uploadForm" id="uploadFrm" action="upload.do" method="post" enctype="multipart/form-data">
             <div id="content_box">
-                <textarea id="content_input" name="content" rows="10" cols="50" maxlength="999"></textarea>
+                <textarea id="content_input" name="content" rows="10" cols="60" maxlength="999"></textarea>
             </div>
             <div id="preview_box"></div>
             <div id="d_file"></div>
             <div id="image_upload_box">
-                <button id="image_upload_btn" type="button" onclick="fn_addFile()">사진 업로드</button>
-            </div>
-            <div id="upload_btn_box">
-                <button id="upload-btn" type="button" onclick="upload_check()">업로드</button>
+                <button id="image_upload_btn" type="button" onclick="fn_addFile()"><i class="fa-solid fa-images"></i>사진 업로드</button>
             </div>
             <div id="back_page_box">
-                <button id="back_page" type="button" onclick="page_back()">뒤로가기</button>
+                <button id="back_page" type="button" onclick="page_back()"><i class="fa-solid fa-arrow-right-from-bracket"></i>뒤로가기</button>
             </div>
-            <div id="cancel_btn_box">
-                <button id="cancel_btn" type="button" onclick="cancel()">취소</button>
-            </div>
+            <button id="upload-btn" type="button" onclick="upload_check()"><i class="fa-solid fa-arrow-up-from-bracket"></i>업로드</button>
+            <button id="cancel_btn" type="button" onclick="cancel()"><i class="fa-solid fa-xmark"></i>취소</button>
         </form>
     </div>
 </body>
