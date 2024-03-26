@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.post">
+    <resultMap id="postResult" type="postDTO">
+        <result property="postId" column="postId" />
+        <result property="userNickname" column="USER_NICKNAME" />
+        <result property="content" column="content" />
+        <result property="uploadDate" column="uploadDate" />
+    </resultMap>
+    <resultMap id="imageResult" type="imageDTO">
+        <result property="postId" column="postId" />
+        <result property="imageNo" column="imageNo" />
+        <result property="fileName" column="fileName" />
+        <result property="filePath" column="filePath" />
+    </resultMap>
+    <resultMap id="commentResult" type="commentDTO">
+        <result property="postId" column="POSTID" />
+        <result property="level" column="LEVEL" />
+        <result property="articleNo" column="COMMENTID" />
+        <result property="parentNo" column="PARENTNO" />
+        <result property="postComment" column="POSTCOMMENT" />
+        <result property="writeDate" column="WRITEDATE" />
+        <result property="user_Nickname" column="USER_NICKNAME" />
+    </resultMap>
+
+
+    <!-- 게시물 추가(이미지는 따로 저장) -->
+    <insert id="addPost" parameterType="postDTO">
+        <![CDATA[
+                INSERT INTO SNS_POST VALUES (postId_seq.nextval, #{userNickname}, #{content}, sysdate)
+                ]]>
+    </insert>
+
+    <!-- 이미지 추가 -->
+    <insert id="addImage" parameterType="java.util.Map">
+        <foreach item="item" collection="list" open="insert all" separator=" " close="select * from dual">
+            into sns_image values(#{item.postId}, #{item.imageNo}, #{item.fileName}, #{item.filePath})
+        </foreach>
+    </insert>
+
+    <!-- 게시물 번호 -->
+    <select id="selectPostId" resultType="int">
+        <![CDATA[ select case when max(postid) is null then 1 else max(postId) + 1 end from SNS_POST]]>
+    </select>
+
+    <!-- 이미지 번호 -->
+    <select id="selectImageNo" resultType="int">
+        <![CDATA[ select nvl(min(imageNo),1) from sns_image]]>
+    </select>
+
+    <!-- 회원 닉네임 가져오기 -->
+    <select id="selectNickname" resultType="String" parameterType="String">
+        <![CDATA[ select USER_NICKNAME from USERS where ACCOUNT_ID = #{accountID} ]]>
+    </select>
+
+    <!-- 설지연  -->
+    <!--게시물 가져오기(게시물번호, 닉네임, 게시글, 업로드날짜-->
+    <!--<select id="postList" resultMap="postResult">
+		<![CDATA[
+        select * from SNS_POST order by UPLOADDATE desc
+        ]]>
+	</select>
+
+    <select id="likeCheck" parameterType="java.util.Map" resultType="int">
+        <![CDATA[
+        select count(*) from SNS_LIKE where USER_NICKNAME=#{loginId} and POSTID=#{contentNo}
+        ]]>
+    </select>
+
+    <select id="bookmarkCheck" parameterType="java.util.Map" resultType="int">
+        <![CDATA[
+        select count(*) from SNS_BOOKMARK where USER_NICKNAME=#{loginId} and POSTID=#{contentNo}
+        ]]>
+    </select>
+
+    <select id="getTag" parameterType="int" resultType="String">
+        <![CDATA[
+        select HASHTAG from SNS_TAG where POSTID=#{contentNo}
+        ]]>
+    </select>
+
+    <select id="getCommentList"  resultType="commentDTO">
+        <![CDATA[
+        select level, COMMENTID, PARENTNO, POSTID, POSTCOMMENT,WRITEDATE, USER_NICKNAME from SNS_COMMENT
+        start with parentNo = 0 connect by prior COMMENTID=parentno
+        order SIBLINGS by COMMENTID desc
+        ]]>
+    </select>
+
+    <select id="likeCnt" parameterType="int" resultType="int">
+        <![CDATA[
+        select count(*) from SNS_LIKE where POSTID=#{contentNo}
+        ]]>
+    </select>
+
+    <delete id="deletLike" parameterType="java.util.Map">
+        <![CDATA[
+        delete from SNS_LIKE where USER_NICKNAME=#{loginNickname} and POSTID=#{postId}
+        ]]>
+    </delete>
+
+    <select id="selectNewLikeId" parameterType="int" resultType="int">
+        <![CDATA[
+        select nvl(max(likeid),0) from SNS_LIKE
+        ]]>
+    </select>
+
+    <insert id="pushLike" parameterType="java.util.Map">
+        <![CDATA[
+        insert into SNS_LIKE values (#{newLikeId},#{postId},#{loginNickname},sysdate)
+        ]]>
+    </insert>-->
+</mapper>

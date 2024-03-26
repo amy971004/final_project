@@ -1,9 +1,8 @@
 package org.example.post.dao;
 
 import org.apache.ibatis.session.SqlSession;
-import org.example.member.dto.MemberDTO;
-import org.example.post.dto.ImageDTO;
 import org.example.post.dto.CommentDTO;
+import org.example.post.dto.ImageDTO;
 import org.example.post.dto.PostDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

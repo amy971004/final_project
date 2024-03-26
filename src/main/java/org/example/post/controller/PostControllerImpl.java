@@ -1,18 +1,18 @@
 package org.example.post.controller;
 
 // 필요한 클래스와 인터페이스를 임포트합니다.
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.example.member.dto.MemberDTO;
-import org.example.post.dto.ImageDTO;
-import org.example.post.service.PostService;
 import org.example.post.dto.*;
-import org.junit.runner.Request;
+import org.example.post.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jmx.export.metadata.ManagedMetric;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -26,7 +26,7 @@ import java.util.*;
 
 // 클래스 선언부입니다. @Controller 애노테이션을 사용하여 이 클래스가 컨트롤러임을 나타냅니다.
 @Controller
-@RequestMapping("/post")
+@RequestMapping("/main/post")
 public class PostControllerImpl implements PostController {
     private String loginId = "테스트용";
     // PostService 타입의 service 객체에 대한 의존성을 주입받습니다.

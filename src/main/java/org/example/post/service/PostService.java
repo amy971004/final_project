@@ -1,6 +1,5 @@
 package org.example.post.service;
 
-import org.example.member.dto.MemberDTO;
 import org.example.post.dto.CommentDTO;
 import org.example.post.dto.PostDTO;
 
