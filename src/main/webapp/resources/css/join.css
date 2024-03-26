@@ -258,7 +258,7 @@ h5 {
 #emailCheckBox {
     position: relative;
     width: 400px;
-    height: 75px;
+    height: 120px;
     margin-left: auto;
     margin-right: auto;
     border: black 2px solid;
@@ -271,7 +271,8 @@ h5 {
 /* 이메일 인증창 내부 */
 #a1 {
     position: absolute;
-    width: 440px;
+    width: 400px;
+    height: 120px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -55%);
@@ -282,7 +283,7 @@ h5 {
     width: 300px;
     height: 35px;
     border-radius: 5px;
-    margin-top: 7px;
+    margin-top: 66px;
     margin-right: 7px;
 }
 /* 인증번호 확인 버튼 */
@@ -302,7 +303,7 @@ h5 {
 /* 인증번호 전송 버튼 */
 #sendMail {
     position: absolute;
-    top: 540px;
+    top: 541px;
     right: 83px;
     width: 43px;
     height: 26px;
@@ -319,7 +320,7 @@ h5 {
 }
 #sendMail.emailSuccess {
     position: absolute;
-    top: 556px;
+    top: 541px;
     right: 83px;
     width: 43px;
     height: 26px;
@@ -333,4 +334,17 @@ h5 {
     border: green;
     background-color: green;
     color: white;
+}
+/* 닫기버튼 */
+#close2 {
+    top: 12px;
+    right: 6px;
+}
+/* 입력창 내부2 */
+#a2 {
+    top: 30px;
+    height: 47px;
+    left: 0;
+    width: 100%;
+    border-bottom: black 2px solid;
 }

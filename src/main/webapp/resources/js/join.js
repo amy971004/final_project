@@ -684,8 +684,10 @@ $(document).ready(function() {
     sendMail.on('click', function () {
 
         emailCheckBox.show();
+        jQuery("#emailCheckBox").draggable();
 
         let userEmail = $('#emailInput').val();
+        let userName = $('#nameInput').val();
 
         if (userEmail.length === 0) {
             alert("이메일 주소를 입력해주세요.");
@@ -696,7 +698,7 @@ $(document).ready(function() {
         $.ajax({
             url: "/emailSend.do",
             type: "GET",
-            data: { userEmail: userEmail },
+            data: { userEmail: userEmail, userName: userName },
             success: function(response) {
                 if(response != null) {
                     alert("인증번호를 발송했습니다.");
@@ -728,6 +730,12 @@ $(document).ready(function() {
             $('#checkMail').val("");
             joinChk()
         }
+    });
+
+    let close2 = $('#close2');
+
+    close2.on('click', function (){
+        emailCheckBox.hide();
     });
 
 

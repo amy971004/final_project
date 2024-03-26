@@ -106,7 +106,7 @@ public class MemberServiceImpl implements MemberService{
 
     // 인증메일 보내기
     @Override
-    public String sendMail(String userEmail) throws Exception {
+    public String sendMail(String userEmail, String userName) throws Exception {
         // 랜덤 문자열을 생성해서 mail_key 컬럼에 넣어주기
         String mail_key = new TempKey().getKey(30,false); // 랜덤키 길이 설정
 
@@ -116,7 +116,8 @@ public class MemberServiceImpl implements MemberService{
         sendMail.setText(
                 "<h1>회원가입 인증메일</h1>" +
                 "<br>ㅇㅇㅇ(이름 아직 미정)에 오신 것을 환영합니다!" +
-                "<br> 인증번호는 <h3>" + mail_key + "</h3> 입니다.");
+                "<br> \"" + userName + "\"님 아래의 인증번호를 인증번호 입력란에 입력해주세요." +
+                "<h3>" + mail_key + "</h3>");
                 sendMail.setFrom("wlfjddl4256@gmail.com", "황선준");
                 sendMail.setTo(userEmail);
                 sendMail.send();

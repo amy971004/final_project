@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -173,10 +171,11 @@ public class MemberControllerImpl implements MemberController{
     }
 
     // 인증메일 전송
+    @Override
     @ResponseBody
     @RequestMapping("/emailSend.do")
-    public String sendMail(String userEmail) throws Exception {
-        return service.sendMail(userEmail);
+    public String sendMail(String userEmail, String userName) throws Exception {
+        return service.sendMail(userEmail, userName);
     }
 
 }

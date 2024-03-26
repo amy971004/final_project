@@ -32,5 +32,5 @@ public interface MemberService {
     int updateMailAuth(MemberDTO memberDTO) throws Exception;
     int updateMailFail(String userId) throws Exception;
 
-    String sendMail(String userEmail) throws Exception;
+    String sendMail(String userEmail,String userName) throws Exception;
 }
