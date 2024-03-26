@@ -115,6 +115,13 @@
                     <div id="emailInputBox" class="inputBox">
                         <i class="fa-regular fa-envelope" style="padding-left: 13px"></i>
                         <input type="text" name="userEmail" id="emailInput" class="input" maxlength="25" placeholder="Email">
+                        <button type="button" id="sendMail" style="display: none">인증</button>
+                        <div id="emailCheckBox" style="display: none">
+                            <div id="a1">
+                                <input type="text" id="checkMail" placeholder="인증번호 입력">
+                                <button type="button" id="checkMailBtn">OK</button>
+                            </div>
+                        </div>
                     </div>
                     <h5 id="emailInputText1" class="InputText">* 이메일을 입력해주세요.</h5>
                     <h5 id="emailInputText2" class="InputText">* 한글은 입력할 수 없습니다.</h5>

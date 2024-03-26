@@ -79,8 +79,6 @@ public class MemberControllerImpl implements MemberController{
         Files.write(path, file.getBytes());
         member.setProfileImg(fileName);
 
-
-        // 회원 정보 및 이미지 경로 데이터베이스에 저장
         int result = service.addMember(member);
 
         // 처리 후 리다이렉트 또는 뷰 반환
@@ -172,6 +170,13 @@ public class MemberControllerImpl implements MemberController{
         }
         // 홈 페이지로 리다이렉트
         return new ModelAndView("redirect:/");
+    }
+
+    // 인증메일 전송
+    @ResponseBody
+    @RequestMapping("/emailSend.do")
+    public String sendMail(String userEmail) throws Exception {
+        return service.sendMail(userEmail);
     }
 
 }

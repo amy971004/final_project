@@ -32,11 +32,11 @@
                     <i class="fa-solid fa-key" style="padding-left: 14px"></i>
                     <input type="password" id="pwInput" name="userPw" class="input" maxlength="14" placeholder="Password">
                 </div>
-                <br>
-                <p> <button type="button" id="loginBtn" class="btn1"><i class="fa-solid fa-arrow-right-to-bracket"></i>  Login</button>
+                <div style="margin-top: 34px">
+                    <button type="button" id="loginBtn" class="btn1"><i class="fa-solid fa-arrow-right-to-bracket"></i>  Login</button>
                     <button type="button" id="joinBtn" class="btn2" onclick="location.href='http://localhost:8081/member/joinMember.do'"><i class="fa-solid fa-users"></i> Sign in</button>
-                <p>
-                <div id="find" style="margin-top: 10px">
+                </div>
+                <div id="find" style="margin-top: 26px">
                     <a type="button" id="findById">forget ID?</a> / <a type="button" id="findByPw">forget PW?</a>
                 </div>
             </form>

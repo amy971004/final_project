@@ -27,4 +27,10 @@ public interface MemberService {
     // 비밀번호 변경
     boolean changePw(String changePw, String accountId);
 
+    // 이메일 인증
+    int updateMailKey(MemberDTO memberDTO) throws Exception;
+    int updateMailAuth(MemberDTO memberDTO) throws Exception;
+    int updateMailFail(String userId) throws Exception;
+
+    String sendMail(String userEmail) throws Exception;
 }

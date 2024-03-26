@@ -1,9 +1,12 @@
 package org.example.member.service;
 
+import org.example.mail.MailHandler;
 import org.example.member.dao.MemberDAO;
 import org.example.member.dto.MemberDTO;
+import org.example.util.TempKey;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,10 +14,13 @@ public class MemberServiceImpl implements MemberService{
 
     private final MemberDAO dao;
 
+
     @Autowired
     public MemberServiceImpl(MemberDAO dao) {
         this.dao = dao;
     }
+    @Autowired
+    JavaMailSender mailSender;
 
     // 로그인 part1
     // 아이디 비밀번호를 입력받아 로그인
@@ -80,5 +86,44 @@ public class MemberServiceImpl implements MemberService{
         String changePw = BCrypt.hashpw(inputPw, BCrypt.gensalt());
         return dao.changePw(changePw, accountId);
     }
+    
+    // 이메일 인증
+
+    @Override
+    public int updateMailKey(MemberDTO memberDTO) throws Exception {
+        return dao.updateMailKey(memberDTO);
+    }
+
+    @Override
+    public int updateMailAuth(MemberDTO memberDTO) throws Exception {
+        return dao.updateMailAuth(memberDTO);
+    }
+
+    @Override
+    public int updateMailFail(String userId) throws Exception {
+        return dao.emailAuthFail(userId);
+    }
+
+    // 인증메일 보내기
+    @Override
+    public String sendMail(String userEmail) throws Exception {
+        // 랜덤 문자열을 생성해서 mail_key 컬럼에 넣어주기
+        String mail_key = new TempKey().getKey(30,false); // 랜덤키 길이 설정
+
+        // 이메일 인증을 위한 이메일 발송
+        MailHandler sendMail = new MailHandler((mailSender));
+        sendMail.setSubject("[회원가입 인증메일 입니다.]"); // 메일제목
+        sendMail.setText(
+                "<h1>회원가입 인증메일</h1>" +
+                "<br>ㅇㅇㅇ(이름 아직 미정)에 오신 것을 환영합니다!" +
+                "<br> 인증번호는 <h3>" + mail_key + "</h3> 입니다.");
+                sendMail.setFrom("wlfjddl4256@gmail.com", "황선준");
+                sendMail.setTo(userEmail);
+                sendMail.send();
+
+        return mail_key;
+    }
+
+
 
 }

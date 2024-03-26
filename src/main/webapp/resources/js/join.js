@@ -5,7 +5,7 @@ $(document).ready(function() {
     let joinChkIcon = $('#joinChkIcon'); // 회원가입 유효성 체크 아이콘
     function joinChk() {
         // 모든 유효성 검사 성공시 회원가입버튼 활성화
-        if (idValid && pwValid && pwCValid && nicknameValid && nameValid && emailValid && birthdayValid && phoneNumberValid) {
+        if (idValid && pwValid && pwCValid && nicknameValid && nameValid && emailValid && emailValid2 && birthdayValid && phoneNumberValid) {
             joinBtn.addClass('joinBtn1').removeClass('joinBtn2').prop('disabled', false);
             joinChkIcon.css('color', 'green');
         // 유효성 검사가 1개라도 실패시 회원가입 버튼 비활성화
@@ -17,7 +17,7 @@ $(document).ready(function() {
     
     // 회원가입 버튼 클릭시
     joinBtn.click(function() {
-        if (idValid && pwValid && pwCValid && nicknameValid && nameValid && emailValid && birthdayValid && phoneNumberValid){
+        if (idValid && pwValid && pwCValid && nicknameValid && nameValid && emailValid && emailValid2 && birthdayValid && phoneNumberValid){
             alert("회원가입 완료!");
         } else {
             alert("회원정보를 확인해주세요.");
@@ -35,6 +35,7 @@ $(document).ready(function() {
     let emailValid = false; // 이메일 유효성 상태 - 기본값 실패
     let birthdayValid = false; // 생년월일 유효성 상태 - 기본값 실패
     let phoneNumberValid = false; // 핸드폰 번호 유효성 상태 - 기본값 실패
+    let emailValid2 = false; // 이메일 인증 유효성 상태 - 기본값 실패
 
     // ############################### 아이디 ###############################
     let idInput = $('#idInput'); // 아이디 입력창
@@ -447,6 +448,8 @@ $(document).ready(function() {
     let emailInputText1 = $('#emailInputText1'); // 이메일을 입력해주세요.
     let emailInputText2 = $('#emailInputText2'); // 한글은 입력할 수 없습니다.
     let emailInputText3 = $('#emailInputText3'); // 이메일 양식을 확인해주세요.
+    let emailCheckBox = $('#emailCheckBox'); // 이메일 인증번호 입력창
+    let sendMail = $('#sendMail'); // 이메일 인증 버튼
 
     <!-- 포커스 잡혔을 때 이벤트 -->
     emailInput.focus(function () {
@@ -484,6 +487,11 @@ $(document).ready(function() {
                     emailInputText2.hide(); // 한글은 입력할 수 없습니다. <- 숨기기
                     emailInputText3.show(); // 이메일 양식을 확인해주세요. <- 보이게
                     emailValid = false; // 유효성 검증 실패
+                    emailValid2 = false; // 유효성 검증 실패
+                    emailCheckBox.hide();
+                    checkMail.removeClass('error'); // 테두리 빨간색 제거
+                    sendMail.removeClass('emailSuccess');
+                    $('#checkMail').val("");
                 } else {
                     // 이메일 형식(@와 . 포함)인 경우
                     emailInputText1.hide(); // 이메일을 입력해주세요. <- 숨기기
@@ -503,9 +511,12 @@ $(document).ready(function() {
             emailInputBox.addClass('success'); // 테두리를 초록색으로
             emailInputBox.removeClass('error'); // 테두리를 빨간색으로
             emailInput.removeClass('errorText'); // font-color - red 제거
+            sendMail.show();
         } else {
             emailInputBox.addClass('error'); // 테두리를 빨간색으로
             emailInputBox.removeClass('success'); // 초록색 테두리 제거
+            sendMail.hide();
+            emailCheckBox.hide();
         }
         joinChk();
     });
@@ -661,6 +672,62 @@ $(document).ready(function() {
     profileInput.blur(function () {
         profileInputBox.css('border-color', '#646161'); // 테두리를 #646161 색으로
         profileInputBox.css('background-color', 'rgba(255, 255, 255, 0)');
+    });
+
+
+    // 이메일인증
+
+    let checkMailBtn = $('#checkMailBtn');
+    let checkMail = $('#checkMail');
+    let email_key;
+
+    sendMail.on('click', function () {
+
+        emailCheckBox.show();
+
+        let userEmail = $('#emailInput').val();
+
+        if (userEmail.length === 0) {
+            alert("이메일 주소를 입력해주세요.");
+            return;
+        }
+
+        // AJAX 요청을 시작합니다.
+        $.ajax({
+            url: "/emailSend.do",
+            type: "GET",
+            data: { userEmail: userEmail },
+            success: function(response) {
+                if(response != null) {
+                    alert("인증번호를 발송했습니다.");
+                    email_key = response;
+                } else {
+                    alert("인증번호 전송에 실패했습니다. 이메일 주소를 확인해주세요.");
+                }
+            },
+            error: function() {
+                alert("서버 요청 중 오류가 발생했습니다. 다시 시도해 주세요.");
+            }
+        });
+    });
+
+    checkMailBtn.on('click', function () {
+        let checkMailVal = checkMail.val(); // 클릭할 때마다 값을 가져옵니다.
+        if (checkMailVal === email_key) {
+            alert("이메일 인증 성공");
+            emailValid2 = true; // 유효성 검증 성공
+            checkMail.removeClass('error'); // 테두리 빨간색 제거
+            sendMail.addClass('emailSuccess');
+            emailCheckBox.hide();
+            joinChk()
+        } else {
+            alert("인증번호를 확인해주세요.");
+            emailValid2 = false; // 유효성 검증 실패
+            checkMail.addClass('error'); // 테두리를 빨간색으로
+            sendMail.removeClass('emailSuccess');
+            $('#checkMail').val("");
+            joinChk()
+        }
     });
 
 
