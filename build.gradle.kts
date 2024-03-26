@@ -33,6 +33,8 @@ dependencies {
     implementation("org.springframework:spring-webmvc:6.0.11")
     implementation("org.springframework:spring-jdbc:6.0.11")
     implementation ("org.springframework:spring-context-support:6.0.11")
+    // Spring Websocket
+    implementation ("org.springframework:spring-websocket:6.0.11")
 
 
     // JSTL - JSP 페이지에서 사용
@@ -52,7 +54,8 @@ dependencies {
     implementation("org.apache.commons:commons-dbcp2:2.9.0") // DBCP 커넥션 풀
 
     // JSON 처리
-    implementation("com.googlecode.json-simple:json-simple:1.1.1")
+    // implementation("com.googlecode.json-simple:json-simple:1.1.1")
+    implementation("com.google.code.gson:gson:2.10.1")
 
     // SLF4J - 로깅 추상화 레이어
     implementation ("org.slf4j:slf4j-api:2.0.3")
@@ -72,6 +75,11 @@ dependencies {
     // Jakarta Mail의 구현체를 포함하는 종속성
     implementation ("com.sun.mail:jakarta.mail:2.0.1")
 
+    // Jackson Databind
+    implementation ("com.fasterxml.jackson.core:jackson-databind:2.16.0")
+
+    // Log4j
+    implementation ("log4j:log4j:1.2.17")
 
 
 

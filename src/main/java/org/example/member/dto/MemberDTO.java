@@ -18,5 +18,4 @@ public class MemberDTO {
     private String profileImg; // 회원 프로필사진 저장경로
     private String introduction; // 회원 프로필 소개글
     private String ROLE; // 회원 권한
-    private String mail_key; // 이메일인증 난수
 }
