@@ -1,117 +1,114 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>사진 및 글 내용 업로드</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../../resources/css/uploadPost.css" />
-    <link rel="stylesheet" href="../../resources/css/nav.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<style>
-</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+    /* 이미지 보여주기  + 파일 첨부 갯수 제한 */
     function readURL(input){
-        if(input.files && input.files[0]){
-            let reader = new FileReader();
-            reader.onload = function (e){
-                let img =$('<img id="preview_image"/>');
-                $(img).attr('src',e.target.result);
-                $('#preview_box').append(img);
+        let preview_box = $('#preview_box');
+        // 파일 첨부 갯수 제한
+        if(input.files.length > 4){
+            alert('이미지는 최대 4개 까지 가능합니다.');
+            $('.files').val('');
+            preview_box.empty();
+        }
+        // 이미지 미리보기
+        if(input.files && input.files.length > 0){
+            preview_box.empty();
+            for(let i=0; i < input.files.length; i++){
+                let reader = new FileReader();
+                reader.onload = function (e){
+                    let lastModified = input.files[i].lastModified;
+                    /*let img =$('<img id="preview_image"/>');
+                    $(img).attr('src',e.target.result);*/
+                    $('#preview_box').append('<div class="image_div" id="'+lastModified+'"><img id="preview_image" src="'+e.target.result+'" class="'+lastModified+'"/><p class="txt">삭제</p></div>');
+                }
+                reader.readAsDataURL(input.files[i]);
+                console.log(input.files[i].type);
+                console.log(input.files[i].lastModified)
             }
-            reader.readAsDataURL(input.files[0]);
+            console.log(input);
+            console.log(input.files);
+            console.log(input.files.length);
         }
     }
-    $(document).ready(function() {
-        $('#file_input').change(function() {
-            let fileNamesDiv = $('#file_names');
-            fileNamesDiv.empty(); // 이전에 표시된 파일 이름을 지웁니다.
+    // 사진 클릭 시 해당 사진 삭제
+    $(document).on('click','img', function (e){
+        console.log(e,"클릭");
+        let input = $('.files')[0].files;
+        console.log(input);
 
-            let files = $(this).prop('files');
-            if (files.length > 0) {
-                for (let i = 0; i < files.length; i++) {
-                    let fileName = files[i].name;
-                    let fileNameNode = $('<p>').text(fileName);
-                    fileNamesDiv.append(fileNameNode);
-                }
-            } else {
-                fileNamesDiv.text('선택된 파일이 없습니다.');
+        let dataTranster = new DataTransfer();
+        let target = e.target;
+        let removeId = $(target).attr("class");
+        console.log(removeId);
+
+        for(let i=0; i < input.length; i++){
+            let file = input[i];
+            console.log(file);
+            if(file.lastModified != removeId){
+                dataTranster.items.add(file);
+                console.log(dataTranster.items);
             }
-        });
-    });
-    function fn_addFile(){
-        $('#d_file').append("<br><input type='file' name='file' onchange='readURL(this)'>");
+        }
+        $('.files')[0].files = dataTranster.files;
+        console.log($('.files')[0].files = dataTranster.files);
+        $('#'+removeId).remove();
+
+    })
+
+    /* 업로드 확인 여부 */
+    function upload_check(){
+        // 이미지 파일 첨부 확인 여부
+        let files = $('.files')[0].files;
+        if(files.length === 0){
+            alert('이미지 1개 이상 업로드 하세요.');
+        }
+        else{
+            // 업로드 누를 시
+            if(confirm('업로드 하시겠습니까?') === true){ // 확인 누를 시
+                let frm = document.uploadForm;
+                frm.submit();
+            }
+        }
+    }
+    /* 뒤로 가기 */
+    function page_back() {
+        // 이전 페이지로 이동
+        history.go(-1);
+    }
+    /* 취소 확인 여부 */
+    function cancel(){
+        // 확인 클릭 시 메인 페이지로 이동
+        if(confirm('취소하시겠습니까?') === true){
+            location.href = "/main";
+        }
+        // 취소 클릭 시 계속 작성
     }
 </script>
 <body>
-    <div class="logo">
-        <a href="#" class="no-underline" style="padding-top: 20px;font-size: 25px">L</a>
-        <!-- 홈 -->
-        <a class="no-underline"><i onclick="location.href='http://localhost:8081/main'" class="fa-solid fa-house"></i></a>
-        <!-- 검색 -->
-        <a href="#" class="no-underline"><i class="fa-solid fa-magnifying-glass "></i></a>
-        <!-- 알림 -->
-        <a href="#" class="no-underline"><i class="fa-solid fa-bell "></i></a>
-        <!-- 북마크 -->
-        <a href="#" class="no-underline"><i class="fa-regular fa-bookmark "></i></a>
-        <!-- 업로드 -->
-        <a class="no-underline"><i onclick="location.href='http://localhost:8081/main/post/uploadPost.do'" id="uploadBtn" class="fa-solid fa-plus"></i></a>
-        <!-- 내프로필 -->
-        <a class="no-underline"><i onclick="location.href='http://localhost:8081/main/profile/profileView.do'" class="fa-regular fa-user"></i></a>
-        <!-- 로그아웃 -->
-        <a class="no-underline"><i id="logoutBtn" class="fa-solid fa-arrow-right-from-bracket"></i></a>
-    </div>
-    <div id="upload_from_box">
-        <h2 style="margin: 0">게시물 업로드</h2>
-        <form id="uploadFrm" action="upload.do" method="post" enctype="multipart/form-data">
-            글 내용
-            <div id="content_box">
-                <textarea id="content_input" name="content" rows="10" cols="50" maxlength="999" required></textarea>
-            </div>
-
-            <div id="preview_box"></div>
-            <div id="d_file">
-                <input type="file" name="file" onchange='readURL(this)'>
-            </div>
-            <div id="image_add_box">
-                <button id="image_add_btn" type="button" onclick="fn_addFile()">사진추가</button>
-            </div>
-            <div id="upload_btn_box">
-                <button id="upload-btn" type="submit">업로드</button>
-            </div>
-        </form>
-    </div>
-    <script>
-        $(document).ready(function() {
-            let logoutBtn = $('#logoutBtn');
-
-            logoutBtn.on('click', function (){
-                // 로그아웃 여부를 확인하는 경고창 표시
-                let confirmLogout2 = confirm('로그아웃 하시겠습니까?');
-
-                if (confirmLogout2) {
-                    // 사용자가 확인을 선택한 경우에만 로그아웃 처리를 수행함
-                    $.ajax({
-                        url: '/logout.do',
-                        type: 'GET',
-                        success: function(response) {
-                            // 로그아웃 성공 시 콘솔에 메시지 출력
-                            console.log('로그아웃 성공');
-                            // 로그인 페이지로 리다이렉트
-                            window.location.href = '/';
-                        },
-                        error: function(xhr, status, error) {
-                            // 로그아웃 실패 시 콘솔에 메시지 출력
-                            console.error('로그아웃 실패:', error);
-                        }
-                    });
-                } else {
-                    // 취소를 눌렀을 때의 동작
-                    console.log('사용자가 로그아웃을 취소했습니다.');
-                }
-            });
-
-        });
-    </script>
+<div id="upload_from_box">
+    <h2>게시물 업로드</h2>
+    <form name="uploadForm" id="uploadFrm" action="upload.do" method="post" enctype="multipart/form-data">
+        <div id="content_box">
+            <textarea id="content_input" name="content" rows="10" cols="60" maxlength="999"></textarea>
+        </div>
+        <div id="image_upload_box">
+            <label id="image_upload_btn" for="file"><i class="fa-solid fa-images"></i>사진 업로드</label>
+            <input type="file" class="files" id="file" name="file" onchange="readURL(this)" hidden multiple>
+        </div>
+        <div id="preview_box"></div>
+        <%--            <div id="back_page_box">
+                        <button id="back_page" type="button" onclick="page_back()"><i class="fa-solid fa-arrow-right-from-bracket"></i>뒤로가기</button>
+                    </div>--%>
+        <button id="upload-btn" type="button" onclick="upload_check()"><i class="fa-solid fa-arrow-up-from-bracket"></i>업로드</button>
+        <button id="cancel_btn" type="button" onclick="cancel()"><i class="fa-solid fa-xmark"></i>취소</button>
+    </form>
+</div>
 </body>
 </html>
