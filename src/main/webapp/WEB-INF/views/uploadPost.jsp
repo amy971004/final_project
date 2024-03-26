@@ -8,56 +8,38 @@
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-    /* 이미지 보여주기 */
+    /* 이미지 보여주기  + 파일 첨부 갯수 제한 */
     function readURL(input){
-        if(input.files && input.files[0]){
-            let reader = new FileReader();
-            reader.onload = function (e){
-                let img =$('<img id="preview_image"/>');
-                $(img).attr('src',e.target.result);
-                $('#preview_box').append(img);
-            }
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-/*    function num(){
-        let file = document.querySelectorAll(".files");
-        console.log(file);
-        console.log(file[0].outerHTML)
-
-       let files = $('.files');
-        console.log("input=file 수 : " + files.length);
-        for(let i=0; i < files.length; i++){
-            console.log("1 -> 파일 O / 0 -> 파일 X : " + files[i].files.length);
-            for(let i=0; i < files.length; i++){
-                // 빈 파일 경우 삭제
-                if(files[i].files.length === 0){
-                    $('#file'+i).remove();
-                }
-            }
-        }
-    }*/
-
-    /* 이미지 업로드 */
-    let cnt = 0;
-    function fn_addFile(){
-        // 이미지 개수 제한
-        // input file 개수
-        let files = $('.files');
-        if(files.length === 4){
+        let preview_box = $('#preview_box');
+        // 파일 첨부 갯수 제한
+        if(input.files.length > 4){
             alert('이미지는 최대 4개 까지 가능합니다.');
-        }else{
-            $('#d_file').append("<input hidden class='files' type='file' name='file' id='file"+cnt+"' onchange='readURL(this)'>")
-            $('#file'+cnt).click();
-            cnt++;
+            $('.files').val('');
+            preview_box.empty();
+        }
+        // 이미지 미리보기
+        if(input.files && input.files.length > 0){
+            preview_box.empty();
+            for(let i=0; i < input.files.length; i++){
+                let reader = new FileReader();
+                    reader.onload = function (e){
+                        let img =$('<img id="preview_image"/>');
+                        $(img).attr('src',e.target.result);
+                        $('#preview_box').append(img);
+                    }
+                    reader.readAsDataURL(input.files[i]);
+                    console.log(input.files[i].type);
+            }
+            console.log(input);
+            console.log(input.files);
+            console.log(input.files.length);
         }
     }
 
     /* 업로드 확인 여부 */
     function upload_check(){
         // 이미지 파일 첨부 확인 여부
-        let files =  $('.files');
+        let files = $('.files')[0].files;
         if(files.length === 0){
             alert('이미지 1개 이상 업로드 하세요.');
         }
@@ -66,8 +48,6 @@
             if(confirm('업로드 하시겠습니까?') === true){ // 확인 누를 시
                 let frm = document.uploadForm;
                 frm.submit();
-            } else{ // 취소 누를 시
-                history.go(-1); // 이전 페이지로 이동
             }
         }
     }
@@ -93,13 +73,13 @@
                 <textarea id="content_input" name="content" rows="10" cols="60" maxlength="999"></textarea>
             </div>
             <div id="preview_box"></div>
-            <div id="d_file"></div>
             <div id="image_upload_box">
-                <button id="image_upload_btn" type="button" onclick="fn_addFile()"><i class="fa-solid fa-images"></i>사진 업로드</button>
+                <label id="image_upload_btn" for="file"><i class="fa-solid fa-images"></i>사진 업로드</label>
+                <input type="file" class="files" id="file" name="file" onchange="readURL(this)" hidden multiple>
             </div>
-            <div id="back_page_box">
+<%--            <div id="back_page_box">
                 <button id="back_page" type="button" onclick="page_back()"><i class="fa-solid fa-arrow-right-from-bracket"></i>뒤로가기</button>
-            </div>
+            </div>--%>
             <button id="upload-btn" type="button" onclick="upload_check()"><i class="fa-solid fa-arrow-up-from-bracket"></i>업로드</button>
             <button id="cancel_btn" type="button" onclick="cancel()"><i class="fa-solid fa-xmark"></i>취소</button>
         </form>

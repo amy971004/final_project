@@ -44,26 +44,32 @@ button:hover{
  #image_upload_box .fa-images{
      padding-right: 5px;
  }
+ #image_upload_box #image_upload_btn {
+     border: solid 1px #9ba0ab ;
+     border-radius: 10px;
+     padding: 10px 10px;
+ }
+label:hover{
+    color: #6c757d;
+}
 /*#back_page_box{*/
 /*     position: relative;*/
 /*     bottom: 475px;*/
 /*     right: 145px;*/
 /* }*/
-#back_page_box .fa-arrow-right-from-bracket{
+/*#back_page_box .fa-arrow-right-from-bracket{
     padding-right: 5px;
-}
- #upload_btn_box{
+}*/
+ #upload-btn{
      position: relative;
-     right: 100px;
-     top: 40px;
+     top: 60px;
  }
 .fa-arrow-up-from-bracket{
      padding-right: 5px;
  }
-#cancel_btn_box{
+#cancel_btn{
     position: relative;
-    left: 150px;
-    bottom: 40px;
+    top: 60px;
     outline: none;
 }
 .fa-xmark{
