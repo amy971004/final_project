@@ -25,7 +25,7 @@ dependencies {
 
     // 서블릿 API - 서블릿 개발 기반
     compileOnly("jakarta.servlet:jakarta.servlet-api:5.0.0") // 최신 버전 사용 권장
-//    compileOnly("jakarta.servlet.jsp:jakarta.servlet.jsp-api:5.0.0")  // JSP API - JSP 개발 기반
+    // compileOnly("jakarta.servlet.jsp:jakarta.servlet.jsp-api:5.0.0")  // JSP API - JSP 개발 기반
     compileOnly("jakarta.servlet.jsp:jakarta.servlet.jsp-api:3.0.0")  // JSP API - JSP 개발 기반
 
     // 스프링 프레임워크 기본 의존성
@@ -67,9 +67,9 @@ dependencies {
     implementation ("commons-fileupload:commons-fileupload:1.4")
 
     // 이메일 인증
-// Jakarta Mail API를 위한 종속성
+    // Jakarta Mail API를 위한 종속성
     implementation ("jakarta.mail:jakarta.mail-api:2.0.1")
-// Jakarta Mail의 구현체를 포함하는 종속성
+    // Jakarta Mail의 구현체를 포함하는 종속성
     implementation ("com.sun.mail:jakarta.mail:2.0.1")
 
 

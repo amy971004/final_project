@@ -1,3 +1,5 @@
+package org.example.util;
+
 import org.mindrot.jbcrypt.BCrypt;
 
 public class PasswordHashingExample {

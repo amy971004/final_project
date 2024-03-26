@@ -59,7 +59,7 @@
     <!-- 필터 매핑 -->
     <filter>
         <filter-name>AuthorizationFilter</filter-name>
-        <filter-class>org.example.AuthorizationFilter</filter-class>
+        <filter-class>org.example.util.AuthorizationFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>AuthorizationFilter</filter-name>
