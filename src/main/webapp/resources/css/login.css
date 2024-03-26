@@ -105,7 +105,7 @@ h6 {
 
 /* 로그인 버튼에 호버될 때 */
 #loginBtn:hover {
-    background-color: rgba(255, 255, 255, 0.50);
+    background-color: rgba(199, 199, 199, 0.66);
 }
 
 /* 회원가입 버튼 */
@@ -121,7 +121,7 @@ h6 {
 
 /* 회원가입 버튼에 호버될 때 */
 #joinBtn:hover {
-    background-color: rgba(255, 255, 255, 0.50);
+    background-color: rgba(199, 199, 199, 0.66);
 }
 
 /* 입력창 */
@@ -146,16 +146,18 @@ h6 {
 
 /* 입력창에 호버될 때 배경색 조금 더 진하게 */
 .inputBox:hover{
-    background-color: rgba(255, 255, 255, 0.50);
+    background-color: rgba(232, 232, 232, 0.66);
 }
 
 /* 아이디 비밀번호 찾기 */
 #find {
+    margin-top: 30px;
     font-size: 15px;
     text-align: center;
 }
 #findById,#findByPw {
     cursor: pointer;
+    transition: background-color, color 0.3s;
 }
 
 /* 아이디, 비밀번호 찾기 버튼 */
@@ -172,12 +174,12 @@ h6 {
 
 /* 아이디 찾기 버튼에 호버될 때 */
 #findByIdBtn:hover {
-    background-color: rgba(255, 255, 255, 0.50);
+    background-color: rgba(199, 199, 199, 0.66);
 }
 
 /* 비밀번호 찾기 버튼에 호버될 때 */
 #findByPwBtn:hover {
-    background-color: rgba(255, 255, 255, 0.50);
+    background-color: rgba(199, 199, 199, 0.66);
 }
 
 /* 비밀번호 재설정 버튼 */
@@ -197,7 +199,7 @@ h6 {
 
 /* 비밀번호 재성정 버튼에 호버될 때 */
 #pwChangeBtn:hover {
-    background-color: rgba(255, 255, 255, 0.50);
+    background-color: rgba(199, 199, 199, 0.66);
 }
 
 /* 닫기 버튼 */
@@ -241,13 +243,13 @@ h6 {
 
 /* 입력창에 호버될 때 배경색 조금 더 진하게 */
 .inputBox1:hover {
-    background-color: rgba(255, 255, 255, 0.66);
+    background-color: rgba(232, 232, 232, 0.66);
 }
 
 /* 입력창에 포커스 될 때 파란색 테두리 */
 .inputBox-focus {
     border: #1717bd 2px solid;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(232, 232, 232, 0.66);
 }
 
 /* 유효성 검사 결과 실패일 때 빨간색 테두리 */
@@ -307,3 +309,15 @@ h5 {
     color: white;
 }
 
+#findById:hover {
+    padding: 6px;
+    border-radius: 12px;
+    background-color: #4A4D50FF;
+    color: white;
+}
+#findByPw:hover {
+    padding: 6px;
+    border-radius: 12px;
+    background-color: #4A4D50FF;
+    color: white;
+}

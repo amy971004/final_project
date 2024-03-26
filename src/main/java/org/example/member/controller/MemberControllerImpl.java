@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -79,8 +77,6 @@ public class MemberControllerImpl implements MemberController{
         Files.write(path, file.getBytes());
         member.setProfileImg(fileName);
 
-
-        // 회원 정보 및 이미지 경로 데이터베이스에 저장
         int result = service.addMember(member);
 
         // 처리 후 리다이렉트 또는 뷰 반환
@@ -172,6 +168,14 @@ public class MemberControllerImpl implements MemberController{
         }
         // 홈 페이지로 리다이렉트
         return new ModelAndView("redirect:/");
+    }
+
+    // 인증메일 전송
+    @Override
+    @ResponseBody
+    @RequestMapping("/emailSend.do")
+    public String sendMail(String userEmail, String userName) throws Exception {
+        return service.sendMail(userEmail, userName);
     }
 
 }

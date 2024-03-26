@@ -13,7 +13,7 @@
     <div id="joinB">
         <!-- 닫기 버튼 -->
         <button class="close" onclick="location.href='http://localhost:8081'">X</button>
-        <form action="/profile/updateProfile.do" method="post">
+        <form action="main/profile/updateProfile.do" method="post">
             <div id="joinS">
                 <!-- 회원가입 폼 -->
                 <!-- 아이디 -->

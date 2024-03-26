@@ -15,6 +15,7 @@
         <result property="profileImg" column="PROFILEIMG" />
         <result property="introduction" column="INTRODUCTION" />
         <result property="ROLE" column="USER_ROLE" />
+        <result property="mail_key" column="MAIL_KEY" />
     </resultMap>
 
     <!-- 회원 추가 -->
@@ -86,5 +87,18 @@
         DELETE FROM users WHERE USER_ID = #{userId}
     </delete>
 
+    <!-- 회원가입시 이메일 인증을 위한 랜덤번호 저장 -->
+    <update id="updateMailKey" parameterType="MemberDTO">
+        update USERS set MAIL_KEY=#{mail_key} where USER_EMAIL=#{userEmail} and USER_ID=#{userId}
+    </update>
+
+    <!--    메일 인증을 하면 mail_auth 컬럼을 기본값 0에서 1로 바꿔 로그인을 허용-->
+    <update id="updateMailAuth" parameterType="MemberDTO">
+        update USERS set MAIL_AUTH=1 where USER_EMAIL=#{userEmail} and MAIL_KEY=#{mail_key}
+    </update>
+
+    <select id="emailAuthFail" parameterType="String" resultType="int">
+        select count(*) from USERS where USER_ID=#{userId} and MAIL_AUTH=1
+    </select>
 
 </mapper>

@@ -5,6 +5,7 @@ import org.example.member.dto.MemberDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.xml.stream.events.Namespace;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -94,6 +95,21 @@ public class MemberDAOImpl implements MemberDAO{
         params.put("changePw", changePw);
         params.put("accountId", accountId);
         return sqlSession.update("mapper.member.changePw", params) > 0;
+    }
+
+    @Override
+    public int updateMailKey(MemberDTO memberDTO) throws Exception {
+        return sqlSession.update("mapper.member.updateMailKey", memberDTO);
+    }
+
+    @Override
+    public int updateMailAuth(MemberDTO memberDTO) throws Exception {
+        return sqlSession.update("mapper.member.updateMailAuth", memberDTO);
+    }
+
+    @Override
+    public int emailAuthFail(String userId) throws Exception {
+        return sqlSession.selectOne("mapper.member.updateAuthFail", userId);
     }
 
 }

@@ -1,0 +1,52 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+.logo {
+    display: flex; /* Flexbox 사용 */
+    position: fixed;
+    flex-direction: column; /* 항목을 세로로 정렬 */
+    align-items: center; /* 중앙 정렬 */
+    height: 100%; /* 전체 화면 높이 */
+    width: 80px; /* 사이드바 너비 */
+    background-color: #f0f0f0; /* 배경 색상 */
+    padding: 20px 0; /* 상단과 하단 여백 */
+    box-shadow: 2px 0px 5px rgba(0,0,0,0.1); /* 사이드바에 그림자 추가 */
+}
+
+.no-underline {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none; /* 링크 밑줄 제거 */
+    color: black; /* 아이콘 색상 */
+    padding: 50px 0; /* 아이콘 간 여백 */
+}
+
+.no-underline i {
+    position: fixed;
+    font-size: 20px;
+    transition: color, font-size 0.5s;
+}
+
+/* 로고 특별 처리 */
+.logo a:first-child {
+    padding-bottom: 40px; /* 로고와 다음 아이콘 사이의 여백 */
+
+}
+
+/* 로그아웃 버튼 특별 처리 */
+#logoutBtn {
+    margin-top: auto; /* 나머지 항목들과 분리하여 하단에 배치 */
+    padding: 20px 0; /* 상하 여백 */
+}
+
+.no-underline > i:hover {
+    cursor: pointer; /* 아이콘에 마우스 오버 시 커서 변경 */
+    font-size: 25px;
+    color: white;
+}
+
+#logoutBtn:hover {
+    color: red;
+}

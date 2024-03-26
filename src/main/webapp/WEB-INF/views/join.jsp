@@ -5,9 +5,15 @@
     <meta charset="UTF-8">
     <title>회원가입</title>
     <link href="../../resources/css/join.css" rel="stylesheet" type="text/css" />
+    <!-- jQuery 라이브러리 먼저 추가 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- 그 다음 jQuery UI 라이브러리 추가 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <!-- jQuery UI CSS 추가 -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <%-- 아이콘 js --%>
+    <script src="https://kit.fontawesome.com/56a665fb69.js" crossorigin="anonymous"></script>
 </head>
-<script src="https://kit.fontawesome.com/56a665fb69.js" crossorigin="anonymous"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <body>
 <div id="backgroundImg">
 
@@ -115,6 +121,16 @@
                     <div id="emailInputBox" class="inputBox">
                         <i class="fa-regular fa-envelope" style="padding-left: 13px"></i>
                         <input type="text" name="userEmail" id="emailInput" class="input" maxlength="25" placeholder="Email">
+                        <button type="button" id="sendMail" class="emailSuccess" style="display: none">인증</button>
+                        <div id="emailCheckBox" style="display: none">
+                            <div id="a1">
+                                <button type="button" id="close2" class="close">X</button>
+                                <div id="a2">
+                                    <input type="text" id="checkMail" placeholder="인증번호 입력">
+                                    <button type="button" id="checkMailBtn">OK</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <h5 id="emailInputText1" class="InputText">* 이메일을 입력해주세요.</h5>
                     <h5 id="emailInputText2" class="InputText">* 한글은 입력할 수 없습니다.</h5>

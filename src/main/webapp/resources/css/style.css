@@ -159,7 +159,9 @@ body{
 
 
 .contents{
-    max-width: 614px;
+    width: 1000px;
+    height: 1000px;
+    max-width: 1300px;
     border: 1px solid rgba(0,0,0,0.09);
     border-radius: 3px;
     margin-bottom: 60px;
@@ -228,6 +230,7 @@ body{
 .contents .img_section img{
     width: 100%;
 }
+
 
 
 .contents .bottom_icons{
@@ -514,7 +517,6 @@ body{
 
 
 }
-
 
 
 
