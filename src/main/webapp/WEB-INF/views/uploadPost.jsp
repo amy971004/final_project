@@ -24,40 +24,27 @@
                 let reader = new FileReader();
                 reader.onload = function (e){
                     let lastModified = input.files[i].lastModified;
-                    /*let img =$('<img id="preview_image"/>');
-                    $(img).attr('src',e.target.result);*/
-                    $('#preview_box').append('<div class="image_div" id="'+lastModified+'"><img id="preview_image" src="'+e.target.result+'" class="'+lastModified+'"/><p class="txt">삭제</p></div>');
+                    $('#preview_box').append('<div class="image_div" id="'+lastModified+'"><img id="preview_image" src="'+e.target.result+'"/><p id="txt" class="'+lastModified+'">삭제</p></div>');
                 }
                 reader.readAsDataURL(input.files[i]);
-                console.log(input.files[i].type);
-                console.log(input.files[i].lastModified)
             }
-            console.log(input);
-            console.log(input.files);
-            console.log(input.files.length);
         }
     }
     // 사진 클릭 시 해당 사진 삭제
-    $(document).on('click','img', function (e){
-        console.log(e,"클릭");
+    $(document).on('click','p', function (e){
         let input = $('.files')[0].files;
-        console.log(input);
 
         let dataTranster = new DataTransfer();
         let target = e.target;
         let removeId = $(target).attr("class");
-        console.log(removeId);
 
         for(let i=0; i < input.length; i++){
             let file = input[i];
-            console.log(file);
             if(file.lastModified != removeId){
                 dataTranster.items.add(file);
-                console.log(dataTranster.items);
             }
         }
         $('.files')[0].files = dataTranster.files;
-        console.log($('.files')[0].files = dataTranster.files);
         $('#'+removeId).remove();
 
     })
@@ -103,9 +90,6 @@
             <input type="file" class="files" id="file" name="file" onchange="readURL(this)" hidden multiple>
         </div>
         <div id="preview_box"></div>
-        <%--            <div id="back_page_box">
-                        <button id="back_page" type="button" onclick="page_back()"><i class="fa-solid fa-arrow-right-from-bracket"></i>뒤로가기</button>
-                    </div>--%>
         <button id="upload-btn" type="button" onclick="upload_check()"><i class="fa-solid fa-arrow-up-from-bracket"></i>업로드</button>
         <button id="cancel_btn" type="button" onclick="cancel()"><i class="fa-solid fa-xmark"></i>취소</button>
     </form>

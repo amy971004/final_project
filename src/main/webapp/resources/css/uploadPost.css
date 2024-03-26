@@ -37,23 +37,27 @@ button:hover{
  .image_div{
      float: left;
      margin: 5px 5px;
-     height: 95px;
+     height: 73px;
  }
  #preview_image {
      max-width: 100px;
      height: 70px;
+     margin: 3px;
  }
- .image_div:hover .txt{
-     opacity: 0.5;
-     text-align: center;
-     color: #000000;
+ .image_div:hover #txt{
+     opacity: 0.6;
+     display: block;
  }
- .txt{
+ #txt{
+     background-color: #000000;
      margin: 0;
- }
- #preview_image:hover .fa-x{
-    background-color: #6c757d; opacity: 5;
+     text-align: center;
+     position: relative;
+     bottom: 80px;
+     border: solid 1px #000000;
      color: #ffffff;
+     padding: 26px 0;
+     display: none;
  }
  #image_upload_box {
      margin-top: 10px;
