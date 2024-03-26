@@ -12,14 +12,14 @@
 <div id="backgroundImg">
     <div id="joinB">
         <!-- 닫기 버튼 -->
-        <button class="close" onclick="location.href='http://localhost:8081'">X</button>
-        <form action="/profile/updateProfile.do" method="post">
+        <button class="close" onclick="location.href='http://localhost:8081/main/profile/profileView.do'">X</button>
+        <form action="/main/profile/updateProfile.do" method="post">
             <div id="joinS">
                 <!-- 회원가입 폼 -->
                 <!-- 아이디 -->
                 <p><h6>아이디</h6>
                 <div id="idInputBox" class="inputBox">
-                    <input type="text" name="userId" id="idInput" class="input" maxlength="14" placeholder="${modprofile.userId}" autofocus>
+                    <input type="text" name="userId" id="idInput" class="input" maxlength="14" value="${modprofile.userId}" autofocus>
                 </div>
                 <h5 id="idInputText1" class="InputText">* 아이디를 입력해주세요.</h5>
                 <h5 id="idInputText2" class="InputText">* 아이디는 5~14자리로 입력해주세요.</h5>
@@ -47,7 +47,7 @@
                 <!-- 닉네임 -->
                 <p><h6>닉네임</h6>
                 <div id="nicknameInputBox" class="inputBox">
-                    <input type="text" name="userNickname" id="nicknameInput" class="input" maxlength="10" placeholder="${modprofile.userNickname}">
+                    <input type="text" name="userNickname" id="nicknameInput" class="input" maxlength="10" value="${modprofile.userNickname}">
                 </div>
                 <h5 id="nicknameInputText1" class="InputText">* 닉네임을 입력해주세요.</h5>
                 <h5 id="nicknameInputText2" class="InputText">* 닉네임은 2~10자리로 입력해주세요.</h5>
@@ -58,7 +58,7 @@
                 <!-- 이름 -->
                 <p><h6>이름</h6>
                 <div id="nameInputBox" class="inputBox">
-                    <input type="text" name="userName" id="nameInput" class="input" maxlength="5" placeholder="${modprofile.userName}">
+                    <input type="text" name="userName" id="nameInput" class="input" maxlength="5" value="${modprofile.userName}">
                 </div>
                 <h5 id="nameInputText1" class="InputText">* 이름을 입력해주세요.</h5>
                 <h5 id="nameInputText2" class="InputText">* 한글만 입력해주세요.</h5>
@@ -67,7 +67,7 @@
                 <!-- 이메일 -->
                 <p><h6>이메일</h6>
                 <div id="emailInputBox" class="inputBox">
-                    <input type="text" name="email" id="emailInput" class="input" maxlength="25" placeholder="${modprofile.email}">
+                    <input type="text" name="email" id="emailInput" class="input" maxlength="25" value="${modprofile.email}">
                 </div>
                 <h5 id="emailInputText1" class="InputText">* 이메일을 입력해주세요.</h5>
                 <h5 id="emailInputText2" class="InputText">* 한글은 입력할 수 없습니다.</h5>
@@ -76,7 +76,7 @@
                 <!-- 생년월일 -->
                 <p><h6>생년월일</h6>
                 <div id="birthdayInputBox" class="inputBox">
-                    <input type="text" name="birthday" id="birthdayInput" class="input" maxlength="8" placeholder="${modprofile.birthday}">
+                    <input type="text" name="birthday" id="birthdayInput" class="input" maxlength="8" value="${modprofile.birthday}">
                 </div>
                 <h5 id="birthdayInputText1" class="InputText">* 생년월일을 입력해주세요.</h5>
                 <h5 id="birthdayInputText2" class="InputText">* 숫자 외에는 입력할 수 없습니다.</h5>
@@ -85,7 +85,7 @@
                 <!-- 핸드폰 번호 -->
                 <p><h6>핸드폰 번호</h6>
                 <div id="phoneNumberInputBox" class="inputBox">
-                    <input type="text" name="phoneNumber" id="phoneNumberInput" class="input" maxlength="11" placeholder="${modprofile.phoneNumber}">
+                    <input type="text" name="phoneNumber" id="phoneNumberInput" class="input" maxlength="11" value="${modprofile.phoneNumber}">
                 </div>
                 <h5 id="phoneNumberInputText1" class="InputText">* 핸드폰번호를 입력해주세요.</h5>
                 <h5 id="phoneNumberInputText2" class="InputText">* 숫자 외에는 입력할 수 없습니다.</h5>

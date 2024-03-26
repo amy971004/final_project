@@ -63,6 +63,12 @@ dependencies {
     // 멀티파트
     implementation ("commons-fileupload:commons-fileupload:1.4")
 
+    // jackson
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.0")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.17.0")
+
+
+
 
 // 주석 처리된 의존성은 프로젝트 요구에 따라 해제하여 사용
 // Thymeleaf 템플릿 엔진

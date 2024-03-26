@@ -1,14 +1,10 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false"%>
 <html lang="en" xmlns:c="http://www.w3.org/1999/XSL/Transform" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <link href="../../resources/css/profile.css" rel="stylesheet" type="text/css" />
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%
-    response.setHeader("Pragma","no-cache");
-    response.setDateHeader("Expires",0);
-    response.setHeader("Cache-Control", "no-cache");
-%>
 <c:set var="contextPath" value="${pageContext.request.contextPath }" />
+<%@ include file="header.jsp"%>
 <body>
+
 <!--프로필 섹션-->
 <header>
 
@@ -22,7 +18,7 @@
                         <img src="/resources/img/profile/defaultProfile.png" alt=""/>
                     </c:when>
                     <c:otherwise>
-                        <img src="${contextPath}/profile/download.do?imageFileName=${profile.profileImg}&userId=${profile.userId}"  alt=""/>
+                        <img src="${contextPath}/main/profile/download.do?imageFileName=${profile.profileImg}&userId=${profile.userId}"  alt=""/>
                     </c:otherwise>
                 </c:choose>
 
@@ -32,8 +28,8 @@
 
                 <h1 class="profile-user-name">${profile.userId} / ${profile.userNickname}</h1>
 
-                <button class="btn profile-edit-btn" onclick="location.href='http://localhost:8081/profile/modprofile.do?id=${profile.userId}'">Edit Profile</button>
-                <button class="btn profile-settings-btn" onclick="location.href='http://localhost:8081/profile/editImg.do'">Edit Image</button>
+                <button class="btn profile-edit-btn" onclick="location.href='http://localhost:8081/main/profile/modprofile.do?id=${profile.userId}'">Edit Profile</button>
+                <button class="btn profile-settings-btn" onclick="location.href='http://localhost:8081/main/profile/editImg.do'">Edit Image</button>
 
             </div>
 

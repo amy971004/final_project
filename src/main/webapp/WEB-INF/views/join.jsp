@@ -1,4 +1,9 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="image" value="${image}"/>
+<c:set var="nickname" value="${nickname}"/>
+<c:set var="contextPath" value="${pageContext.request.contextPath }" />
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -9,6 +14,7 @@
 <script src="https://kit.fontawesome.com/56a665fb69.js" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <body>
+
 <div id="backgroundImg">
 
     <%-- 회원가입 프로필 이미지 미리보기 --%>
@@ -41,10 +47,21 @@
         <button class="close" onclick="location.href='http://localhost:8081'">X</button>
         <div id="joinS">
             <!-- 회원가입 폼 -->
-            <form action="addMember.do" method="post" enctype="multipart/form-data">
+            <form action="${contextPath}/member/addMember.do" method="post" enctype="multipart/form-data">
                 <i id="profileIcon" class="fa-sharp fa-solid fa-circle-user fa-10x" ></i>
                 <!-- 이미지 미리보기를 위한 img 태그 추가 -->
-                <img id="profile" src="#" alt="Image Preview">
+                <c:choose>
+                    <%-- 카카오톡으로 로그인을 했을 시 image의 값이 있음
+                        -> 바로 preview가 뜨고 파라미터 값으로 받을 수 있도록 설정
+                    --%>
+                    <c:when test="${image != null}">
+                        <input type="text" name="kakaoImg" value="${image}" style="display: none">
+                        <img id="profile" src="${image}" alt="Image Preview" style="display: block">
+                    </c:when>
+                    <c:otherwise>
+                        <img id="profile" src="#" alt="Image Preview">
+                    </c:otherwise>
+                </c:choose>
                 <input id="imgUpload" type="file" name="file" onchange="previewFile()">
                 <p><h5 id="profile1">프로필 소개</h5>
                 <div id="output"></div>
@@ -90,7 +107,15 @@
                     <p><h6>닉네임</h6>
                     <div id="nicknameInputBox" class="inputBox">
                         <i class="fa-regular fa-id-card" style="padding-left: 12px"></i>
-                        <input type="text" name="userNickname" id="nicknameInput" class="input" maxlength="10" placeholder="NickName">
+                        <c:choose>
+                            <%--카카오톡에서 받은 닉네임으로 닉네임 값을 설정--%>
+                            <c:when test="${nickname != null}">
+                                <input type="text" name="userNickname" id="nicknameInput" class="input" maxlength="10" value=${nickname}>
+                            </c:when>
+                            <c:otherwise>
+                                <input type="text" name="userNickname" id="nicknameInput" class="input" maxlength="10" placeholder="NickName">
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                     <h5 id="nicknameInputText1" class="InputText">* 닉네임을 입력해주세요.</h5>
                     <h5 id="nicknameInputText2" class="InputText">* 닉네임은 2~10자리로 입력해주세요.</h5>

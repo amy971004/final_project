@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -33,7 +35,7 @@ public class ProfileControllerImpl implements ProfileController{
 
     // 프로필 정보 띄우기
     @Override
-    @RequestMapping("/profile/profileView.do")
+    @RequestMapping("/main/profile/profileView.do")
     public ModelAndView profileView(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
         response.setHeader("Pragma", "no-cache"); // HTTP 1.0
@@ -47,7 +49,7 @@ public class ProfileControllerImpl implements ProfileController{
 
     // 프로필 정보 변경 페이지
     @Override
-    @RequestMapping("/profile/modprofile.do")
+    @RequestMapping("/main/profile/modprofile.do")
     public ModelAndView modprofile( HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
         ProfileDTO dto = new ProfileDTO();
@@ -60,7 +62,7 @@ public class ProfileControllerImpl implements ProfileController{
 
     // 아이디 중복 확인
     @Override
-    @RequestMapping("/profile/checkId.do")
+    @RequestMapping("/main/profile/checkId.do")
     @ResponseBody
     public String checkId(String userId, HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -71,7 +73,7 @@ public class ProfileControllerImpl implements ProfileController{
 
     // 닉네임 중복 확인
     @Override
-    @RequestMapping("/profile/checkNickname.do")
+    @RequestMapping("/main/profile/checkNickname.do")
     @ResponseBody
     public String checkNickname(String nickname, HttpServletRequest request) throws Exception {
         HttpSession session = request.getSession();
@@ -82,19 +84,19 @@ public class ProfileControllerImpl implements ProfileController{
 
     // 프로필 정보 수정
     @Override
-    @RequestMapping("/profile/updateProfile.do")
+    @RequestMapping("/main/profile/updateProfile.do")
     public ModelAndView updateProfile(ProfileDTO dto, HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
         dto.setAccountId((String) session.getAttribute("accountID"));
         String hashedPw = BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt());
         dto.setPassword(hashedPw);
         int result = service.updateProfile(dto);
-        return  new ModelAndView("redirect:/profile/profileView.do");
+        return  new ModelAndView("redirect:/main/profile/profileView.do");
 
     }
 
     // 이미지,소개 수정 페이지
-    @RequestMapping("/profile/editImg.do")
+    @RequestMapping("/main/profile/editImg.do")
     @Override
     public ModelAndView editImg(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String userId = request.getParameter("id");
@@ -106,13 +108,13 @@ public class ProfileControllerImpl implements ProfileController{
 
     // 프로필 이미지와 소개 변경
     @Override
-    @PostMapping("/profile/upload.do")
+    @PostMapping("/main/profile/upload.do")
     public ModelAndView upload(String content, MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
         String accountId = (String) session.getAttribute("accountID");
         String userId = service.profileView(accountId).getUserId();
         String fileName = "";
-        ModelAndView mav = new ModelAndView("redirect:/profile/profileView.do");
+        ModelAndView mav = new ModelAndView("redirect:/main/profile/profileView.do");
 
         try {
             // editImg.jsp 에서 선택된 파일이 있다면 메서드 실행
@@ -143,7 +145,7 @@ public class ProfileControllerImpl implements ProfileController{
         String fileName = "";
         String originalFilename = file.getOriginalFilename();
         String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
-        String UPLOAD_DIR = "E:\\profile\\" + userId + "\\";
+        String UPLOAD_DIR = "c:\\profile\\" + userId + "\\";
         Path directory = Paths.get(UPLOAD_DIR);
         // 경로에 사용자의 accountId로 하는 디렉터리가 없다면 디렉터리 생성
         if (!Files.exists(directory)) {
@@ -160,7 +162,7 @@ public class ProfileControllerImpl implements ProfileController{
 
 
     @Override
-    @RequestMapping("/profile/download.do")
+    @RequestMapping("/main/profile/download.do")
     public void download(String imageFileName,
                          String userId,
                          HttpServletResponse response,
@@ -171,7 +173,16 @@ public class ProfileControllerImpl implements ProfileController{
 
         response.setHeader("Cache-Control", "no-cache");
         response.addHeader("Content-disposition", "attachment;fileName="+imageFileName);
-        FileInputStream in = new FileInputStream(file);
+
+        BufferedImage originalImage = ImageIO.read(file);
+
+        // 이미지 리사이징
+        BufferedImage resizedImage = resizeImage(originalImage);
+
+        ImageIO.write(resizedImage, "jpeg", out);
+
+        out.close();
+        /*FileInputStream in = new FileInputStream(file);
         byte[] buffer = new byte[1024 * 8];
         while(true) {
             int count = in.read(buffer);
@@ -181,8 +192,17 @@ public class ProfileControllerImpl implements ProfileController{
             out.write(buffer, 0, count);
         }
         in.close();
-        out.close();
+        out.close();*/
     }
+
+    private BufferedImage resizeImage(BufferedImage originalImage) {
+        BufferedImage resizedImage = new BufferedImage(179, 179, BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics2D = resizedImage.createGraphics();
+        graphics2D.drawImage(originalImage, 0, 0, 179, 179, null);
+        graphics2D.dispose();
+        return resizedImage;
+    }
+
 }
 
 

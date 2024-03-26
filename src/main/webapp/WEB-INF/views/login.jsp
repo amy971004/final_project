@@ -114,7 +114,12 @@
             </form>
         </div>
         <input type="button" value="Go" id="pwChangeBtn" class="btn1" disabled>
+
     </div>
+
+    <%-- 카카오톡 로그인 api --%>
+    <img src="../../resources/img/kakao_login_medium_narrow.png" alt=""
+         onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=52a452682eb9c6ca55aa5147006d7da1&redirect_uri=http://localhost:8081/app/login/kakao&response_type=code'">
 
     <%-- 비회원 오류창 --%>
     <div id="loginWarningDialog" title="알림" style="display:none;">
