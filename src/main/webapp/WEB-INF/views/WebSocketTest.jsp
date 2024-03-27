@@ -3,7 +3,15 @@
 <head>
     <title>WebSocket Test</title>
     <script type="text/javascript">
-        var socket;
+
+        let socket;
+
+        // 페이지를 옮기거나 브라우저가 닫히면 웹소켓 연결 끊기
+        window.onunload = window.onbeforeunload = function() {
+            if (socket) {
+                socket.close();
+            }
+        };
 
         // 웹소켓 연결 열기
         function openSocket() {
@@ -43,14 +51,14 @@
                 console.log("버튼 누름 연결안되어있음")
                 return;
             }
-            var text = document.getElementById("messageInput").value;
+            let text = document.getElementById("messageInput").value;
             console.log("버튼 누름 정상작동")
             socket.send(text);
         }
 
         // 메시지 출력
         function writeResponse(text) {
-            var messages = document.getElementById("messages");
+            let messages = document.getElementById("messages");
             messages.innerHTML += "<br/>" + text;
         }
     </script>

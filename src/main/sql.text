@@ -31,9 +31,11 @@ CREATE TABLE room (
 );
 
 채팅방 참여자 테이블
-CREATE TABLE room_participants (
+CREATE TABLE participants (
     room_id VARCHAR2(32) NOT NULL,
     account_id VARCHAR2(32) NOT NULL,
+    user_id VARCHAR2(50) NOT NULL,
+    user_name VARCHAR2(50) NOT NULL,
     joined_at DATE DEFAULT SYSDATE NOT NULL,
     PRIMARY KEY (room_id, account_id),
     FOREIGN KEY (room_id) REFERENCES room(room_id),

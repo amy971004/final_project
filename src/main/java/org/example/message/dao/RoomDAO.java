@@ -18,5 +18,5 @@ public interface RoomDAO {
     List<RoomDTO> findAllRoomsByAccountId(String senderAccountId);
 
     // 채팅 창여자 목록 테이플에 추가
-    void addParticipant(String roomId, String accountId);
+    void addParticipant(String roomId, String accountId, String userId, String userName);
 }

@@ -34,8 +34,8 @@
 
     <!-- 채팅방 참여자 추가 -->
     <insert id="addParticipant" parameterType="map" useGeneratedKeys="true" keyProperty="roomId">
-        INSERT INTO PARTICIPANTS (ROOM_ID, ACCOUNT_ID, JOINED_AT)
-        VALUES (#{roomId}, #{accountId}, CURRENT_TIMESTAMP)
+        INSERT INTO PARTICIPANTS (ROOM_ID, ACCOUNT_ID, USER_ID, USER_NAME, JOINED_AT)
+        VALUES (#{roomId}, #{accountId}, #{userId}, #{userName}, CURRENT_TIMESTAMP)
     </insert>
 
     <!-- 발신자 accountId로 참여하고 있는 모든 채팅방 조회 -->

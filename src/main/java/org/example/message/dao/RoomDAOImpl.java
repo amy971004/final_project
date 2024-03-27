@@ -39,11 +39,13 @@ public class RoomDAOImpl implements RoomDAO {
 
     // 채팅방 참여자 추가
     @Override
-    public void addParticipant(String roomId, String accountId) {
+    public void addParticipant(String roomId, String accountId, String userId, String userName) {
         // 2개 이상의 파라미터를 넘기기 위해 해시맵 사용
         Map<String, Object> params = new HashMap<>();
         params.put("roomId", roomId);
         params.put("accountId", accountId);
+        params.put("userId", userId);
+        params.put("userName", userName);
         sqlSession.insert("mapper.room.addParticipant", params);
     }
 

@@ -31,7 +31,7 @@ public class RoomServiceImpl implements RoomService {
     // 수신자, 발신자의 accountId로 채팅방이 이미 있는 지 확인하고 있으면 해당 채팅방 반환, 없으면 새로 생성
     @Override
     @Transactional
-    public RoomDTO findOrCreateChatRoom(String senderAccountId, String receiverAccountId) {
+    public RoomDTO findOrCreateChatRoom(String senderAccountId, String receiverAccountId, String senderName,String receiverName) {
 
         // 두사람만의 채팅방 찾기
         // UUID 를 알파벳 순으로 정렬
@@ -51,16 +51,11 @@ public class RoomServiceImpl implements RoomService {
         // 이 예제에서는 간단하게 senderId와 receiverId만 사용하지만,
         // 실제 애플리케이션에서는 보다 복잡한 로직이 필요할 수 있습니다.
 
-        // accountId로 회원정보를 담은 DTO 객체 저장
-        MemberDTO sendUser = memberDAO.findMemberByAccountId(senderAccountId);
-        MemberDTO receiverUer = memberDAO.findMemberByAccountId(receiverAccountId);
-
-
         // 두번째 단계: 존재하지 않는다면, 새로운 채팅방을 생성합니다.
         RoomDTO newRoom = new RoomDTO();
 
         // roomName, roomMetaName 설정
-        newRoom.setRoomName("'" + sendUser.getUserName() + "'님과 '" + receiverUer.getUserName() + "'님의 채팅방");
+        newRoom.setRoomName("'" + senderName + "'님과 '" + receiverName + "'님의 채팅방");
         newRoom.setRoomMetaName(roomMetaName);
 
         // DB에 채팅방 정보 저장
