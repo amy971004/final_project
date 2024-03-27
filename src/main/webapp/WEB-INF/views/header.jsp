@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%--<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>--%>
 
 <html>
 <head>
@@ -17,7 +17,7 @@
 <div class="logo">
     <a href="#" class="no-underline" style="padding-top: 20px;font-size: 25px">L</a>
     <!-- 홈 -->
-    <a class="no-underline"><i onclick="location.href='http://localhost:8081/main'" class="fa-solid fa-house"></i></a>
+    <a class="no-underline"><i onclick="location.href='http://localhost:8081/main/post/mainPost.do'" class="fa-solid fa-house"></i></a>
     <!-- 검색 -->
     <a href="#" class="no-underline"><i class="fa-solid fa-magnifying-glass "></i></a>
     <!-- 알림 -->

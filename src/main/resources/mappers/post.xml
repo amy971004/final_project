@@ -110,4 +110,65 @@
         insert into SNS_LIKE values (#{newLikeId},#{postId},#{loginNickname},sysdate)
         ]]>
     </insert>
+
+    <!-- SNS_BOOKMARK 테이블 식별자번호 가져오기 -->
+    <select id="selectNewBookmarkId" parameterType="int" resultType="int">
+        <![CDATA[
+        select nvl(max(bookmarkid),0) from SNS_BOOKMARK
+        ]]>
+    </select>
+
+    <!-- 북마크 취소 -->
+    <delete id="deletBook" parameterType="java.util.Map">
+        <![CDATA[
+        delete from SNS_BOOKMARK where USER_NICKNAME=#{loginNickname} and POSTID=#{postId}
+        ]]>
+    </delete>
+
+    <!-- 북마크 저장 -->
+    <insert id="pushBook" parameterType="java.util.Map">
+        <![CDATA[
+        insert into SNS_BOOKMARK values (#{newBookmarkId},#{loginNickname},#{postId},sysdate)
+        ]]>
+    </insert>
+
+    <!-- 로그인된 계정의 닉네임 가져오기 -->
+    <select id="selectLoginNickname" parameterType="String" resultType="String">
+        <![CDATA[
+        select USER_NICKNAME from USERS where ACCOUNT_ID=#{accountId}
+        ]]>
+    </select>
+
+    <!-- COMMENTID 가져오기 -->
+    <select id="getCommentId" parameterType="int" resultType="int">
+        <![CDATA[
+        select nvl(max(commentid),0) from SNS_COMMENT
+        ]]>
+    </select>
+
+    <!-- 댓글 저장하기 -->
+    <insert id="inputComment" parameterType="java.util.Map">
+        <![CDATA[
+        insert into SNS_COMMENT values (#{commentId},#{parentNo},#{postId},#{loginNickname},#{postComment},sysdate)
+        ]]>
+    </insert>
+
+    <!--이미지 전체리스트 가져오기 -->
+    <select id="getImageList" resultType="org.example.post.dto.ImageDTO">
+        <![CDATA[
+        select * from SNS_IMAGE
+        ]]>
+    </select>
+
+    <!--게시물 삭제-->
+    <delete id="deletePost" parameterType="int">
+        <![CDATA[
+        delete from SNS_POST where POSTID=#{postId}
+        ]]>
+    </delete>
+
+    <!-- 프로필 이미지 가져오기 -->
+    <select id="getProfileImg" parameterType="String" resultType="String">
+        select PROFILEIMG from USERS where USER_NICKNAME=#{userNickname}
+    </select>
 </mapper>

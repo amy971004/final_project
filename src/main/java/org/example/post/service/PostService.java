@@ -1,6 +1,7 @@
 package org.example.post.service;
 
 import org.example.post.dto.CommentDTO;
+import org.example.post.dto.ImageDTO;
 import org.example.post.dto.PostDTO;
 
 import java.util.List;
@@ -32,6 +33,21 @@ public interface PostService {
 
     int pushLike(int postId, String loginNickname);
 
+    String loginNickname(String accountId);
 
+    int deletBook(int postId, String loginNickname);
 
+    int pushBook(int postId, String loginNickname);
+
+    // 댓글 저장
+    void inputComment(Map<String,Object> comment);
+
+    // 이미지 전체정보 가져오기
+    List<ImageDTO> getImageList();
+
+    // 게시물 삭제
+    void deletePost(int postId);
+
+    // 유저 프로필 이미지 가져오기
+    String getProfileImg(String userNickname);
 }

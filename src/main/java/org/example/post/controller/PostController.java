@@ -2,7 +2,7 @@ package org.example.post.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.post.dto.LikePushDTO;
+import org.example.post.dto.PushDTO;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -15,5 +15,5 @@ public interface PostController {
     // 설지연 --------------------------------------
     ModelAndView post(HttpServletRequest request, HttpServletResponse response) throws Exception;
 
-    String heartPush(LikePushDTO likePushDTO);
+    String heartPush(PushDTO likePushDTO);
 }

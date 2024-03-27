@@ -85,13 +85,59 @@ public class PostServiceImpl implements PostService {
         return dao.likeCnt(contentNo);
     }
 
+    // 좋아요 취소
     @Override
     public int deletLike(int postId, String loginNickname) {
         return dao.deletLike(postId, loginNickname);
     }
 
+    //좋아요 저장
     @Override
     public int pushLike(int postId, String loginNickname) {
         return dao.pushLike(postId, loginNickname);
+    }
+
+    // 로그인된 계정의 닉네임 가져오는 메서드
+    @Override
+    public String loginNickname(String accountId) {
+        return dao.loginNickname(accountId);
+    }
+
+    // 북마크 취소버튼
+    @Override
+    public int deletBook(int postId, String loginNickname) {
+        return dao.deleBook(postId, loginNickname);
+    }
+
+    // 북마크 저장버튼
+    @Override
+    public int pushBook(int postId, String loginNickname) {
+        return dao.pushBook(postId, loginNickname);
+    }
+
+    // 댓글 저장
+    @Override
+    public void inputComment(Map<String,Object> comment) {
+        // 댓글 식별자 번혹 가져오기
+        int commentId = dao.getCommentId();
+        comment.put("commentId",commentId+1);
+        dao.inputComment(comment);
+    }
+
+    // 이미지 리스트 가져오기
+    @Override
+    public List<ImageDTO> getImageList() {
+        return dao.getImageList();
+    }
+
+    // 게시물 삭제
+    @Override
+    public void deletePost(int postId) {
+        dao.deletePost(postId);
+    }
+
+    @Override
+    public String getProfileImg(String userNickname) {
+        return dao.getProfileImg(userNickname);
     }
 }

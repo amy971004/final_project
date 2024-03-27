@@ -3,95 +3,11 @@
 body {
     background: #fafafa;
 }
-main {
+.post {
     display: flex;
     justify-content: center;
     padding: 40px 0 10px 0;
 }
-
-/* header */
-/*header {
-    position: fixed;
-    display: flex;
-    width: 100%;
-    justify-content: space-around;
-    background-color: white;
-    padding: 15px 0 15px 0;
-    border-bottom: 1px solid #e1e1e1;
-}*/
-/*h1 {
-    font-family: "Lobster", cursive;
-    font-size: 28px;
-}*/
-/*.bar-search {
-    position: relative;
-}*/
-/*.bar-search input {
-    width: 260px;
-    padding: 8px 16px 8px 40px;
-    background-color: #efefef;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: lighter;
-}*/
-/*.bar-search input:focus {
-    outline: none;
-}*/
-/*.img-explore {
-    position: absolute;
-    top: 9px;
-    left: 16px;
-    width: 15px;
-}*/
-/*.list-nav {
-    display: flex;
-}*/
-/*.list-nav li img {
-    width: 25px;
-    height: 24px;
-    margin: 5px 23px 0 0;
-}
-.img-navProfile {
-    border-radius: 100%;
-}*/
-
-/* story */
-/*.box-story {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    width: 470px;
-    height: 120px;
-    border: 1px solid #e1e1e1;
-    border-radius: 10px;
-    background-color: white;
-    padding: 16px;
-    margin: 20px 0 20px 0;
-}
-.img-profile-56px {
-    width: 56px;
-    border-radius: 100%;
-    margin: 0 20px 5px 0;
-}
-.name-story {
-    font-size: 12px;
-    padding: 0 0 0 4px;
-}*/
-/*.img-story {
-    border: 3px solid transparent;
-    background-image: linear-gradient(#fff, #fff),
-    linear-gradient(
-            to right,
-            rgb(186, 22, 201) 0%,
-            rgb(255, 47, 0) 25%,
-            rgb(255, 68, 0) 50%,
-            rgb(252, 180, 47) 90%,
-            rgb(234, 223, 107) 100%
-    );
-    background-origin: border-box;
-    background-clip: content-box, border-box;
-}*/
 
 /* feed */
 .box-feed {
@@ -117,10 +33,13 @@ main {
     border: 1px solid #efefef;
 }
 .icon-more {
-/*    width: 20px;
-    height: 20px;*/
+    /*    width: 20px;
+        height: 20px;*/
     margin: 0 20px 0 0;
     font-size: 1.5rem;
+    &:hover{
+        color:#d5dee8;
+    }
 }
 .userName-feed {
     font-size: 14px;
@@ -132,7 +51,9 @@ main {
     margin: 0 0 0 10px;
 }
 .img-feed {
+    display: flex;
     width: 470px;
+    align-items: center;
 }
 .icon-feed {
     display: flex;
@@ -185,9 +106,15 @@ main {
 .comment {
     display: flex;
     margin: 0 15px 5px 15px;
+    word-break: break-all;
 }
 .post-comment {
     word-break:break-all;
+}
+.reply_comment {
+    font-size: 8px;
+    color: #A9A9A9;
+    margin: 0 0 0 15px;
 }
 /*좋아요 갯수*/
 .text-like {
@@ -250,234 +177,83 @@ form {
     cursor: pointer;
 }
 
-/* 오른쪽 */
-/*.box-aside {
-    margin: 40px 0 0 40px;
-}
-.img-profile-32px {
-    width: 32px;
-    border-radius: 100%;
-    border: 1px solid #efefef;
-}
-.box-myProfile {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 320px;
-    margin: 0 0 20px 0;
-}
-.box-myProfile div {
-    display: flex;
-    align-items: center;
-}
-.box-myProfile p {
-    color: #262626;
-    font-weight: bold;
-    font-size: 14px;
+.show_all_comment {
+    margin: 0 15px 10px 15px;
+    font-size: 13px;
+    color:#828282;
+    cursor: pointer;
 }
 
-.box-recommend {
-    width: 320px;
-    margin: 0 0 30px 0;
-}
-.box-recommend h2 {
-    color: #828282;
-    font-weight: bold;
-    font-size: 14px;
-}
-.head-recommend {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 0 0 15px 0;
+
+
+/*댓글 상자*/
+.comment_box {
+    display:none;
 }
 
-.btn-recommend-all {
-    background-color: transparent;
-    border: none;
-    color: #262626;
-    font-weight: bold;
-    font-size: 12px;
-}
-.box-recommend-profile {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 0 0 15px 0;
-}
-.profile-recommend {
-    display: flex;
-    justify-content: flex-start;
-}
 
-.btn-blue {
-    background-color: transparent;
-    border: none;
-    color: rgb(0, 149, 246);
-    font-weight: bold;
-    font-size: 12px;
-}
-.userName-recommend {
-    font-size: 14px;
-    color: #262626;
-    font-weight: bold;
-    margin: 0 0 4px 10px;
-}
-.follower-recommend {
-    font-size: 12px;
-    color: #8e8e8e;
-    margin: 0 0 0 10px;
-}
-
-!* footer *!
-.footer {
-    width: 320px;
-    line-height: 18px;
-    font-size: 12px;
-    color: #c7c7c7;
-}
-.footer-info {
-    margin: 0 0 20px 0;
-}
-
-!* id검색 상자 *!
-.box-filteredId {
+/* ------ 메뉴창 ------ */
+.wrap-menu{
     display: none;
     position: absolute;
-    top: 50px;
-    left: -50px;
-    width: 375px;
-    height: 375px;
+    text-align: center;
+    margin-left: 475px;
+    margin-top:45px;
     background-color: white;
     border-radius: 6px;
-    border: 1px solid #e1e1e1;
-    overflow: scroll;
-    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.25);
-    padding: 10px;
+    border:1px solid #e1e1e1;
+    box-shadow: 3px 3px 3px rgb(0,0,0,0.25);
+    padding: 5px;
 }
-.box-recentSearch {
-    position: relative;
-}
-.title-recentSearch {
-    position: absolute;
-    color: #262626;
-    font-weight: bold;
-    font-size: 16px;
-    top: 10px;
-    left: 5px;
-    margin: 10px 15px;
-}
-.content-recentSearch {
-    position: absolute;
-    color: #8e8e8e;
-    font-size: 14px;
-    font-weight: bold;
-    top: 180px;
-    left: 110px;
-}*/
-/* .box-filteredId-deco {
-  display: inline-block;
-  width: 0;
-  height: 0;
-  border-top: 25px solid transparent;
-  border-right: 30px solid transparent;
-  border-bottom: 25px solid red;
-  border-left: 30px solid transparent;
-} */
-/*
-.filteredId {
-    !* display: inline-block; *!
-    font-size: 14px;
-    font-weight: bold;
-    padding: 0 0 7px 0;
-}
-.filteredImg {
-    display: inline-block;
-    margin: 10px;
-    width: 44px;
-    height: 44px;
-    border-radius: 100%;
-}
-.wrapFiltered {
+.modify-menu,
+.delete-menu {
+    align-content: center;
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    &:hover{
+        color: #d5dee8;
+    }
 }
-.wrapText {
-    display: flex;
-    flex-direction: column;
+.modify-img,
+.delete-img {
+    margin: 18.5px 20px;
 }
-.filteredName {
-    font-size: 14px;
-    color: #8e8e8e;
+.modify-word,
+.delete-word {
+    margin: 16px 20px 16px 0;
 }
 
-!* 프로필 메뉴 *!
-.list-profile {
-    position: relative;
-}
-.wrap-menu {
+/* ---  모달창  ----*/
+.modal {
     display: none;
-    position: absolute;
-    top: 50px;
-    right: 0;
-    background-color: white;
-    width: 230px;
-    border-radius: 6px;
-    border: 1px solid #e1e1e1;
-    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.25);
-    padding: 20px;
+    position:fixed;
+    justify-content: center;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background-color: rgba(0,0,0,0.4);
+    z-index: 10000;
 }
-.wrap-menu div {
+.close_modal {
+    position: absolute;
+    color: white;
+    font-size: 20px;
+    margin-right: 30px;
+}
+
+.modal_content {
+    position:absolute;
+    top:50%;
+    width:500px;
+    height:600px;
+    padding:40px;
+    text-align: center;
+    background-color: rgb(255,255,255);
+    border-radius:10px;
+    box-shadow:0 2px 3px 0 rgba(34,36,38,0.15);
+    transform:translateY(-50%);
+}
+
+.modal_header {
     display: flex;
 }
-.menu-profile,
-.menu-bookmark,
-.menu-setting,
-.menu-change {
-    padding: 0 0 25px 0;
-}
-.wrap-menu div img {
-    width: 16px;
-    height: 16px;
-    margin: 0 10px 0 0;
-}
-.wrap-menu div p,
-.wrap-menu p {
-    font-size: 14px;
-    color: #262626;
-}
-
-!* 미디어쿼리 *!
-@media (max-width: 1000px) {
-    .box-aside {
-        display: none;
-    }
-    header h1 {
-        position: absolute;
-        top: 15px;
-        left: 25px;
-    }
-    .bar-search {
-        left: 110px;
-    }
-}
-@media (max-width: 800px) {
-    .bar-search input {
-        width: 200px;
-    }
-}
-
-@media (max-width: 760px) {
-    .bar-search {
-        display: none;
-    }
-    .list-nav {
-        position: absolute;
-        top: 15px;
-        right: 25px;
-    }
-    header {
-        height: 65px;
-    }
-}*/
