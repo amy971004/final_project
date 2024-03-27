@@ -41,7 +41,32 @@ public interface PostDAO {
 
     int pushLike(int postId, String loginNickname);
 
+    // SNS_LIKE 테이블의  likeId 생성
     int selectNewLikeId();
 
+    int selectNewBookmarkId();
 
+    // 로그인된 계정의 닉네임 가져오기
+    String loginNickname(String accountId);
+
+    // 북마크 취소
+    int deleBook(int postId, String loginNickname);
+
+    // 북마크 저장
+    int pushBook(int postId, String loginNickname);
+
+    // 댓글 COMMENTID 가져오기
+    int getCommentId();
+
+    // 댓글 저장하기
+    void inputComment(Map<String,Object> comment);
+
+    // 이미지리스트 가져오기
+    List<ImageDTO> getImageList();
+
+    // 게시물 삭제
+    void deletePost(int postId);
+
+    // 프로필 이미지 가져오기
+    String getProfileImg(String userNickname);
 }
