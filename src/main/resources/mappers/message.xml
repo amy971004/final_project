@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.member">
+
+    <resultMap id="mesResult" type="org.example.message.dto.MessageDTO">
+        <result property="messageId" column="MESSAGE_ID" />
+        <result property="roomId" column="ROOM_ID" />
+        <result property="senderId" column="SENDER_ID" />
+        <result property="messageText" column="MESSAGE_TEXT" />
+        <result property="sentAt" column="SENT_AT" />
+    </resultMap>
+
+</mapper>

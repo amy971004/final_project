@@ -14,7 +14,6 @@ public class MemberServiceImpl implements MemberService{
 
     private final MemberDAO dao;
 
-
     @Autowired
     public MemberServiceImpl(MemberDAO dao) {
         this.dao = dao;

@@ -44,4 +44,6 @@ public interface MemberDAO {
     int updateMailAuth(MemberDTO memberDTO) throws Exception;
     int emailAuthFail(String userId) throws Exception;
 
+    // 전달받은 accountId로 일치하는 회원정보 가져오기
+    MemberDTO findMemberByAccountId(String accountId);
 }

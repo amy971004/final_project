@@ -43,9 +43,14 @@
         SELECT * FROM users WHERE USER_ID = #{userId} AND USER_PW = #{userPw}
     </select>
 
-    <!-- 사용자 정보 조회 -->
+    <!-- 사용자 정보 조회 By userId-->
     <select id="findMemberById" parameterType="String" resultMap="memResult">
         SELECT * FROM users WHERE USER_ID = #{userId}
+    </select>
+
+    <!-- 사용자 정보 조회 By accountID-->
+    <select id="findMemberByAccountId" parameterType="String" resultMap="memResult">
+        SELECT * FROM users WHERE ACCOUNT_ID = #{accountID}
     </select>
 
     <!-- 아이디 찾기 -->

@@ -41,6 +41,7 @@ dependencies {
     // Jakarta Standard Tag Library
     implementation ("jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:2.0.0")
     implementation ("org.glassfish.web:jakarta.servlet.jsp.jstl:2.0.0")
+    implementation ("jakarta.platform:jakarta.jakartaee-api:8.0.0")
 
     // MyBatis - 데이터베이스 연동
     implementation("org.mybatis:mybatis:3.5.15")
@@ -78,8 +79,9 @@ dependencies {
     // Jackson Databind
     implementation ("com.fasterxml.jackson.core:jackson-databind:2.16.0")
 
+
     // Log4j
-    implementation ("log4j:log4j:1.2.17")
+    implementation("log4j:log4j:1.2.17")
 
 
 

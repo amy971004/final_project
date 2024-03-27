@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.room">
+
+    <resultMap id="roomResult" type="org.example.message.dto.RoomDTO">
+        <result property="roomId" column="ROOM_ID" />
+        <result property="roomName" column="ROOM_NAME" />
+        <result property="roomMetaName" column="ROOM_MEATNAME" />
+        <result property="createdAt" column="CREATED_AT" />
+    </resultMap>
+
+    <resultMap id="memberResult" type="org.example.member.dto.MemberDTO">
+        <result property="accountID" column="ACCOUNT_ID" />
+        <result property="userId" column="USER_ID" />
+    </resultMap>
+
+    <select id="findReceiverAccountId" parameterType="String" resultType="String">
+        SELECT ACCOUNT_ID
+        FROM USERS
+        WHERE USER_ID = #{receiverId}
+    </select>
+
+    <!-- 두 사용자의 accountId로 채팅방 조회 -->
+    <select id="findRoomByUserIds" parameterType="map" resultMap="roomResult">
+        SELECT * FROM ROOM
+        WHERE ROOM_METANAME = #{roomMetaName}
+    </select>
+
+    <!-- 새로운 채팅방 정보를 DB에 저장 -->
+    <insert id="createRoom" parameterType="org.example.message.dto.RoomDTO">
+        INSERT INTO ROOM (ROOM_NAME, ROOM_METANAME, CREATED_AT)
+        VALUES (#{roomName}, #{roomMetaName}, CURRENT_TIMESTAMP)
+    </insert>
+
+    <!-- 채팅방 참여자 추가 -->
+    <insert id="addParticipant" parameterType="map" useGeneratedKeys="true" keyProperty="roomId">
+        INSERT INTO PARTICIPANTS (ROOM_ID, ACCOUNT_ID, JOINED_AT)
+        VALUES (#{roomId}, #{accountId}, CURRENT_TIMESTAMP)
+    </insert>
+
+    <!-- 발신자 accountId로 참여하고 있는 모든 채팅방 조회 -->
+    <select id="findAllRoomsByAccountId" parameterType="String" resultMap="roomResult">
+        SELECT r.* FROM ROOM r
+        JOIN PARTICIPANTS rp ON r.room_id = rp.room_id
+        WHERE rp.account_id = #{senderAccountId}
+        ORDER BY r.created_at DESC
+    </select>
+
+</mapper>

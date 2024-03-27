@@ -101,4 +101,5 @@ public class HomeController {
     @ResponseBody
     public void returnNoFavicon() {
     }
+
 }
