@@ -206,5 +206,12 @@ public class MemberControllerImpl implements MemberController{
         return new ModelAndView("redirect:/");
     }
 
+    // 인증메일 전송
+    @Override
+    @ResponseBody
+    @RequestMapping("/emailSend.do")
+    public String sendMail(String userEmail, String userName) throws Exception {
+        return service.sendMail(userEmail, userName);
+    }
 
 }

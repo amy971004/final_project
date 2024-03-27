@@ -60,4 +60,9 @@ public interface MemberController {
     // 로그아웃시 로그인 화면으로 리다이렉트되며 세션 초기화
     @RequestMapping(value = "/logout.do", method = RequestMethod.POST)
     ModelAndView logout(HttpServletRequest request);
+
+    // 인증메일 전송
+    @ResponseBody
+    @RequestMapping("/emailSend.do")
+    String sendMail(String userEmail, String userName) throws Exception;
 }

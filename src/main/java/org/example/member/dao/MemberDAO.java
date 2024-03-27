@@ -40,4 +40,8 @@ public interface MemberDAO {
     // 식별자 아이디로 회원정보를 찾은 후 입력받은 비밀번호로 변경
     boolean changePw(String hashPw, String accountId);
 
+    int updateMailKey(MemberDTO memberDTO) throws Exception;
+    int updateMailAuth(MemberDTO memberDTO) throws Exception;
+    int emailAuthFail(String userId) throws Exception;
+
 }

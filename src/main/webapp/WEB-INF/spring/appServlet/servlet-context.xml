@@ -3,9 +3,11 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:websocket="http://www.springframework.org/schema/websocket"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
                             http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
-                            http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+                            http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+                             http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd">
 
     <!-- MVC 설정 활성화: 애노테이션 기반의 컨트롤러(@Controller) 사용을 가능하게 합니다. -->
     <mvc:annotation-driven/>
@@ -15,6 +17,10 @@
 
     <context:component-scan base-package="org.example"/>
 
+    <websocket:handlers>
+        <websocket:mapping handler="echoHandler" path="/echo" />
+        <websocket:sockjs />
+    </websocket:handlers>
 
     <!-- ViewResolver 설정: 컨트롤러에서 반환하는 뷰 이름을 실제 뷰 경로로 변환해 줍니다. -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -22,10 +28,10 @@
         <property name="suffix" value=".jsp" />
     </bean>
     <!-- 컨트롤러, 서비스, 리포지토리 등의 컴포넌트 자동 스캔: 지정된 패키지 안의 @Component, @Service, @Repository, @Controller 등을 자동으로 스캔하여 스프링 빈으로 등록합니다. -->
-
-
     <!-- servlet-context.xml 또는 해당하는 스프링 설정 파일에 추가 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"/>
 
+
+    <bean id="echoHandler" class="org.example.message.EchoHandler"></bean>
 
 </beans>

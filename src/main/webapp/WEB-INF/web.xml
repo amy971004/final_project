@@ -5,7 +5,10 @@
          version="4.0">
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/spring/*.xml</param-value>
+        <param-value>
+            /WEB-INF/spring/*.xml
+            /WEB-INF/spring/email-context.xml
+        </param-value>
     </context-param>
 
     <listener>
@@ -20,10 +23,13 @@
             <param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
+<!--        1:1이 아닌 1:다수 채팅 시 true 아니면 없애기 일단 테스트용-->
+        <async-supported>true</async-supported>
         <multipart-config>
-            <!-- 설정: 파일당 최대 크기 (예: 10MB), 전체 요청에 대한 최대 크기 (예: 50MB) -->
-            <max-file-size>10485760</max-file-size> <!-- 10MB -->
-            <max-request-size>52428800</max-request-size> <!-- 50MB -->
+            <!-- 파일당 최대 크기를 25MB로 설정 -->
+            <max-file-size>26214400</max-file-size> <!-- 25MB -->
+            <!-- 전체 요청에 대한 최대 크기를 100MB로 설정 -->
+            <max-request-size>104857600</max-request-size> <!-- 100MB -->
             <file-size-threshold>0</file-size-threshold>
         </multipart-config>
     </servlet>
@@ -56,7 +62,7 @@
     <!-- 필터 매핑 -->
     <filter>
         <filter-name>AuthorizationFilter</filter-name>
-        <filter-class>org.example.AuthorizationFilter</filter-class>
+        <filter-class>org.example.util.AuthorizationFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>AuthorizationFilter</filter-name>
