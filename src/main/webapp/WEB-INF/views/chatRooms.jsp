@@ -36,15 +36,36 @@
     <div id="m1">
         <div id="roomList">
             <div id="roomListTop">
-                <img id="profile" src="#" alt="Image Preview">
-                <br><span>${user.userName}<br>${user.userId}</span>
-                <h2>메세지</h2>
+                <div id="TL1">
+                    <div id="TLA3">
+                        <h6 class="T3">메세지</h6>
+                    </div>
+                    <div id="TLA1">
+                        <i class="fa-sharp fa-solid fa-circle-user fa-6x" ></i>
+                    </div>
+                    <div id="TLA2">
+                        <h6 class="T1">${user.userName}</h6>
+                        <h6 class="T2">${user.userId}</h6>
+                    </div>
+                </div>
             </div>
             <div id="roomListBottom">
                 <ul>
                     <c:forEach var="room" items="${rooms}">
-                        <div class="room" onclick="selectRoom('${room.roomId}');" data-roomId="${room.roomId}">
-                            <li>${room.roomName}<br>${room.roomReceiverName}<br>해당 채팅방의 roomId: ${room.roomId}</li>
+                        <div class="rooms" onclick="selectRoom('${room.roomId}');" data-roomId="${room.roomId}">
+                            <div class="roomsContainer">
+                                <div class="rcA1">
+                                    <i class="fa-sharp fa-solid fa-circle-user fa-5x" ></i>
+                                </div>
+                                <div class="rcA2">
+                                    <div class="rcB1">
+                                        <h6 class="roomName">${room.roomName}</h6>
+                                        <h6 class="roomReceiverName">${room.roomReceiverName}</h6>
+                                        <div class="roomContents">해당 채팅방의 roomId: ${room.roomId}</div>
+                                        <h6 class="rateDate">2024-03-28 11:58</h6>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </c:forEach>
                 </ul>
@@ -54,8 +75,12 @@
             <div id="message">
 
             </div>
-            <input type="text" id="messageInput">
-            <button type="button" onclick="sendMessage();">전송</button>
+            <div id="messageInputC">
+                <div id="messageInputBox">
+                    <input type="text" id="messageInput" placeholder="메세지를 입력하세요.">
+                </div>
+                <button id="sendMessageBtn" type="button" onclick="sendMessage();">Send</button>
+            </div>
         </div>
     </div>
 </main>

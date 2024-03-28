@@ -1,7 +1,9 @@
 /* nav를 제외한 본문 공간 */
+
 #m1 {
     display: flex; /* 요소들을 가로로 배치하기 위해 Flexbox 사용 */
     flex-direction: row; /* 요소들을 가로 방향으로 배치 */
+    height: 100vh;
 }
 /* 채팅방 목록 */
 #roomList {
@@ -12,21 +14,165 @@
 }
 /* 채팅방 목록 상단 */
 #roomListTop {
-    background-color: #eaeaea;
+    background: #fafafa;
     height: 150px;
+    border-bottom: #cccccc 2px solid;
 }
 /* 채팅방 목록 하단 */
 #roomListBottom {
     background-color: #cecece;
     height: calc(100vh - 150px);
+    overflow-y:scroll;
 }
 /* 세부 채팅방 */
-#rooms {
-    height: 110px;
+.rooms {
+    height: 135px;
     background-color: white;
     border-bottom: #e7e7e7 solid 2px;
     cursor: pointer;
 }
+.rooms:hover {
+    background-color: #aaaeb4;
+}
+.rooms:active {
+    background-color: #6e7175;
+}
+.roomCheck {
+    background-color: #1717bd;
+}
+.roomsContainer {
+    display: flex;
+    flex-direction: row; /* 요소들을 가로 방향으로 배치 */
+}
+.rcA1 {
+    display: flex;
+    width: 130px;
+    height: 130px;
+    justify-content: center;
+    align-items: center; /* 중앙 정렬 */
+    /*background-color: #3f729b;*/
+}
+.rcA2 {
+    display: flex;
+    height: 130px;
+    flex: 1;
+}
+.rcB1 {
+    /*padding-left: 20px;*/
+}
+.roomName {
+    font-size: 19px;
+    font-weight: 550;
+    padding-top: 12px;
+    padding-bottom: 7px;
+ }
+.roomReceiverName {
+    font-size: 16px;
+    font-weight: 600;
+    padding-bottom: 15px;
+}
+#TL1 {
+    display: flex;
+    flex-direction: row; /* 요소들을 가로 방향으로 배치 */
+    padding-left: 16px;
+}
+.T1 {
+    font-size: 20px;
+    font-weight: 300;
+    padding-top: 40px;
+    padding-bottom: 5px;
+}
+.T2 {
+    font-size: 20px;
+    font-weight: 300;
+}
+.T3 {
+    padding-top: 4px;
+    font-size: 18px;
+    font-weight: 600;
+}
+#TLA3 {
+    padding-left: 3px;
+    padding-top: 120px;
+}
+#TLA1 {
+    padding-top: 17px;
+    padding-left: 40px;
+    display: flex;
+    width: 110px;
+    height: 110px;
+    justify-content: center;
+    align-items: center; /* 중앙 정렬 */
+}
+#TLA2 {
+    padding-left: 20px;
+}
 #chatting {
     flex:1;
+    display: flex;
+    flex-direction: column;
+}
+#message {
+    flex: 1;
+    overflow-y:scroll;
+}
+#messageInputC {
+    display: flex;
+    align-items: center; /* 중앙 정렬 */
+    height: 50px;
+}
+#sendMessageBtn {
+    width: 60px;
+    height: 33px;
+    font-size: 15px;
+    border: 2px #2658a4 solid;
+    border-radius: 15px;
+    background-color: #2c5ea9;
+    color: white;
+    cursor: pointer;
+}
+#sendMessageBtn:hover {
+    background-color: #587aaf;
+    border: 2px solid #587aaf;
+}
+#sendMessageBtn:active {
+    background-color: #1c3767;
+    border: 2px solid #1c3767;
+}
+/* 입력창 */
+#messageInput {
+    background-color: transparent;
+    border: transparent;
+    margin-left: 20px;
+    margin-right: 10px;
+    width: 30vw;
+    height: 30px;
+    font-size: 15px;
+    outline: none;
+}
+/* 입력창 테두리 */
+#messageInputBox {
+    margin-left: 30px;
+    margin-right: 10px;
+    width: 30vw;
+    height: 30px;
+    border: #a4a4a4 1px solid;
+    margin-bottom: 3px;
+    text-align: center;
+    border-radius: 15px;
+    background-color: transparent;
+    transition: background-color, border, 0.3s;
+}
+
+.roomContents {
+    width: 330px;
+    height: 34px;
+}
+
+.rateDate {
+    color: #2b3035;
+    position: relative;
+    width: 130px;
+    left: 195px;
+    bottom: -10px;
 }
