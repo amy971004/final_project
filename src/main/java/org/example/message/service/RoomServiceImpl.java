@@ -57,6 +57,7 @@ public class RoomServiceImpl implements RoomService {
         // roomName, roomMetaName 설정
         newRoom.setRoomName("'" + senderName + "'님과 '" + receiverName + "'님의 채팅방");
         newRoom.setRoomMetaName(roomMetaName);
+        newRoom.setRoomReceiverName(receiverName);
 
         // DB에 채팅방 정보 저장
         dao.createRoom(newRoom);

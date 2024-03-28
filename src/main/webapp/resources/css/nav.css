@@ -57,4 +57,5 @@ body {
 }
 #mainContents {
     margin-left: 80px;
+    min-height: 100vh;
 }

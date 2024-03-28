@@ -5,13 +5,24 @@
     <resultMap id="roomResult" type="org.example.message.dto.RoomDTO">
         <result property="roomId" column="ROOM_ID" />
         <result property="roomName" column="ROOM_NAME" />
-        <result property="roomMetaName" column="ROOM_MEATNAME" />
+        <result property="roomMetaName" column="ROOM_METANAME" />
+        <result property="roomReceiverName" column="ROOM_RECEIVERNAME" />
         <result property="createdAt" column="CREATED_AT" />
     </resultMap>
 
     <resultMap id="memberResult" type="org.example.member.dto.MemberDTO">
         <result property="accountID" column="ACCOUNT_ID" />
         <result property="userId" column="USER_ID" />
+        <result property="userPw" column="USER_PW" />
+        <result property="userNickname" column="USER_NICKNAME" />
+        <result property="userName" column="USER_NAME" />
+        <result property="userEmail" column="USER_EMAIL" />
+        <result property="userBirthday" column="USER_BIRTHDAY" />
+        <result property="userPhoneNumber" column="USER_PHONENUMBER" />
+        <result property="userJoinDate" column="USER_JOINDATE" />
+        <result property="profileImg" column="PROFILEIMG" />
+        <result property="introduction" column="INTRODUCTION" />
+        <result property="ROLE" column="USER_ROLE" />
     </resultMap>
 
     <select id="findReceiverAccountId" parameterType="String" resultType="String">
@@ -28,8 +39,8 @@
 
     <!-- 새로운 채팅방 정보를 DB에 저장 -->
     <insert id="createRoom" parameterType="org.example.message.dto.RoomDTO">
-        INSERT INTO ROOM (ROOM_NAME, ROOM_METANAME, CREATED_AT)
-        VALUES (#{roomName}, #{roomMetaName}, CURRENT_TIMESTAMP)
+        INSERT INTO ROOM (ROOM_NAME, ROOM_METANAME, ROOM_RECEIVERNAME, CREATED_AT)
+        VALUES (#{roomName}, #{roomMetaName}, #{roomReceiverName}, CURRENT_TIMESTAMP)
     </insert>
 
     <!-- 채팅방 참여자 추가 -->

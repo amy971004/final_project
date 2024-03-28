@@ -4,8 +4,6 @@ plugins {
     kotlin("jvm")
 }
 
-
-
 group = "org.example"
 version = "1.0-SNAPSHOT"
 
@@ -56,7 +54,8 @@ dependencies {
 
     // JSON 처리
     // implementation("com.googlecode.json-simple:json-simple:1.1.1")
-    implementation("com.google.code.gson:gson:2.10.1")
+    // implementation("com.google.code.gson:gson:2.10.1")
+    implementation("org.json:json:20240303")
 
     // SLF4J - 로깅 추상화 레이어
     implementation ("org.slf4j:slf4j-api:2.0.3")

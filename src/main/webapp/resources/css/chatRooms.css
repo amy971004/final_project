@@ -1,0 +1,32 @@
+/* nav를 제외한 본문 공간 */
+#m1 {
+    display: flex; /* 요소들을 가로로 배치하기 위해 Flexbox 사용 */
+    flex-direction: row; /* 요소들을 가로 방향으로 배치 */
+}
+/* 채팅방 목록 */
+#roomList {
+    border-right: #e7e7e7 solid 2px;
+    border-bottom: #e7e7e7 solid 2px;
+    width: 500px;
+    min-height: 100vh;
+}
+/* 채팅방 목록 상단 */
+#roomListTop {
+    background-color: #eaeaea;
+    height: 150px;
+}
+/* 채팅방 목록 하단 */
+#roomListBottom {
+    background-color: #cecece;
+    height: calc(100vh - 150px);
+}
+/* 세부 채팅방 */
+#rooms {
+    height: 110px;
+    background-color: white;
+    border-bottom: #e7e7e7 solid 2px;
+    cursor: pointer;
+}
+#chatting {
+    flex:1;
+}
