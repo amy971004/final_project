@@ -32,6 +32,7 @@
 </div>
 <main id="mainContents">
     <div id="m1">
+<!--        <div id="roomList" data-userAccountId="${user.accountID}">-->
         <div id="roomList">
             <div id="roomListTop">
                 <div id="TL1">
@@ -42,8 +43,8 @@
                         <i class="fa-sharp fa-solid fa-circle-user fa-6x" ></i>
                     </div>
                     <div id="TLA2">
-                        <h6 class="T1">${user.userName}</h6>
-                        <h6 class="T2">${user.userId}</h6>
+                        <h6 id="userName" class="T1">${user.userName}</h6>
+                        <h6 id="userID" class="T2">${user.userId}</h6>
                     </div>
                 </div>
             </div>
@@ -65,13 +66,88 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="rooms" onclick="selectRoom('${room.roomId}');" data-roomId="${room.roomId}">
+                            <div class="roomsContainer">
+                                <div class="rcA1">
+                                    <i class="fa-sharp fa-solid fa-circle-user fa-5x" ></i>
+                                </div>
+                                <div class="rcA2">
+                                    <div class="rcB1">
+                                        <h6 class="roomName">${room.roomName}</h6>
+                                        <h6 class="roomReceiverName">${room.roomReceiverName}</h6>
+                                        <div class="roomContents">해당 채팅방의 roomId: ${room.roomId}</div>
+                                        <h6 class="rateDate">2024-03-28 11:58</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rooms" onclick="selectRoom('${room.roomId}');" data-roomId="${room.roomId}">
+                            <div class="roomsContainer">
+                                <div class="rcA1">
+                                    <i class="fa-sharp fa-solid fa-circle-user fa-5x" ></i>
+                                </div>
+                                <div class="rcA2">
+                                    <div class="rcB1">
+                                        <h6 class="roomName">${room.roomName}</h6>
+                                        <h6 class="roomReceiverName">${room.roomReceiverName}</h6>
+                                        <div class="roomContents">해당 채팅방의 roomId: ${room.roomId}</div>
+                                        <h6 class="rateDate">2024-03-28 11:58</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </c:forEach>
                 </ul>
             </div>
         </div>
         <div id="chatting">
+            <div id="chattingHeader">
+                <div id="chattingHeaderLeft">
+                    <div id="chA1">
+                        <i class="fa-sharp fa-solid fa-circle-user fa-2x" ></i>
+                    </div>
+                    <div id="chA2">
+                        <h6 id="recName"></h6>
+                    </div>
+                </div>
+                <div id="chattingHeaderRight">
+                    <h6 id="recRoomName"></h6>
+                </div>
+            </div>
             <div id="message">
-
+                <div class="messageC receiver">
+                    <div class="msA1 sender">
+                        send
+                    </div>
+                    <div class="msB1 sender">
+                        <div>contentscontents</div>
+                    </div>
+                    <div class="msC1">
+                        2024-03-30 14:33
+                    </div>
+                </div>
+                <div class="messageC sender">
+                    <div class="msA1 receiver">
+                        rec
+                    </div>
+                    <div class="msB1 receiver">
+                        <div>contentscontents</div>
+                    </div>
+                    <div class="msC1">
+                        2024-03-30 14:33
+                    </div>
+                </div>
+                <div class="messageC">
+                    <div class="msA1">
+                        Name
+                    </div>
+                    <div class="msB1">
+                        <div>채팅내용</div>
+                    </div>
+                    <div class="msC1">
+                        2024-03-30 14:33
+                    </div>
+                </div>
             </div>
             <div id="messageInputC">
                 <div id="messageInputBox">
@@ -83,6 +159,7 @@
     </div>
 </main>
 </body>
-<script src="../../resources/js/chatRooms.js"></script>
+<script src="../../resources/js/rooms.js"></script>
+<script src="../../resources/js/chat.js"></script>
 <script src="../../resources/js/logout.js"></script>
 </html>

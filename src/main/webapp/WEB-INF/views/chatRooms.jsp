@@ -34,6 +34,7 @@
 </div>
 <main id="mainContents">
     <div id="m1">
+<%--        <div id="roomList" data-userAccountId="${user.accountID}">--%>
         <div id="roomList">
             <div id="roomListTop">
                 <div id="TL1">
@@ -44,8 +45,8 @@
                         <i class="fa-sharp fa-solid fa-circle-user fa-6x" ></i>
                     </div>
                     <div id="TLA2">
-                        <h6 class="T1">${user.userName}</h6>
-                        <h6 class="T2">${user.userId}</h6>
+                        <h6 id="userName" class="T1">${user.userName}</h6>
+                        <h6 id="userID" class="T2">${user.userId}</h6>
                     </div>
                 </div>
             </div>
@@ -60,9 +61,9 @@
                                 <div class="rcA2">
                                     <div class="rcB1">
                                         <h6 class="roomName">${room.roomName}</h6>
-                                        <h6 class="roomReceiverName">${room.roomReceiverName}</h6>
-                                        <div class="roomContents">해당 채팅방의 roomId: ${room.roomId}</div>
-                                        <h6 class="rateDate">2024-03-28 11:58</h6>
+                                        <h6 class="roomReceiverName">${room.opponentName}</h6>
+                                        <div class="roomContents">${room.lastMessage}</div>
+                                        <h6 class="rateDate">${room.formattedLastMessageDate}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -72,6 +73,19 @@
             </div>
         </div>
         <div id="chatting">
+            <div id="chattingHeader">
+                <div id="chattingHeaderLeft">
+                    <div id="chA1">
+                        <i class="fa-sharp fa-solid fa-circle-user fa-2x" ></i>
+                    </div>
+                    <div id="chA2">
+                        <h6 id="recName"></h6>
+                    </div>
+                </div>
+                <div id="chattingHeaderRight">
+                    <h6 id="recRoomName"></h6>
+                </div>
+            </div>
             <div id="message">
 
             </div>
@@ -85,6 +99,7 @@
     </div>
 </main>
 </body>
-<script src="../../resources/js/chatRooms.js"></script>
+<script src="../../resources/js/rooms.js"></script>
+<script src="../../resources/js/chat.js"></script>
 <script src="../../resources/js/logout.js"></script>
 </html>

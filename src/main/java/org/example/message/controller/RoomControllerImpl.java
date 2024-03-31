@@ -3,15 +3,12 @@ package org.example.message.controller;
 import jakarta.servlet.http.HttpSession;
 import org.example.member.dao.MemberDAO;
 import org.example.member.dto.MemberDTO;
-import org.example.member.service.MemberService;
 import org.example.message.dao.RoomDAO;
 import org.example.message.dto.RoomDTO;
 import org.example.message.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -81,5 +78,18 @@ public class RoomControllerImpl implements RoomController{
         model.addAttribute("user", user);
 
         return new ModelAndView("chatRooms");
-}
     }
+
+    // roomId 로 Room 정보 가져오기
+    @Override
+    @GetMapping("/main/chatRooms/getRoomInfo.do")
+    @ResponseBody
+    public RoomDTO getRoomByRoomId(@RequestParam("roomId") String roomId, HttpSession session) {
+        RoomDTO room = roomDAO.getRoomByRoomId(roomId);
+        String myAccountId = (String) session.getAttribute("accountID");
+        String opponentName = roomDAO.findOpponentName(roomId, myAccountId);
+        room.setOpponentName(opponentName);
+        return room;
+    }
+
+}

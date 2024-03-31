@@ -13,4 +13,6 @@ public interface MessageDAO {
 
     // roomId 로 모든 message 가져오기
     List<MessageDTO> getMessagesByRoomId(String roomId);
+
+    MessageDTO getLastMessageByRoomId(String roomId);
 }

@@ -36,4 +36,9 @@ public class MessageDAOImpl implements MessageDAO {
         return sqlSession.selectList("mapper.message.getMessagesByRoomId", roomId);
     }
 
+    @Override
+    public MessageDTO getLastMessageByRoomId(String roomId) {
+        return sqlSession.selectOne("mapper.message.getLastMessageByRoomId", roomId);
+    }
+
 }

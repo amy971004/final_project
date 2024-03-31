@@ -1,10 +1,12 @@
 package org.example.message.dao;
 
 import org.apache.ibatis.session.SqlSession;
+import org.example.message.dto.MessageDTO;
 import org.example.message.dto.RoomDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,10 +51,42 @@ public class RoomDAOImpl implements RoomDAO {
         sqlSession.insert("mapper.room.addParticipant", params);
     }
 
+    // RoomId로 Room 정보 반환
+    @Override
+    public RoomDTO getRoomByRoomId(String roomId) {
+        return sqlSession.selectOne("mapper.room.getRoomByRoomId", roomId);
+    }
+
     // 발신자 accountId로 내가 참여하고있는 모든 채팅방 불러오기
     @Override
     public List<RoomDTO> findAllRoomsByAccountId(String senderAccountId) {
         return sqlSession.selectList("mapper.room.findAllRoomsByAccountId", senderAccountId);
+    }
+
+    // 발신자 accountId로 내가 참여하고 있는 모든 채팅방과 그 마지막 메시지 정보 불러오기
+    @Override
+    public List<RoomDTO> findAllRoomsWithLastMessage(String senderAccountId) {
+        List<RoomDTO> rooms = findAllRoomsByAccountId(senderAccountId);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm"); // 날짜 형식 지정
+
+        for (RoomDTO room : rooms) {
+            MessageDTO lastMessage = sqlSession.selectOne("mapper.message.getLastMessageByRoomId", room.getRoomId());
+            if (lastMessage != null) {
+                room.setLastMessage(lastMessage.getMessageText());
+                // 날짜 형식 변환하여 새로운 필드에 저장
+                room.setFormattedLastMessageDate(formatter.format(lastMessage.getSentAt()));
+            }
+        }
+        return rooms;
+    }
+
+    // RoomDAOImpl에 메서드 구현
+    @Override
+    public String findOpponentName(String roomId, String myAccountId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("roomId", roomId);
+        params.put("myAccountId", myAccountId);
+        return sqlSession.selectOne("mapper.room.findOpponentName", params);
     }
 
 }

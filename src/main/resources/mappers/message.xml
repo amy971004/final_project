@@ -53,6 +53,12 @@
         ORDER BY SENT_AT
     </select>
 
+    <!-- 각 채팅방의 마지막 메세지 가져오기-->
+    <select id="getLastMessageByRoomId" parameterType="String" resultMap="mesResult">
+        SELECT * FROM (
+                          SELECT * FROM MESSAGES WHERE ROOM_ID = #{roomId} ORDER BY SENT_AT DESC
+                      ) WHERE ROWNUM = 1
+    </select>
 
 
 </mapper>

@@ -69,7 +69,7 @@ public class RoomServiceImpl implements RoomService {
     // 발신자 accountId로 내가 참여하고있는 모든 채팅방 불러오기
     @Override
     public List<RoomDTO> findAllRoomsByAccountId(String senderAccountId) {
-        return dao.findAllRoomsByAccountId(senderAccountId);
+        return dao.findAllRoomsWithLastMessage(senderAccountId);
     }
 
 }

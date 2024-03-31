@@ -50,11 +50,33 @@
     </insert>
 
     <!-- 발신자 accountId로 참여하고 있는 모든 채팅방 조회 -->
+<!--    <select id="findAllRoomsByAccountId" parameterType="String" resultMap="roomResult">-->
+<!--        SELECT r.* FROM ROOM r-->
+<!--        JOIN PARTICIPANTS rp ON r.room_id = rp.room_id-->
+<!--        WHERE rp.account_id = #{senderAccountId}-->
+<!--        ORDER BY r.created_at DESC-->
+<!--    </select>-->
     <select id="findAllRoomsByAccountId" parameterType="String" resultMap="roomResult">
-        SELECT r.* FROM ROOM r
-        JOIN PARTICIPANTS rp ON r.room_id = rp.room_id
-        WHERE rp.account_id = #{senderAccountId}
-        ORDER BY r.created_at DESC
+        SELECT r.*, p.user_name AS opponentName
+        FROM room r
+                 JOIN participants p ON r.room_id = p.room_id
+        WHERE p.account_id != #{senderAccountId}
+          AND r.room_id IN (
+            SELECT room_id FROM participants WHERE account_id = #{senderAccountId}
+        )
+    </select>
+
+    <select id="findOpponentName" parameterType="map" resultType="String">
+        SELECT p.user_name
+        FROM participants p
+        WHERE p.room_id = #{roomId}
+          AND p.account_id != #{myAccountId}
+          AND ROWNUM = 1
+    </select>
+
+    <!-- Room 정보 조회 By RoomID-->
+    <select id="getRoomByRoomId" parameterType="String" resultMap="roomResult">
+        SELECT * FROM ROOM WHERE ROOM_ID = #{roomId}
     </select>
 
 </mapper>

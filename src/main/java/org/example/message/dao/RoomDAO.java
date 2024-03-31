@@ -19,4 +19,13 @@ public interface RoomDAO {
 
     // 채팅 창여자 목록 테이플에 추가
     void addParticipant(String roomId, String accountId, String userId, String userName);
+
+    // roomId로 RoomDTO 반환
+    RoomDTO getRoomByRoomId(String roomId);
+
+    // 발신자 accountId로 내가 참여하고 있는 모든 채팅방과 그 마지막 메시지 정보 불러오기
+    List<RoomDTO> findAllRoomsWithLastMessage(String senderAccountId);
+
+    // RoomDAOImpl에 메서드 구현
+    String findOpponentName(String roomId, String myAccountId);
 }
