@@ -66,13 +66,14 @@
 }
 .rcB1 {
     /*padding-left: 20px;*/
+    position: relative;
 }
 .roomName {
     font-size: 18px;
     font-weight: bold;
     padding-top: 12px;
     margin-bottom: 5px;
- }
+}
 .roomReceiverName {
     font-weight: 600;
     padding-bottom: 15px;
@@ -295,4 +296,23 @@
 
 .messageAppear {
     animation: messageAppear 0.5s ease-out forwards;
+}
+.deleteBtn {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 5px; /* 상단으로부터의 거리 */
+    right: -4px; /* 우측으로부터의 거리 */
+    border-radius: 5px;
+    border: 0 solid transparent;
+    margin-left: 125px;
+    font-size: 15px;
+    background-color: transparent;
+    color: red;
+    cursor: pointer;
+    transition: color, background-color 0.3s;
+}
+.deleteBtn:hover {
+    background-color: red;
+    color: white;
 }

@@ -1,5 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<script type="text/javascript">
+    let accountId = "<%= session.getAttribute("accountID") %>";
+</script>
 <html>
 <head>
     <title>채팅방 목록</title>
@@ -34,7 +37,7 @@
 </div>
 <main id="mainContents">
     <div id="m1">
-<%--        <div id="roomList" data-userAccountId="${user.accountID}">--%>
+        <%--        <div id="roomList" data-userAccountId="${user.accountID}">--%>
         <div id="roomList">
             <div id="roomListTop">
                 <div id="TL1">
@@ -60,7 +63,7 @@
                                 </div>
                                 <div class="rcA2">
                                     <div class="rcB1">
-                                        <h6 class="roomName">${room.roomName}</h6>
+                                        <h6 class="roomName">${room.roomName}<button onclick="deleteRoom('${room.roomId}');" class="deleteBtn" type="button">X</button></h6>
                                         <h6 class="roomReceiverName">${room.opponentName}</h6>
                                         <div class="roomContents">${room.lastMessage}</div>
                                         <h6 class="rateDate">${room.formattedLastMessageDate}</h6>

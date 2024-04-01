@@ -68,8 +68,6 @@ public class ChatHandler implements WebSocketHandler{
         // 서블릿 세션에 저장되어있던 accountId(로그인시 저장됨)
         String senderAccountId = (String) session.getAttributes().get("accountID");
 
-        System.out.println("####@@1234 어카운트아이디 가져오기 테스트 : " + senderAccountId);
-
         // 데이터베이스에 메세지 저장 part-1
         MessageDTO messageDTO = new MessageDTO();
         messageDTO.setRoomId(roomId);

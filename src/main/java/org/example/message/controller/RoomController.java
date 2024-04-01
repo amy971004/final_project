@@ -24,4 +24,9 @@ public interface RoomController {
     @GetMapping("/main/chatRooms/getRoomInfo.do")
     @ResponseBody
     RoomDTO getRoomByRoomId(@RequestParam("roomId") String roomId, HttpSession session);
+
+    // roomId 로 해당 Room 삭제하기
+    @GetMapping("/main/chatRooms/deleteRoom.do")
+    @ResponseBody
+    boolean deleteRoom(@RequestParam("roomId") String roomId);
 }

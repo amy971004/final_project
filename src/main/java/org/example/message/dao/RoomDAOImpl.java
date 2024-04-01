@@ -5,6 +5,7 @@ import org.example.message.dto.MessageDTO;
 import org.example.message.dto.RoomDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -88,5 +89,22 @@ public class RoomDAOImpl implements RoomDAO {
         params.put("myAccountId", myAccountId);
         return sqlSession.selectOne("mapper.room.findOpponentName", params);
     }
+
+    @Override
+    @Transactional
+    public boolean deleteRoom(String roomId) {
+
+        sqlSession.delete("mapper.room.deleteMessages", roomId);
+
+        int result1 = sqlSession.delete("mapper.room.deleteParticipants", roomId);
+        if (0 < result1){
+            int result2 = sqlSession.delete("mapper.room.deleteRoom", roomId);
+            return 0 < result2;
+        } else {
+            return false;
+        }
+
+    }
+
 
 }

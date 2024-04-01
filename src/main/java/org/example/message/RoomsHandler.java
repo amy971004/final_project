@@ -11,6 +11,7 @@ public class RoomsHandler implements org.springframework.web.socket.WebSocketHan
         // 클라이언트가 웹소켓에 연결되면 호출됩니다.
         // 웹소켓 세션을 파라미터로 받아 해당 세션과 연결된 클라이언트와의 작업을 처리할 수 있습니다.
         // 일반적으로 클라이언트와의 연결이 확립되면 수행할 초기화 작업을 수행합니다.
+
     }
 
     @Override

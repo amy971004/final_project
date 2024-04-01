@@ -28,4 +28,8 @@ public interface RoomDAO {
 
     // RoomDAOImpl에 메서드 구현
     String findOpponentName(String roomId, String myAccountId);
+
+    // roomId 로 해당 Room 삭제하기
+    boolean deleteRoom(String roomId);
+
 }

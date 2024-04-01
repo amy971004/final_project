@@ -70,14 +70,12 @@ function openChatSocket(roomId) {
     // 웹소켓 이벤트 핸들러 설정
     chatSocket.onopen = function(event) {
         console.log("Connected to /chat?roomId=" + roomId);
-        alert("chat 웹소켓 연결 성공")
     };
 
     // 웹소켓 메세지를 받았을때
     chatSocket.onmessage = function(event) {
         let message = JSON.parse(event.data);
         displayMessages([message]); // 새 메시지를 화면에 표시하는 함수 호출
-        showMessage(); // 새 메시지가 도착했을 때 메시지를 자연스럽게 표시하는 함수 호출
     };
 
 }
@@ -120,6 +118,17 @@ function displayMessages(messages) {
         setTimeout(function() {
             messageElement.removeClass('messageAppear');
         }, 500); // 애니메이션 지속 시간과 동일하게 설정
+
+        let roomId = message.roomId;
+
+        // 채팅방 목록에서 해당 roomId를 가진 채팅방 아이템 찾기
+        let roomItem = $('.rooms[data-roomId="' + roomId + '"]');
+        if (roomItem.length) {
+            // 최근 메시지와 날짜 정보 업데이트
+            roomItem.find('.roomContents').text(message.messageText);
+            roomItem.find('.rateDate').text(formatDateTime(message.sentAt));
+        }
+
     });
 
     // 메시지가 추가된 후 스크롤을 아래로 이동시킵니다.
@@ -161,7 +170,7 @@ function sendMessage() {
         sentAt: new Date().toISOString() // 메세지 전송 시간
     };
 
-    // WebSocket을 통해 메시지 데이터를 서버로 전송
+    // WebSocket 을 통해 메시지 데이터를 서버로 전송
     chatSocket.send(JSON.stringify(messageData));
 
     // 메시지 입력 필드 초기화

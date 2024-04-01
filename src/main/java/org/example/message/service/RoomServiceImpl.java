@@ -14,12 +14,10 @@ import java.util.List;
 @Service
 public class RoomServiceImpl implements RoomService {
     private final RoomDAO dao;
-    private final MemberDAO memberDAO;
 
     @Autowired
     public RoomServiceImpl(RoomDAO dao, MemberDAO memberDAO) {
         this.dao = dao;
-        this.memberDAO = memberDAO;
     }
 
     // 전달받은 receiverId로 receiverAccountId 찾기

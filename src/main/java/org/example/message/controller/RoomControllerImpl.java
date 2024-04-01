@@ -92,4 +92,12 @@ public class RoomControllerImpl implements RoomController{
         return room;
     }
 
+    // roomId 로 해당 Room 삭제하기
+    @Override
+    @ResponseBody
+    @DeleteMapping("/main/chatRooms/deleteRoom.do")
+    public boolean deleteRoom(@RequestParam("roomId") String roomId) {
+        return roomDAO.deleteRoom(roomId);
+    }
+
 }

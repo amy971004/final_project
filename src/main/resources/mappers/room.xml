@@ -50,12 +50,12 @@
     </insert>
 
     <!-- 발신자 accountId로 참여하고 있는 모든 채팅방 조회 -->
-<!--    <select id="findAllRoomsByAccountId" parameterType="String" resultMap="roomResult">-->
-<!--        SELECT r.* FROM ROOM r-->
-<!--        JOIN PARTICIPANTS rp ON r.room_id = rp.room_id-->
-<!--        WHERE rp.account_id = #{senderAccountId}-->
-<!--        ORDER BY r.created_at DESC-->
-<!--    </select>-->
+    <!--    <select id="findAllRoomsByAccountId" parameterType="String" resultMap="roomResult">-->
+    <!--        SELECT r.* FROM ROOM r-->
+    <!--        JOIN PARTICIPANTS rp ON r.room_id = rp.room_id-->
+    <!--        WHERE rp.account_id = #{senderAccountId}-->
+    <!--        ORDER BY r.created_at DESC-->
+    <!--    </select>-->
     <select id="findAllRoomsByAccountId" parameterType="String" resultMap="roomResult">
         SELECT r.*, p.user_name AS opponentName
         FROM room r
@@ -78,5 +78,20 @@
     <select id="getRoomByRoomId" parameterType="String" resultMap="roomResult">
         SELECT * FROM ROOM WHERE ROOM_ID = #{roomId}
     </select>
+
+    <!-- 채팅 메시지 삭제 -->
+    <delete id="deleteMessages" parameterType="string">
+        DELETE FROM MESSAGES WHERE ROOM_ID = #{roomId}
+    </delete>
+
+    <!-- 채팅방 참가자 삭제 -->
+    <delete id="deleteParticipants" parameterType="string">
+        DELETE FROM PARTICIPANTS WHERE ROOM_ID = #{roomId}
+    </delete>
+
+    <!-- 채팅방 삭제 -->
+    <delete id="deleteRoom" parameterType="string">
+        DELETE FROM ROOM WHERE ROOM_ID = #{roomId}
+    </delete>
 
 </mapper>

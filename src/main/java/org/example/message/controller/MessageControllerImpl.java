@@ -11,12 +11,10 @@ import java.util.List;
 @RestController
 public class MessageControllerImpl implements MessageController{
 
-    private final MessageService service;
     private final MessageDAO messageDAO;
 
     @Autowired
     public MessageControllerImpl(MessageService service, MessageDAO messageDAO) {
-        this.service = service;
         this.messageDAO = messageDAO;
     }
 
