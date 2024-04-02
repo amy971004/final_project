@@ -75,9 +75,11 @@ public class PostDAOImpl implements PostDAO {
         return sqlSession.selectList("mapper.post.getTag",contentNo);
     }
 
+    // 댓글 리스트 가져오기
     @Override
-    public List<CommentDTO> getCommentList() {
-        return sqlSession.selectList("mapper.post.getCommentList");
+    public List<CommentDTO> getCommentList(int postId) {
+
+        return sqlSession.selectList("mapper.post.getCommentList",postId);
     }
 
     @Override
@@ -155,14 +157,53 @@ public class PostDAOImpl implements PostDAO {
         return sqlSession.selectList("mapper.post.getImageList");
     }
 
+    // 게시물 삭제
     @Override
     public void deletePost(int postId) {
         sqlSession.delete("mapper.post.deletePost",postId);
     }
 
+    // 프로필 이미지이름 가져오기
     @Override
     public String getProfileImg(String userNickname) {
         return sqlSession.selectOne("mapper.post.getProfileImg",userNickname);
     }
+
+    // 게시물의 좋아요 정보 가져오기
+    @Override
+    public List<String> getLikeInfo(int postId) {
+        return sqlSession.selectList("mapper.post.getLikeInfo",postId);
+    }
+
+    // 대댓글의 commentId 가져오기
+    @Override
+    public List<Integer> getReplyComment(int commentId) {
+        return sqlSession.selectList("mapper.post.getReplyComment",commentId);
+    }
+
+    // 팔로우 아이디 가져오기
+    private int selectNewfollowId() {
+        return sqlSession.selectOne("mapper.post.selectNewfollowId");
+    }
+
+    // 팔로우 메서드
+    @Override
+    public void follow(Map<String, Object> followInfo) {
+        int followId = selectNewfollowId();
+        followInfo.put("followId",followId+1);
+        sqlSession.insert("mapper.post.follow",followInfo);
+    }
+
+    @Override
+    public List<String> getfollowList(String loginNickname) {
+        return sqlSession.selectList("mapper.post.getfollowList",loginNickname);
+    }
+
+    // 팔로우 취소 메서드
+    @Override
+    public void delteFollow(Map<String, Object> followingInfo) {
+        sqlSession.delete("mapper.post.deleteFollow",followingInfo);
+    }
+
 
 }

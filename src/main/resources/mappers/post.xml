@@ -16,7 +16,7 @@
     <resultMap id="commentResult" type="commentDTO">
         <result property="postId" column="POSTID" />
         <result property="level" column="LEVEL" />
-        <result property="articleNo" column="COMMENTID" />
+        <result property="commentId" column="COMMENTID" />
         <result property="parentNo" column="PARENTNO" />
         <result property="postComment" column="POSTCOMMENT" />
         <result property="writeDate" column="WRITEDATE" />
@@ -73,15 +73,18 @@
         ]]>
     </select>
 
+    <!--태그 가져오기-->
     <select id="getTag" parameterType="int" resultType="String">
         <![CDATA[
         select HASHTAG from SNS_TAG where POSTID=#{contentNo}
         ]]>
     </select>
 
-    <select id="getCommentList"  resultType="commentDTO">
+    <select id="getCommentList"  resultType="commentDTO" parameterType="int">
         <![CDATA[
-        select level, COMMENTID, PARENTNO, POSTID, POSTCOMMENT,WRITEDATE, USER_NICKNAME from SNS_COMMENT
+        select level, COMMENTID, PARENTNO, POSTID, POSTCOMMENT,WRITEDATE, USER_NICKNAME
+        from SNS_COMMENT
+        WHERE POSTID = #{postId}
         start with parentNo = 0 connect by prior COMMENTID=parentno
         order SIBLINGS by COMMENTID desc
         ]]>
@@ -169,6 +172,50 @@
 
     <!-- 프로필 이미지 가져오기 -->
     <select id="getProfileImg" parameterType="String" resultType="String">
+        <![CDATA[
         select PROFILEIMG from USERS where USER_NICKNAME=#{userNickname}
+        ]]>
     </select>
+
+    <!-- 게시물의 좋아요 정보 가져오기 -->
+    <select id="getLikeInfo" parameterType="int" resultType="String">
+        <![CDATA[
+        select USER_NICKNAME from SNS_LIKE where POSTID=#{postId}
+        ]]>
+    </select>
+
+    <!-- 대댓글의 commentId 가져오기 -->
+    <select id="getReplyComment" parameterType="int" resultType="int">
+        <![CDATA[
+        select COMMENTID
+        from SNS_COMMENT
+        start with COMMENTID = #{commentId} connect by prior COMMENTID=PARENTNO
+        order SIBLINGS by COMMENTID desc
+        ]]>
+    </select>
+
+    <select id="selectNewfollowId" resultType="int">
+        <![CDATA[
+        select nvl(max(FOLLOWID),0) from SNS_FOLLOW
+        ]]>
+    </select>
+
+    <insert id="follow" parameterType="java.util.Map">
+        <![CDATA[
+        insert into SNS_FOLLOW values(#{followId},#{loginId},#{followerUserId})
+        ]]>
+    </insert>
+
+    <!-- 팔로우한 닉네임 리스트 -->
+    <select id="getfollowList" parameterType="String" resultType="String">
+        <![CDATA[
+        select FOLLOWERUSERID from SNS_FOLLOW where USER_NICKNAME=#{loginNickname}
+        ]]>
+    </select>
+    
+    <delete id="deleteFollow" parameterType="java.util.Map">
+        <![CDATA[
+        delete from SNS_FOLLOW where USER_NICKNAME=#{loginId} and FOLLOWERUSERID=#{followingUserId}
+        ]]>
+    </delete>
 </mapper>

@@ -75,9 +75,11 @@ public class PostServiceImpl implements PostService {
         return dao.getTag(contentNo);
     }
 
+
+    // 댓글 리스트 가져오기
     @Override
-    public List<CommentDTO> getCommentList() {
-        return dao.getCommentList();
+    public List<CommentDTO> getCommentList(int postId) {
+        return dao.getCommentList(postId);
     }
 
     @Override
@@ -136,8 +138,39 @@ public class PostServiceImpl implements PostService {
         dao.deletePost(postId);
     }
 
+    // 프로필 이미지 이름 가져오기
     @Override
     public String getProfileImg(String userNickname) {
         return dao.getProfileImg(userNickname);
+    }
+
+    // 게시물의 좋아요 정보 가져오기
+    @Override
+    public List<String> getLikeInfo(int postId) {
+        return dao.getLikeInfo(postId);
+    }
+
+    // 대댓글의 commentId 가져오기
+    @Override
+    public List<Integer> getReplyComment(int commentId) {
+        return dao.getReplyComment(commentId);
+    }
+
+    // 팔로우 메서드
+    @Override
+    public void follow(Map<String, Object> followInfo) {
+        dao.follow(followInfo);
+    }
+
+    @Override
+    public List<String> getfollowList(String loginNickname) {
+        return dao.getfollowList(loginNickname);
+    }
+
+    // 팔로우 취소 메서드
+    @Override
+    public void deleteFollow(Map<String, Object> followingInfo) {
+        dao.delteFollow(followingInfo);
+        
     }
 }

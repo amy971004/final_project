@@ -73,6 +73,8 @@ dependencies {
     implementation ("com.sun.mail:jakarta.mail:2.0.1")
 
 
+    implementation("com.fasterxml.jackson.core:jackson-core:2.9.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.9.2")
 
 
 // 주석 처리된 의존성은 프로젝트 요구에 따라 해제하여 사용

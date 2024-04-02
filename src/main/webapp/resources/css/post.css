@@ -29,6 +29,7 @@ body {
 }
 .img-profile-32px {
     width: 32px;
+    height: 32px;
     border-radius: 100%;
     border: 1px solid #efefef;
 }
@@ -111,16 +112,12 @@ body {
 .post-comment {
     word-break:break-all;
 }
-.reply_comment {
-    font-size: 8px;
-    color: #A9A9A9;
-    margin: 0 0 0 15px;
-}
 /*좋아요 갯수*/
 .text-like {
     font-size: 13px;
     font-weight: bold;
     margin: 0 15px 10px 15px;
+    cursor: pointer;
 }
 
 form {
@@ -158,6 +155,7 @@ form {
 }
 .input-chat {
     width: 350px;
+    height: 20px;
     border: none;
 }
 .btn-chat {
@@ -221,8 +219,98 @@ form {
 .delete-word {
     margin: 16px 20px 16px 0;
 }
+/*---- 좋아요 모달창 ---*/
+.like_modal {
+    display: none;
+    position:fixed;
+    justify-content: center;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background-color: rgba(0,0,0,0.4);
+    z-index: 10000;
+}
+.like_modal_content {
+    position:fixed;
+    top:50%;
+    width:300px;
+    height:400px;
+    background-color: rgb(255,255,255);
+    border-radius:10px;
+    box-shadow:0 2px 3px 0 rgba(34,36,38,0.15);
+    transform:translateY(-50%);
+    justify-content: center;
+    margin-left:50px;
+}
+.like_modal_header {
+    display: flex;
+    height: 40px;
+    border: 1px solid #e1e1e1;
+    border-top-left-radius:10px;
+    border-top-right-radius: 10px;
+    justify-content: center;
+    align-items: center;
+}
+.like_header_none {
+    flex: 0 1 auto;
+}
+.like_header_subject {
+    text-align: center;
+    flex: 0 1 300px;
+    font-weight: bold;
+}
+.like_header_closebtn {
+    flex : 0 1 auto;
+}
+.like_header_closebtn > span {
+    position: absolute;
+    margin: -8px 0 0 -20px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
-/* ---  모달창  ----*/
+.like_modal_body {
+    width: 100%;
+    height: 360px;
+    align-items: center;
+    overflow-y: scroll;
+}
+/*좋아요 모달 스크롤 숨기기*/
+.like_modal_body::-webkit-scrollbar {
+    display: none;
+}
+.like_article {
+    justify-content: space-between;
+    margin: 10px 10px 0 10px;
+    display: flex;
+}
+.like_profile {
+    display: flex;
+}
+.like_nickName {
+    font-weight: bold;
+    margin: 7px 0 0 10px;
+}
+.follow_btn {
+    width: 60px;
+    height: 30px;
+    background-color: #458eff;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+}
+.following_btn {
+    width: 60px;
+    height: 30px;
+    background-color: #A9A9A9;
+    border: none;
+    border-radius: 5px;
+    color: black;
+    font-weight: bold;
+}
+/* ---  댓글 모달창  ----*/
 .modal {
     display: none;
     position:fixed;
@@ -238,22 +326,127 @@ form {
     position: absolute;
     color: white;
     font-size: 20px;
-    margin-right: 30px;
+    right: 20px;
+    top:20px;
+    cursor: pointer;
 }
 
 .modal_content {
-    position:absolute;
+    position:fixed;
     top:50%;
     width:500px;
-    height:600px;
-    padding:40px;
-    text-align: center;
+    height:750px;
     background-color: rgb(255,255,255);
     border-radius:10px;
     box-shadow:0 2px 3px 0 rgba(34,36,38,0.15);
     transform:translateY(-50%);
+    justify-content: center;
+    margin-left:50px;
 }
 
 .modal_header {
     display: flex;
+    height: 64px;
+    border: 1px solid #e1e1e1;
+    border-top-left-radius:10px;
+    border-top-right-radius: 10px;
+    justify-content: space-between;
+    align-items: center;
+
+}
+.modal_header_feed {
+    display: flex;
+    align-items: center;
+}
+.modal_profile {
+
+    padding: 15px;
+}
+/*모달창 프로필 이미지 사이즈 */
+.modal_profile_32px {
+    width: 32px;
+    height: 32px;
+    border-radius: 100%;
+    border: 1px solid #efefef;
+}
+/*모달창 헤더 닉네임*/
+.modal_nickname {
+    padding:15px 0;
+    font-weight: bold;
+}
+/*모달창 상단 메뉴*/
+.modal_menu_icon {
+    margin: 0 20px 0 0;
+    font-size: 1.5rem;
+    cursor: pointer;
+    &:hover{
+        color:#d5dee8;
+    }
+}
+
+/*모달 바디*/
+.modal_body {
+    margin: 5px;
+    align-items: center;
+    overflow-y: scroll;
+    width: 490px;
+    height: 620px;
+}
+/*모달창 스크롤러 숨기기*/
+.modal_body::-webkit-scrollbar {
+    display: none;
+}
+.modal_comment_box {
+    margin: 2.5px 10px 10px 0;
+    display: flex;
+    /*align-items: center;*/
+   /* overflow: auto;*/
+}
+.modal_comment_replybox {
+    margin: 2.5px 10px 10px 0;
+    display: none;
+}
+
+/*모달 바디 프로필사진*/
+.modal_comment_profileImage{
+    padding: 5px 15px 0 15px;
+}
+.modal_comment_content {
+    /*display: flex;*/
+    align-items: center;
+}
+.modal_comment_nickname {
+    font-weight: bold;
+}
+.modal_comment {
+  /*  padding:0 10px;*/
+    word-break: break-all;
+    margin: 3px 0 0 0;
+}
+/*답글달기*/
+.modal_replycomment{
+    font-size: 13px;
+    color: #A9A9A9;
+    cursor: pointer;
+    margin: 5px 0 0 0;
+}
+.show_more_reply_comment {
+    font-size: 13px;
+    color: #A9A9A9;
+    cursor: pointer;
+    margin: 10px 0 0 0;
+}
+/*모달창 댓글*/
+.modal_box_chat{
+    position: fixed;
+    bottom: 0;
+    border-top: 1px solid #e1e1e1;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+}
+.modal_input-chat {
+    width: 400px;
+    height: 25px;
+    border: none;
 }

@@ -7,4 +7,5 @@ public class Comment2DTO {
     private String comment;
     private int postId;
     private String loginNickname;
+    private int parentNo;
 }

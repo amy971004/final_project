@@ -33,7 +33,8 @@ public interface PostDAO {
 
     List<String> getTag(int contentNo);
 
-    List<CommentDTO> getCommentList();
+    // 댓글 리스트 가져오기
+    List<CommentDTO> getCommentList(int postId);
 
     int likeCnt(int contentNo);
 
@@ -69,4 +70,19 @@ public interface PostDAO {
 
     // 프로필 이미지 가져오기
     String getProfileImg(String userNickname);
+
+    // 게시물 좋아요 정보 가져오기
+    List<String> getLikeInfo(int postId);
+
+    // 대댓글의 commentId 가져오기
+    List<Integer> getReplyComment(int commentId);
+
+    // 팔로우 메서드
+    void follow(Map<String, Object> followInfo);
+
+    // 팔로우한 닉네임 가져오기
+    List<String> getfollowList(String loginNickname);
+
+    // 팔로우 취소 메서드
+    void delteFollow(Map<String, Object> followingInfo);
 }

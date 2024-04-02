@@ -152,7 +152,7 @@ public class PostControllerImpl implements PostController {
 
         // 전체 게시물 가져오기
         List<PostDTO> postList = service.postList(); // 기본 게시물 리스트
-        List<CommentDTO> commentList = service.getCommentList(); // 전체 댓글 가져오기
+     //   List<CommentDTO> commentList = service.getCommentList(); // 전체 댓글 가져오기
         List<ImageDTO> imageList = service.getImageList(); // 전체 이미지 정보 가져오기
 
         List<TagDTO> tagsList = new ArrayList<>(); //태그 저장하는 리스트
@@ -185,7 +185,7 @@ public class PostControllerImpl implements PostController {
         postMap.put("postList", postList); // 게시물리스트
         postMap.put("tagsList", tagsList); // 태그리스트
         postMap.put("likeBookList", likeBookList); // 좋아요, 북마크 여부 리스트
-        postMap.put("commentList", commentList); // 전체 댓글 리스트
+      //  postMap.put("commentList", commentList); //전체 댓글 리스트
         postMap.put("imageList", imageList); // 전체 이미지 정보
         mav.addObject("postMap", postMap);
         mav.addObject("loginNickname", loginNickname);
@@ -233,25 +233,15 @@ public class PostControllerImpl implements PostController {
 
     @ResponseBody
     @RequestMapping(value = "/inputComment.do", method = RequestMethod.GET)
-    // 댓글 저장 메서드
+    // 댓글, 대댓글 저장 메서드
     public String inputComment(Comment2DTO comment2DTO) {
-        System.out.println(comment2DTO.getComment());
-        System.out.println(comment2DTO.getPostId());
-        System.out.println(comment2DTO.getLoginNickname());
-
-        //CommentDTO comment = new CommentDTO();
-//        comment.setPostComment(comment2DTO.getComment());
-//        comment.setPostId(comment2DTO.getPostId());
-//        comment.setUser_Nickname(comment2DTO.getLoginNickname());
-//        comment.setParentNo(0);
         Map<String, Object> comment = new HashMap<>();
         comment.put("postComment", comment2DTO.getComment());
         comment.put("postId", comment2DTO.getPostId());
         comment.put("loginNickname", comment2DTO.getLoginNickname());
-        comment.put("parentNo", 0);
+        comment.put("parentNo", comment2DTO.getParentNo());
 
         service.inputComment(comment);
-
 
         return "success";
     }
@@ -323,13 +313,13 @@ public class PostControllerImpl implements PostController {
             service.deletePost(postId);
             message = "<script>";
             message += "alert('게시물이 삭제 되었습니다.');";
-            message += "location.href='/post/mainPost.do';";
+            message += "location.href='/main/post/mainPost.do';";
             message += "</script>";
             resEnt = new  ResponseEntity(message, responseHeaders, HttpStatus.OK);
         }catch (Exception e){
             message = "<script>";
             message += "alert('게시물이 삭제되지 않았습니다. 다시 시도해 주세요.');";
-            message += "location.href='/post/mainPost.do';";
+            message += "location.href='/main/post/mainPost.do';";
             message += "</script>";
             resEnt = new  ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
             e.printStackTrace();
@@ -337,5 +327,63 @@ public class PostControllerImpl implements PostController {
         return resEnt;
     }
 
+    // postId의 좋아요 정보 가져오는 메서드
+    @ResponseBody
+    @RequestMapping(value = "/getLikeInfo.do", method = RequestMethod.GET)
+    public Map<String,Object> getLikeInfo(int postId, String loginNickname) {
+        System.out.println(loginNickname);
+        System.out.println(postId);
 
+        List<String> likeInfo = service.getLikeInfo(postId);
+        List<String> followList = service.getfollowList(loginNickname);
+        Map<String, Object> like_modal = new HashMap<>();
+        like_modal.put("likeInfo",likeInfo);
+        like_modal.put("followList",followList);
+        for(String s : likeInfo){
+            System.out.println(s);
+        }
+        for(String a : followList){
+            System.out.println(a);
+        }
+
+        return like_modal;
+    }
+    // 댓글 commentId 가져오기
+    @ResponseBody
+    @RequestMapping(value = "/getReplyComment.do", method = RequestMethod.GET)
+    public List<Integer> getReplyComment(int commentId) {
+        List<Integer> replyCommentId = service.getReplyComment(commentId);
+
+        return replyCommentId;
+    }
+
+    // 좋아요 모달창 -> 팔로우 클릭 -> 팔로우 저장 메서드
+    @ResponseBody
+    @RequestMapping(value = "/follow.do", method = RequestMethod.GET)
+    public void follow(String loginId, String followId) {
+        Map<String,Object> followInfo = new HashMap<>();
+        followInfo.put("loginId",loginId);
+        followInfo.put("followerUserId",followId);
+        service.follow(followInfo);
+
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/deleteFollow.do", method = RequestMethod.GET)
+    public void deleteFollow(String loginId, String followingId) {
+        Map<String,Object> followingInfo = new HashMap<>();
+        followingInfo.put("loginId",loginId);
+        followingInfo.put("followingUserId",followingId);
+        service.deleteFollow(followingInfo);
+
+    }
+
+    // 댓글 정보 가져오기
+    @ResponseBody
+    @RequestMapping(value = "/getComment.do", method = RequestMethod.GET)
+    public List<CommentDTO> getComment(int postId) {
+        System.out.println(postId);
+        List<CommentDTO> comment = service.getCommentList(postId);
+        return comment;
+    }
 }
