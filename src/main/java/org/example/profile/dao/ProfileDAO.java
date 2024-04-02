@@ -26,7 +26,5 @@ public interface ProfileDAO {
 
     List<LikeDTO> likeView();
 
-    String getuserNickname(String accountId);
-
     List<LikeDTO> likes(String postId);
 }

@@ -374,4 +374,67 @@ Remove or comment-out the code block below to see how the browser will fall-back
             margin: 0;
         }
     }
+    /* modal */
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-dialog {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        position: relative;
+        width: 400px;
+        height: 500px;
+        background: white;
+        padding: 24px 16px;
+        border-radius: 4px;
+        overflow-y: auto;
+
+    }
+
+    .modal_table{
+        width:100%;
+        height: 300px;
+
+    }
+    .modal-title {
+        display: inline-block;
+        font-size: 24px;
+        font-weight: bold;
+        text-align:left;
+    }
+    #modal-close {
+        position: absolute;
+        top: 24px;
+        right: 16px;
+        cursor: pointer;
+    }
+    #modal_userImg{
+        width:50px;
+        height:50px;
+        border-radius: 75%;
+    }
+    #modal_userID{
+
+        width:200px;
+    }
+    #modal_userFollow{
+        margin:10px;
+        text-align: right;
+        right: 16px;
+    }
 }

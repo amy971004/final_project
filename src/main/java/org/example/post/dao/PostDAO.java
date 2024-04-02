@@ -86,5 +86,5 @@ public interface PostDAO {
     // 팔로우 취소 메서드
     void delteFollow(Map<String, Object> followingInfo);
 
-    String findUserId(String userNickname);
+    String findUserAccountId(String userNickname);
 }

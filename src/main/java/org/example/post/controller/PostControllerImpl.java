@@ -272,10 +272,10 @@ public class PostControllerImpl implements PostController {
     @RequestMapping("profileImageDownload.do")
     public void profileImageDownload(@RequestParam("userNickname") String userNickname,
                               HttpServletResponse response) throws Exception {
-        String userId = service.findUserId(userNickname);
+        String accountId = service.findUserAccountId(userNickname);
         String profileImg = service.getProfileImg(userNickname);
         OutputStream out = response.getOutputStream();
-        String downFile = PROFILE_IMAGE_PATH + "\\" + userId + "\\" + profileImg;
+        String downFile = PROFILE_IMAGE_PATH + "\\" + accountId + "\\" + profileImg;
         File file = new File(downFile);
 
         response.setHeader("Cache-Control", "no-cache");

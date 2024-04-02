@@ -126,14 +126,13 @@ public class ProfileControllerImpl implements ProfileController{
     public ModelAndView upload(String content, MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
         String accountId = (String) session.getAttribute("accountID");
-        String userId = service.profileView(accountId).getUserId();
         String fileName = "";
         ModelAndView mav = new ModelAndView("redirect:/main/profile/profileView.do");
 
         try {
             // editImg.jsp 에서 선택된 파일이 있다면 메서드 실행
             if (!file.isEmpty()) {
-                fileName = uploadFile(file, userId);
+                fileName = uploadFile(file, accountId);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -155,11 +154,11 @@ public class ProfileControllerImpl implements ProfileController{
         return mav;
     }
 
-    private String uploadFile(MultipartFile file, String userId) throws IOException {
+    private String uploadFile(MultipartFile file, String accountId) throws IOException {
         String fileName = "";
         String originalFilename = file.getOriginalFilename();
         String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
-        String UPLOAD_DIR = BOARD_REPO + "\\" + userId + "\\";
+        String UPLOAD_DIR = BOARD_REPO + "\\" + accountId + "\\";
         Path directory = Paths.get(UPLOAD_DIR);
         // 경로에 사용자의 accountId로 하는 디렉터리가 없다면 디렉터리 생성
         if (!Files.exists(directory)) {
@@ -178,11 +177,11 @@ public class ProfileControllerImpl implements ProfileController{
     @Override
     @RequestMapping("/main/profile/download.do")
     public void download(String imageFileName,
-                         String userId,
+                         String accountId,
                          HttpServletResponse response,
                          HttpServletRequest request) throws Exception{
         OutputStream out = response.getOutputStream();
-        String downFile = BOARD_REPO + "\\" + userId + "\\" + imageFileName;
+        String downFile = BOARD_REPO + "\\" + accountId + "\\" + imageFileName;
         File file = new File(downFile);
 
         response.setHeader("Cache-Control", "no-cache");

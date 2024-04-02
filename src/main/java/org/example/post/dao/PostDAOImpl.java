@@ -207,8 +207,8 @@ public class PostDAOImpl implements PostDAO {
 
 
     @Override
-    public String findUserId(String userNickname) {
-        return sqlSession.selectOne("mapper.profile.findUserId", userNickname);
+    public String findUserAccountId(String userNickname) {
+        return sqlSession.selectOne("mapper.profile.findUserAccountId", userNickname);
     }
 
 }

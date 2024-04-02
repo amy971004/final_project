@@ -53,7 +53,7 @@ public interface PostService {
     // 유저 프로필 이미지 가져오기
     String getProfileImg(String userNickname);
 
-    String findUserId(String userNickname);
+    String findUserAccountId(String userNickname);
 
     // 게시물의 좋아요 정보 가져오기
     List<String> getLikeInfo(int postId);

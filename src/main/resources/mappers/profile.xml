@@ -29,7 +29,7 @@
     <resultMap id="commentResult" type="commentDTO">
         <result property="postId" column="POSTID" />
         <result property="level" column="LEVEL" />
-        <result property="articleNo" column="COMMENTID" />
+        <result property="commentId" column="COMMENTID" />
         <result property="parentNo" column="PARENTNO" />
         <result property="postComment" column="POSTCOMMENT" />
         <result property="writeDate" column="WRITEDATE" />
@@ -69,11 +69,6 @@
         SELECT COUNT(*) FROM users WHERE USER_NICKNAME = #{userNickname}
     </select>
 
-    <!-- 닉네임 가져오기 -->
-    <select id="getuserNickname" parameterType="String" resultType="String">
-        select USER_NICKNAME from users where ACCOUNT_ID=#{accountId}
-    </select>
-
     <!--프로필 정보 수정 -->
     <update id="updateProfile" parameterType="profileDTO">
         update users set USER_ID=#{userId}, USER_NAME=#{userName}, USER_EMAIL=#{email},
@@ -88,9 +83,13 @@
         where ACCOUNT_ID = #{accountId}
     </update>
 
+    <select id="findUserAccountId" parameterType="String" resultType="String">
+        select ACCOUNT_ID from USERS where USER_NICKNAME=#{userNickname}
+    </select>
+<!--
     <select id="findUserId" parameterType="String" resultType="String">
         select USER_ID from USERS where USER_NICKNAME=#{userNickname}
-    </select>
+    </select>-->
 
     <select id="postView" parameterType="String" resultMap="postResult">
         select * from SNS_POST where USER_NICKNAME = #{userNickname}

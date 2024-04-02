@@ -62,11 +62,6 @@ public class ProfileServiceImpl implements ProfileService{
     }
 
     @Override
-    public String getuserNickname(String accountId) {
-        return dao.getuserNickname(accountId);
-    }
-
-    @Override
     public List<LikeDTO> likes(String postId) {
         return dao.likes(postId);
     }

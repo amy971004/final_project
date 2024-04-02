@@ -12,64 +12,6 @@
 <link rel="stylesheet" href="../../resources/css/nav.css">
 <c:set var="contextPath" value="${pageContext.request.contextPath }" />
 
-<style>
-    /* modal */
-    .modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 9999;
-        background: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .modal-content {
-        position: relative;
-        width: 400px;
-        height: 500px;
-        background: white;
-        padding: 24px 16px;
-        border-radius: 4px;
-        overflow-y: auto;
-
-    }
-
-    .modal_table{
-        width:100%;
-        height: 300px;
-
-    }
-    .modal-title {
-        display: inline-block;
-        font-size: 24px;
-        font-weight: bold;
-        text-align:left;
-    }
-    #modal-close {
-        position: absolute;
-        top: 24px;
-        right: 16px;
-        cursor: pointer;
-    }
-    #modal_userImg{
-        width:50px;
-        height:50px;
-        border-radius: 75%;
-    }
-    #modal_userID{
-
-        width:200px;
-    }
-    #modal_userFollow{
-        margin:10px;
-        text-align: right;
-        right: 16px;
-    }
-</style>
-
 <body>
 
 
@@ -103,7 +45,7 @@
                         <img src="/resources/img/profile/defaultProfile.png" alt=""/>
                     </c:when>
                     <c:otherwise>
-                        <img src="${contextPath}/main/profile/download.do?imageFileName=${profile.profileImg}&userId=${profile.userId}"  alt=""/>
+                        <img src="${contextPath}/main/profile/download.do?imageFileName=${profile.profileImg}&accountId=${profile.accountId}"  alt=""/>
                     </c:otherwise>
                 </c:choose>
 
@@ -212,7 +154,7 @@
 
 
 </main>
-<%--팔로우 모달창--%>
+<%--모달창--%>
 <div class="modal fade" id="followModal" style="display: none;">
     <div class="modal-dialog">
 
@@ -221,7 +163,7 @@
             <div class="modal-header">
                 <%--모달창의 header 부분에 해당한다.--%>
                 <h4 class="modal-title"></h4>
-                <button id="modal-close" type="button" class="close">×</button>
+                <button id="modal-close" type="button" class="close">닫기</button>
             </div>
             <hr>
             <div class="modal-body">
@@ -286,7 +228,7 @@
         let likesListHTML = '';
         likesData.forEach(function (like) {
             likesListHTML += '<tr>';
-            likesListHTML += '<td style="width:70px;"><img id="modal_userImg" src="' + contextPath + '/main/post/profileImageDownload.do?userNickname=' + like.user_nickname + '" alt=""></td>';
+            likesListHTML += '<td style="width:70px; font-size: 24px;"><img id="modal_userImg" src="' + contextPath + '/main/post/profileImageDownload.do?userNickname=' + like.user_nickname + '" alt=""></td>';
             likesListHTML += '<td id="modal_userID">' + like.user_nickname +'</td>';
             likesListHTML += '<td id="modal_userFollow"><button class="btn btn-outline-primary" value="' + like.user_nickname + '">팔로우</button></td>';
             likesListHTML += '</tr>';

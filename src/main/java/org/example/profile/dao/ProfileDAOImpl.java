@@ -64,11 +64,6 @@ public class ProfileDAOImpl implements ProfileDAO{
     }
 
     @Override
-    public String getuserNickname(String accountId) {
-        return sqlSession.selectOne("mapper.profile.getuserNickname", accountId);
-    }
-
-    @Override
     public List<LikeDTO> likes(String postId) {
         return sqlSession.selectList("mapper.profile.likes", postId);
     }

@@ -175,7 +175,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public String findUserId(String userNickname) {
-        return dao.findUserId(userNickname);
+    public String findUserAccountId(String userNickname) {
+        return dao.findUserAccountId(userNickname);
     }
 }
