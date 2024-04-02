@@ -63,9 +63,7 @@ img {
 /* Profile Section */
 
 .profile {
-    padding-top: 5rem;
-    padding-bottom: 5rem;
-    padding-left: 50px;
+    padding: 5rem 0;
 }
 
 .profile::after {
@@ -76,17 +74,15 @@ img {
 
 .profile-image {
     float: left;
-    width: 179px; /* 가로 길이를 179px로 설정합니다. */
-    height: 179px; /* 세로 길이를 179px로 설정합니다. */
+    width: calc(33.333% - 2rem);
     display: flex;
     justify-content: center;
     align-items: center;
     margin-right: 3rem;
-    overflow: hidden;
-    position: relative;
-    border-radius: 70%;
-    min-height: 120px;
-    min-width: 120px;
+}
+
+.profile-image img {
+    border-radius: 50%;
 }
 
 .profile-user-settings,
@@ -182,40 +178,21 @@ img {
     left: 0;
     width: 100%;
 }
-
-/*.gallery-item:hover .gallery-item-info,
-.gallery-item:focus .gallery-item-info {
+.location-feed{
+    color: black;
+    font-size: 12px;
+}
+ul {
+    list-style: none; /* 리스트 마커 제거 */
+    padding: 0; /* 내부 패딩 제거 */
+    margin: 0; /* 외부 여백 제거 */
     display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 0;
-    width: 80%;
-    height: 80%;
-    background-color: rgba(0, 0, 0, 0.3);
-}*/
-
-/*.gallery-item-info {
-    display: none;
+}
+ul li {
+    margin-right: 10px; /* 리스트 아이템 사이 간격 설정 */
+    color:black;
 }
 
-.gallery-item-info li {
-    display: inline-block;
-    font-size: 1.7rem;
-    font-weight: 600;
-}
-
-.gallery-item-likes {
-    margin-right: 2.2rem;
-}
-
-.gallery-item-type {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    font-size: 2.5rem;
-    text-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.1);
-}*/
 
 .fa-clone,
 .fa-comment {
@@ -224,8 +201,9 @@ img {
 
 .gallery-image {
     width: 100%;
-    height: 100%;
+    height: 92%;
     object-fit: cover;
+
 }
 
 /* Loader */
@@ -253,6 +231,7 @@ img {
         display: none;
     }
 
+    .profile-image,
     .profile-user-settings,
     .profile-bio,
     .profile-stats {
@@ -261,14 +240,9 @@ img {
     }
 
     .profile-image img {
-        width: 100%; /* 이미지의 가로 길이를 179px로 설정합니다. */
-        height: 100%; /* 이미지의 세로 길이를 179px로 설정합니다. */
-        position: absolute; /* 이미지를 부모 요소 내에 절대 위치로 설정합니다. */
+        width: 100px; /* 원하는 크기로 조절 */
+        height: 100px; /* 원하는 크기로 조절 */
         object-fit: cover;
-        top: 50%; /* 부모 요소의 위에서부터 절반 위치로 설정합니다. */
-        left: 50%; /* 부모 요소의 왼쪽에서부터 절반 위치로 설정합니다. */
-        transform: translate(-50%, -50%); /* 이미지의 중심을 부모 요소의 중심으로 이동시킵니다. */
-        border-radius: 50%; /* 이미지를 원형으로 만듭니다. */
     }
 
     .profile-user-settings {
@@ -360,6 +334,7 @@ Remove or comment-out the code block below to see how the browser will fall-back
         grid-gap: 2rem;
     }
 
+    .profile-image,
     .profile-user-settings,
     .profile-stats,
     .profile-bio,

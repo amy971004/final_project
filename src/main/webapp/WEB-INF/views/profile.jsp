@@ -12,7 +12,67 @@
 <link rel="stylesheet" href="../../resources/css/nav.css">
 <c:set var="contextPath" value="${pageContext.request.contextPath }" />
 
+<style>
+    /* modal */
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .modal-content {
+        position: relative;
+        width: 400px;
+        height: 500px;
+        background: white;
+        padding: 24px 16px;
+        border-radius: 4px;
+        overflow-y: auto;
+
+    }
+
+    .modal_table{
+        width:100%;
+        height: 300px;
+
+    }
+    .modal-title {
+        display: inline-block;
+        font-size: 24px;
+        font-weight: bold;
+        text-align:left;
+    }
+    #modal-close {
+        position: absolute;
+        top: 24px;
+        right: 16px;
+        cursor: pointer;
+    }
+    #modal_userImg{
+        width:50px;
+        height:50px;
+        border-radius: 75%;
+    }
+    #modal_userID{
+
+        width:200px;
+    }
+    #modal_userFollow{
+        margin:10px;
+        text-align: right;
+        right: 16px;
+    }
+</style>
+
 <body>
+
+
 <div class="logo">
     <a href="#" class="no-underline" style="padding-top: 20px; font-size: 25px">L</a>
     <!-- 홈 -->
@@ -59,10 +119,15 @@
             </div>
 
             <div class="profile-stats">
+                <c:set var="postCount" value="0" />
+                <c:forEach var="post" items="${profileMap.postDTO}">
+                    <c:set var="postCount" value="${postCount + 1}" />
+                </c:forEach>
 
-                <ul>
-                    <li><span class="profile-stat-count">164</span> posts</li>
-                    <li><span class="profile-stat-count">188</span> followers</li>
+
+                <ul class="profile-count">
+                    <li><span class="profile-stat-count">${postCount}</span> posts</li>
+                    <li id="follower"><span  class="profile-stat-count">188</span> followers</li>
                     <li><span class="profile-stat-count">206</span> following</li>
                 </ul>
 
@@ -86,32 +151,151 @@
 
 <main style="margin-top: 10px">
 
+
+
     <div class="container">
-
         <div class="gallery">
+            <c:forEach var="post" items="${profileMap.postDTO}">
+                <div class="gallery-item" tabindex="0" data-postId="${post.postId}">
+                    <c:forEach var="image" items="${profileMap.imageDTO}">
+                        <c:if test="${post.postId eq image.postId}">
+                            <img src="${contextPath}/main/post/imageDownload.do?imageFileName=${image.fileName}&postId=${post.postId}" class="gallery-image" alt="">
+                        </c:if>
+                    </c:forEach>
+                    <div class="gallery-item-info">
+                        <p class="location-feed">${post.content}</p>
+                        <ul>
+                            <c:set var="likeCount" value="0" />
+                            <c:forEach var="like" items="${profileMap.likeDTO}">
+                                <c:if test="${post.postId eq like.postId}">
+                                    <c:set var="likeCount" value="${likeCount + 1}" />
+                                </c:if>
+                            </c:forEach>
+                            <li class="gallery-item-likes" data-postId="${post.postId}"><span class="visually-hidden">Likes: </span>
+                                <i class="fas fa-heart" aria-hidden="true"></i>
+                                <c:choose>
+                                    <c:when test="${likeCount == null}}">
+                                        0
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${likeCount}
+                                    </c:otherwise>
+                                </c:choose>
+                            </li>
 
-            <div class="gallery-item" tabindex="0">
-                <img src="/resources/img/backImg.jpg" class="gallery-image" alt="">
-                <div class="gallery-item-info">
+                            <c:set var="commentCount" value="0" />
+                            <c:forEach var="comment" items="${profileMap.commentDTO}">
+                                <c:if test="${post.postId eq comment.postId}">
+                                    <c:set var="commentCount" value="${commentCount + 1}" />
+                                </c:if>
+                            </c:forEach>
+                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true">
 
-                    <ul>
-                        <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 56</li>
-                        <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 2</li>
-                    </ul>
-
+                            </i>
+                                <c:choose>
+                                    <c:when test="${commentCount == null}}">
+                                        0
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${commentCount}
+                                    </c:otherwise>
+                                </c:choose>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-
-            </div>
-
-
-
+            </c:forEach>
             <!-- End of gallery -->
-
         </div>
         <!-- End of container -->
     </div>
+
+
 </main>
+<%--팔로우 모달창--%>
+<div class="modal fade" id="followModal" style="display: none;">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <%--모달창의 header 부분에 해당한다.--%>
+                <h4 class="modal-title"></h4>
+                <button id="modal-close" type="button" class="close">×</button>
+            </div>
+            <hr>
+            <div class="modal-body">
+                <%--모달창의 가운데 내용이 들어가는 곳이다.--%>
+                <table class="modal_table">
+
+
+                </table>
+            </div>
+            <div id="count" value="1"></div>
+        </div>
+    </div>
+</div>
+
 <script>
+    /* 팔로워 모달창*/
+    /*팔로워 버튼 클릭*/
+    const open = document.getElementById("follower");
+    const close = document.getElementById("modal-close");
+    const modal = document.querySelector(".modal");
+
+    open.addEventListener('click', function (){
+        $('.modal-title').text("팔로우");
+        modal.style.display = "flex";
+    });
+
+    close.addEventListener('click', function (){
+        modal.style.display = "none";
+    });
+
+    /* 좋아요 모달창*/
+    $('.gallery-item-likes').on('click', function (){
+        const postId = $(this).closest('.gallery-item')[0].getAttribute('data-postId');
+        $('.modal-title').text("좋아요");
+        console.log("postId : "+ postId);
+        $.ajax({
+            url: '/main/profile/likes.do',
+            type: 'POST',
+            data: { postId: postId }, // 서버에 보낼 데이터
+            dataType: 'json', // 응답 데이터 형식
+            success: function(response) {
+                // 성공적으로 데이터를 받아왔을 때의 동작
+                // 받아온 데이터를 사용하여 모달 창에 좋아요를 누른 사용자의 리스트를 표시하는 함수 호출
+                displayLikesModal(response);
+            },
+            error: function(xhr, status, error) {
+                // 에러 발생 시 처리
+                console.error('데이터를 불러오는 중 에러 발생:', error);
+            }
+        });
+        modal.style.display = "flex";
+    });
+
+    close.addEventListener('click', function (){
+        modal.style.display = "none";
+    });
+
+    const contextPath = "${contextPath}";
+
+    function displayLikesModal(likesData) {
+        const modalBody = document.querySelector('.modal_table');
+        let likesListHTML = '';
+        likesData.forEach(function (like) {
+            likesListHTML += '<tr>';
+            likesListHTML += '<td style="width:70px;"><img id="modal_userImg" src="' + contextPath + '/main/post/profileImageDownload.do?userNickname=' + like.user_nickname + '" alt=""></td>';
+            likesListHTML += '<td id="modal_userID">' + like.user_nickname +'</td>';
+            likesListHTML += '<td id="modal_userFollow"><button class="btn btn-outline-primary" value="' + like.user_nickname + '">팔로우</button></td>';
+            likesListHTML += '</tr>';
+
+        });
+        modalBody.innerHTML = likesListHTML;
+    }
+
+
     $(document).ready(function() {
         let logoutBtn = $('#logoutBtn');
 

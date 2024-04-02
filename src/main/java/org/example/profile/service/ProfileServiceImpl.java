@@ -1,9 +1,13 @@
 package org.example.profile.service;
 
+import org.example.post.dto.*;
 import org.example.profile.dao.ProfileDAO;
 import org.example.profile.dto.ProfileDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProfileServiceImpl implements ProfileService{
@@ -35,5 +39,35 @@ public class ProfileServiceImpl implements ProfileService{
     @Override
     public int upload(ProfileDTO dto) {
         return dao.upload(dto);
+    }
+
+    @Override
+    public List<PostDTO> postView(String userNickname) {
+        return dao.postView(userNickname);
+    }
+
+    @Override
+    public List<ImageDTO> imageView() {
+        return dao.imageView();
+    }
+
+    @Override
+    public List<CommentDTO> commentView() {
+        return dao.commentView();
+    }
+
+    @Override
+    public List<LikeDTO> likeView() {
+        return dao.likeView();
+    }
+
+    @Override
+    public String getuserNickname(String accountId) {
+        return dao.getuserNickname(accountId);
+    }
+
+    @Override
+    public List<LikeDTO> likes(String postId) {
+        return dao.likes(postId);
     }
 }

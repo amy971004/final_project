@@ -3,14 +3,14 @@ package org.example.profile.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.example.post.dto.*;
 import org.example.profile.dto.ProfileDTO;
 import org.example.profile.service.ProfileService;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,6 +23,9 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -31,7 +34,7 @@ public class ProfileControllerImpl implements ProfileController{
     @Autowired
     private ProfileService service;
 
-    private static final String BOARD_REPO = "C:\\profile";
+    private static final String BOARD_REPO = "C:\\project\\profile";
 
     // 프로필 정보 띄우기
     @Override
@@ -42,8 +45,20 @@ public class ProfileControllerImpl implements ProfileController{
         response.setDateHeader("Expires", 0); // Proxies
         HttpSession session = request.getSession();
         ProfileDTO dto = service.profileView((String) session.getAttribute("accountID"));
+        List<PostDTO> postDTO = service.postView(dto.getUserNickname());
+        List<ImageDTO> imageDTO = service.imageView();
+        List<CommentDTO> commentDTO = service.commentView();
+        List<LikeDTO> likeDTO = service.likeView();
+
         ModelAndView mav = new ModelAndView("profile");
         mav.addObject("profile", dto);
+        Map<String, Object> profileMap = new HashMap<>();
+        profileMap.put("postDTO", postDTO);
+        profileMap.put("imageDTO", imageDTO);
+        profileMap.put("commentDTO", commentDTO);
+        profileMap.put("likeDTO", likeDTO);
+        mav.addObject("profileMap", profileMap);
+
         return mav;
     }
 
@@ -52,8 +67,7 @@ public class ProfileControllerImpl implements ProfileController{
     @RequestMapping("/main/profile/modprofile.do")
     public ModelAndView modprofile( HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
-        ProfileDTO dto = new ProfileDTO();
-        dto = service.profileView((String) session.getAttribute("accountID"));
+        ProfileDTO dto = service.profileView((String) session.getAttribute("accountID"));
         ModelAndView mav = new ModelAndView("modprofile");
         mav.addObject("modprofile", dto);
         mav.addObject("id", dto.getUserId());
@@ -91,7 +105,7 @@ public class ProfileControllerImpl implements ProfileController{
         String hashedPw = BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt());
         dto.setPassword(hashedPw);
         int result = service.updateProfile(dto);
-        return  new ModelAndView("redirect:/main/profile/profileView.do");
+        return new ModelAndView("redirect:/main/profile/profileView.do");
 
     }
 
@@ -145,7 +159,7 @@ public class ProfileControllerImpl implements ProfileController{
         String fileName = "";
         String originalFilename = file.getOriginalFilename();
         String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
-        String UPLOAD_DIR = "c:\\profile\\" + userId + "\\";
+        String UPLOAD_DIR = BOARD_REPO + "\\" + userId + "\\";
         Path directory = Paths.get(UPLOAD_DIR);
         // 경로에 사용자의 accountId로 하는 디렉터리가 없다면 디렉터리 생성
         if (!Files.exists(directory)) {
@@ -201,6 +215,12 @@ public class ProfileControllerImpl implements ProfileController{
         graphics2D.drawImage(originalImage, 0, 0, 179, 179, null);
         graphics2D.dispose();
         return resizedImage;
+    }
+
+    @PostMapping("/main/profile/likes.do")
+    public ResponseEntity<?> likes(@RequestParam("postId") String postId) throws Exception {
+        List<LikeDTO> likeuser = service.likes(postId);
+        return ResponseEntity.ok().body(likeuser);
     }
 
 }

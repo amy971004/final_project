@@ -2,6 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="header.jsp"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath }" />
 
 <!-- 슬라이더 -->
 <link href="../../resources/css/bxslider.css" rel="stylesheet">
@@ -55,7 +56,7 @@
                     <div class="profile-feed">
                         <img
                                 class="img-profile-32px"
-                                src="/main/post/profileImageDownload.do?userNickname=${post.userNickname}"
+                                src="${contextPath}/main/post/profileImageDownload.do?userNickname=${post.userNickname}"
                                 alt="프로필 이미지"
                         />
                         <div>

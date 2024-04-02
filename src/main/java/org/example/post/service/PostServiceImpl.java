@@ -140,4 +140,9 @@ public class PostServiceImpl implements PostService {
     public String getProfileImg(String userNickname) {
         return dao.getProfileImg(userNickname);
     }
+
+    @Override
+    public String findUserId(String userNickname) {
+        return dao.findUserId(userNickname);
+    }
 }

@@ -14,7 +14,47 @@
         <result property="introduction" column="INTRODUCTION" />
         <result property="role" column="USER_ROLE" />
     </resultMap>
+    <resultMap id="postResult" type="postDTO">
+        <result property="postId" column="postId" />
+        <result property="userNickname" column="USER_NICKNAME" />
+        <result property="content" column="content" />
+        <result property="uploadDate" column="uploadDate" />
+    </resultMap>
+    <resultMap id="imageResult" type="imageDTO">
+        <result property="postId" column="postId" />
+        <result property="imageNo" column="imageNo" />
+        <result property="fileName" column="fileName" />
+        <result property="filePath" column="filePath" />
+    </resultMap>
+    <resultMap id="commentResult" type="commentDTO">
+        <result property="postId" column="POSTID" />
+        <result property="level" column="LEVEL" />
+        <result property="articleNo" column="COMMENTID" />
+        <result property="parentNo" column="PARENTNO" />
+        <result property="postComment" column="POSTCOMMENT" />
+        <result property="writeDate" column="WRITEDATE" />
+        <result property="user_Nickname" column="USER_NICKNAME" />
+    </resultMap>
+    <resultMap id="likeResult" type="likeDTO">
+        <result property="likeId" column="LIKEID"/>
+        <result property="postId" column="POSTID"/>
+        <result property="user_nickname" column="USER_NICKNAME"/>
+        <result property="liketime" column="LIKETIME"/>
+    </resultMap>
+    <resultMap id="followResult" type="followDTO">
+        <result property="followId" column="FOLLOWID"/>
+        <result property="userNickname" column="USER_NICKNAME"/>
+        <result property="followUserId" column="FOLLOWERUSERID"/>
+    </resultMap>
+    <resultMap id="bookmarkResult" type="bookmarkDTO">
+        <result property="bookmarkId" column="BOOKMARKID"/>
+        <result property="userNickname" column="USER_NICKNAME"/>
+        <result property="postId" column="POSTID"/>
+        <result property="bookmarkTime" column="BOOKMARKTIME"/>
+    </resultMap>
 
+
+    <!-- 프로필 정보 -->
     <select id="profileView" parameterType="String" resultMap="profileResult">
         select * from users where ACCOUNT_ID = #{accountId}
     </select>
@@ -29,15 +69,47 @@
         SELECT COUNT(*) FROM users WHERE USER_NICKNAME = #{userNickname}
     </select>
 
+    <!-- 닉네임 가져오기 -->
+    <select id="getuserNickname" parameterType="String" resultType="String">
+        select USER_NICKNAME from users where ACCOUNT_ID=#{accountId}
+    </select>
+
+    <!--프로필 정보 수정 -->
     <update id="updateProfile" parameterType="profileDTO">
         update users set USER_ID=#{userId}, USER_NAME=#{userName}, USER_EMAIL=#{email},
                          USER_PW=#{password}, USER_NICKNAME=#{userNickname}, USER_BIRTHDAY=#{birthday}, USER_PHONENUMBER=#{phoneNumber}
         where ACCOUNT_ID = #{accountId}
+
     </update>
 
+    <!-- 프로필 이미지 & 소개 수정 -->
     <update id="upload" parameterType="profileDTO">
         update users set PROFILEIMG=#{profileImg}, INTRODUCTION=#{introduction}
         where ACCOUNT_ID = #{accountId}
     </update>
+
+    <select id="findUserId" parameterType="String" resultType="String">
+        select USER_ID from USERS where USER_NICKNAME=#{userNickname}
+    </select>
+
+    <select id="postView" parameterType="String" resultMap="postResult">
+        select * from SNS_POST where USER_NICKNAME = #{userNickname}
+    </select>
+
+    <select id="imageView" resultMap="imageResult">
+        select * from SNS_IMAGE
+    </select>
+
+    <select id="commentView" resultMap="commentResult">
+        select * from SNS_COMMENT
+    </select>
+
+    <select id="likeView" resultMap="likeResult">
+        select * from SNS_LIKE
+    </select>
+
+    <select id="likes" parameterType="String" resultMap="likeResult">
+        select * from SNS_LIKE where POSTID=${postId} order by LIKETIME desc
+    </select>
 
 </mapper>

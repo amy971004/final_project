@@ -165,4 +165,9 @@ public class PostDAOImpl implements PostDAO {
         return sqlSession.selectOne("mapper.post.getProfileImg",userNickname);
     }
 
+    @Override
+    public String findUserId(String userNickname) {
+        return sqlSession.selectOne("mapper.profile.findUserId", userNickname);
+    }
+
 }

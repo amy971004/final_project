@@ -1,6 +1,10 @@
 package org.example.profile.service;
 
+import org.example.post.dto.*;
 import org.example.profile.dto.ProfileDTO;
+
+import java.util.List;
+import java.util.Map;
 
 public interface ProfileService {
     ProfileDTO profileView(String accountID);
@@ -14,4 +18,16 @@ public interface ProfileService {
     int updateProfile(ProfileDTO member);
 
     int upload(ProfileDTO dto);
+
+    List<PostDTO> postView(String userNickname);
+
+    List<ImageDTO> imageView();
+
+    List<CommentDTO> commentView();
+
+    List<LikeDTO> likeView();
+
+    String getuserNickname(String accountId);
+
+    List<LikeDTO> likes(String postId);
 }

@@ -9,7 +9,10 @@
         <typeAlias type="org.example.post.dto.PostDTO" alias="postDTO"/>
         <typeAlias type="org.example.post.dto.ImageDTO" alias="imageDTO"/>
         <typeAlias type="org.example.post.dto.CommentDTO" alias="commentDTO"/>
+        <typeAlias type="org.example.post.dto.LikeDTO" alias="likeDTO"/>
         <typeAlias type="org.example.profile.dto.ProfileDTO" alias="profileDTO"/>
+        <typeAlias type="org.example.post.dto.FollowDTO" alias="followDTO"/>
+        <typeAlias type="org.example.post.dto.bookmarkDTO" alias="bookmarkDTO"/>
     </typeAliases>
 
 

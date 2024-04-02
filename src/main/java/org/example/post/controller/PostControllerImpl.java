@@ -26,9 +26,8 @@ import java.util.*;
 @Controller
 @RequestMapping("/main/post")
 public class PostControllerImpl implements PostController {
-    private String loginId = "테스트용";
-    private static final String IMAGE_PATH = "D:\\tomcat\\apache-tomcat-10.1.19\\webapps\\post\\post";
-    private static final String PROFILE_IMAGE_PATH ="C:\\profile";
+    private static final String IMAGE_PATH = "C:\\project\\post";
+    private static final String PROFILE_IMAGE_PATH ="C:\\project\\profile";
     // PostService 타입의 service 객체에 대한 의존성을 주입받습니다.
     // @Autowired 애노테이션을 통해 Spring이 자동으로 주입하게 합니다.
     @Autowired
@@ -47,9 +46,6 @@ public class PostControllerImpl implements PostController {
     @PostMapping("/upload.do")
     public void upload(String content, MultipartFile[] file,  HttpServletRequest request, HttpServletResponse response) throws Exception{
 
-        // 웹 접근 가능한 경로 내에 이미지 저장 폴더를 설정
-        String saveDirectory = request.getServletContext().getRealPath("/post/");
-        String saveDirectory2 = saveDirectory.replace("ROOT\\", "post\\");
 
         // 게시물 정보 저장
         Map<String, Object> postInfo = new HashMap<String, Object>();
@@ -60,13 +56,13 @@ public class PostControllerImpl implements PostController {
         int postNo = service.selectPostId();
 
         // 지정 경로에 폴더가 없으면 자동생성.
-        File directory = new File(saveDirectory2 + '/' + postNo);
+        File directory = new File(IMAGE_PATH + '/' + postNo);
         if (!directory.exists()) {
             boolean isCreated = directory.mkdirs(); // 디렉터리 생성 시도
             if (!isCreated) {
                 // 디렉터리 생성 실패에 대한 처리
                 // 예: 로깅, 예외 던지기 등
-                throw new IOException("Failed to create directory: " + saveDirectory2 + '/' + postNo);
+                throw new IOException("Failed to create directory: " + IMAGE_PATH + '/' + postNo);
             }
         }
 
@@ -78,7 +74,7 @@ public class PostControllerImpl implements PostController {
                 UUID uuid = UUID.randomUUID();
                 fileName = uuid + "_" + fileName;
                 // 파일 저장 경로 정의
-                String path = Paths.get(saveDirectory2 + '/' + postNo + '/' + fileName).toString();
+                String path = Paths.get(IMAGE_PATH + '/' + postNo + '/' + fileName).toString();
                 // 이미지 객체 생성 / 정보 저장
                 ImageDTO image = new ImageDTO();
                 image.setFileName(fileName);
@@ -114,7 +110,7 @@ public class PostControllerImpl implements PostController {
             // 예외 발생 시 이미지 파일 삭제
             if(imageFileInfo != null && imageFileInfo.size() != 0){
                 for(ImageDTO imageDTO : imageFileInfo){
-                    Path filePath = Paths.get(saveDirectory2 + '/' + postNo + '/' + imageDTO.getFileName());
+                    Path filePath = Paths.get(IMAGE_PATH + '/' + postNo + '/' + imageDTO.getFileName());
                     Files.delete(filePath);
                     System.out.println(imageDTO.getFileName());
                 }
@@ -286,9 +282,10 @@ public class PostControllerImpl implements PostController {
     @RequestMapping("profileImageDownload.do")
     public void profileImageDownload(@RequestParam("userNickname") String userNickname,
                               HttpServletResponse response) throws Exception {
+        String userId = service.findUserId(userNickname);
         String profileImg = service.getProfileImg(userNickname);
         OutputStream out = response.getOutputStream();
-        String downFile = PROFILE_IMAGE_PATH + "\\" + userNickname + "\\" + profileImg;
+        String downFile = PROFILE_IMAGE_PATH + "\\" + userId + "\\" + profileImg;
         File file = new File(downFile);
 
         response.setHeader("Cache-Control", "no-cache");

@@ -2,11 +2,15 @@ package org.example.profile.dao;
 
 import org.apache.ibatis.session.SqlSession;
 import org.example.member.dto.MemberDTO;
+import org.example.post.dto.*;
 import org.example.profile.dto.ProfileDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class ProfileDAOImpl implements ProfileDAO{
@@ -38,4 +42,35 @@ public class ProfileDAOImpl implements ProfileDAO{
     public int upload(ProfileDTO dto) {
         return sqlSession.update("mapper.profile.upload", dto);
     }
+
+    @Override
+    public List<PostDTO> postView(String userNickname) {
+        return sqlSession.selectList("mapper.profile.postView", userNickname);
+    }
+
+    @Override
+    public List<ImageDTO> imageView() {
+        return sqlSession.selectList("mapper.profile.imageView");
+    }
+
+    @Override
+    public List<CommentDTO> commentView() {
+        return sqlSession.selectList("mapper.profile.commentView");
+    }
+
+    @Override
+    public List<LikeDTO> likeView() {
+        return sqlSession.selectList("mapper.profile.likeView");
+    }
+
+    @Override
+    public String getuserNickname(String accountId) {
+        return sqlSession.selectOne("mapper.profile.getuserNickname", accountId);
+    }
+
+    @Override
+    public List<LikeDTO> likes(String postId) {
+        return sqlSession.selectList("mapper.profile.likes", postId);
+    }
+
 }
