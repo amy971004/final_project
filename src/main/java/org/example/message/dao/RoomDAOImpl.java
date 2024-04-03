@@ -44,6 +44,7 @@ public class RoomDAOImpl implements RoomDAO {
     @Override
     public void addParticipant(String roomId, String accountId, String userId, String userName) {
         // 2개 이상의 파라미터를 넘기기 위해 해시맵 사용
+        System.out.println("#################ROOMID : "+ roomId + "###################################");
         Map<String, Object> params = new HashMap<>();
         params.put("roomId", roomId);
         params.put("accountId", accountId);

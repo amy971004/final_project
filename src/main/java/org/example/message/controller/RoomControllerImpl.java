@@ -36,7 +36,7 @@ public class RoomControllerImpl implements RoomController{
     }
 
     @Override
-    @RequestMapping("/findRoom.do")
+    @PostMapping("/findRoom.do")
     public ModelAndView findRoom(@RequestParam("receiverId") String receiverId, HttpSession session) {
         // 세션에서 발신자의 accountId 가져오기
         String senderAccountId = (String) session.getAttribute("accountID");

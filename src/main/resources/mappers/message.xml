@@ -42,7 +42,7 @@
         values (
                    #{roomId}, #{senderId},
                    #{senderUserId}, #{senderUserName},
-                   #{messageText}, sysdate)
+                   #{messageText}, SYSDATE)
         ]]>
     </insert>
 

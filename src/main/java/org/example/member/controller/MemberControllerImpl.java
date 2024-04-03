@@ -40,7 +40,7 @@ public class MemberControllerImpl implements MemberController{
             session.setAttribute("ROLE", memberDTO.getROLE());
             session.setAttribute("accountID", memberDTO.getAccountID());
             // 로그인 성공 시 로그인 성공 테스트 페이지로 리다이렉트
-            return new ModelAndView("redirect:/main");
+            return new ModelAndView("redirect:/main/post/mainPost.do");
         } else{
             // 홈 페이지로 리다이렉트
             return new ModelAndView("redirect:/?warning=loginFail");

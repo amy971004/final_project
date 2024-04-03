@@ -1,294 +1,252 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+<%@ page import="org.example.post.dto.PostDTO" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="header.jsp"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath }" />
 
-<section id="container">
+<!-- 슬라이더 -->
+<link href="../../resources/css/bxslider.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+<%--<script src="http://code.jquery.com/jquery-latest.min.js"></script>--%>
 
-    <section id="main_container">
-        <div class="inner">
+<script src='../../resources/js/post.js'></script>
+<link href="../../resources/css/post.css" rel="stylesheet">
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script>
+    // 좋아요 목록 보기
+    function show_like_modal(postId, loginNickname) {
+        const modal = document.querySelector("#like_modal"+postId);
+        const body = document.getElementsByTagName('body');
+        body[0].style.overflow = 'hidden';
+        modal.style.display = 'flex';
 
-            <div class="contents_box">
-                <article class="contents">
-                    <header class="top">
-                        <div class="user_container">
-                            <div class="profile_img">
-                                <img src="../../resources/img/thumb.jpeg" alt="프로필이미지">
-                            </div>
-                            <div class="user_name">
-                                <div class="nick_name m_text">KindTiger</div>
-                                <div class="country s_text">Seoul, South Korea</div>
-                            </div>
+        // 해당 게시물의 좋아요 정보 가져오기
+        $.ajax({
+            type:"get",
+            url:"/main/post/getLikeInfo.do",
+            contentType: "application/json",
+            data: {
+                postId : postId,
+                loginNickname : loginNickname
+            },
+            success: function (data){
+                const like_article = document.querySelector("#like_modal_body"+postId);
+                let content = "";
+                let arr = [];
+                let like = data.likeInfo;
+                let follow = data.followList;
+                let cnt = data.followList.length;
+                for(let i=0;i<cnt;i++){
+                        if(like.includes(follow[i])){
+                            let like_article_content = "<div class='like_article'>";
+                            like_article_content += "<div class='like_profile'>";
+                            like_article_content += "<a href='${contextPath}/main/profile/userProfile.do?userNickname=" + follow[i] + "'>";
+                            like_article_content += "<img class='img-profile-32px' src='/main/post/profileImageDownload.do?userNickname="+follow[i]+"' alt='프로필이미지'>";
+                            like_article_content += "</a>";
+                            like_article_content += "<div class='like_nickName'>"+follow[i]+"</div></div>";
+                            like_article_content += "<input class='following_btn' type='button' value='팔로잉' onclick='following(\"${loginNickname}\",\""+follow[i]+"\",this)'></div>";
+                            content += like_article_content;
+                            arr.push(follow[i]);
 
-                        </div>
+                        }
+                }
+                // 팔로우 목록에 있는 닉네임을 좋아요 목록에서 제외
+                for(let j=0;j<arr.length;j++){
+                    like.splice(like.indexOf(arr[j]),1);
+                }
+                for(let i=0;i<like.length;i++){
+                    if(like[i] !== loginNickname){
+                        let like_article_content = "<div class='like_article'>";
+                        like_article_content += "<div class='like_profile'>";
+                        like_article_content += "<a href='${contextPath}/main/profile/userProfile.do?userNickname=" + like[i] + "'>";
+                        like_article_content += "<img class='img-profile-32px' src='/main/post/profileImageDownload.do?userNickname="+like[i]+"' alt='프로필이미지'>";
+                        like_article_content += "</a>";
+                        like_article_content += "<div class='like_nickName'>"+like[i]+"</div></div>";
+                        like_article_content += "<input class='follow_btn' type='button' value='팔로우' onclick='follow(\"${loginNickname}\",\""+like[i]+"\",this)'></div>";
+                        content += like_article_content;
+                    }else if(like[i] === loginNickname){
+                        let like_article_content = "<div class='like_article'>";
+                        like_article_content += "<div class='like_profile'>";
+                        like_article_content += "<a href='${contextPath}/main/profile/userProfile.do?userNickname=" + like[i] + "'>";
+                        like_article_content += "<img class='img-profile-32px' src='/main/post/profileImageDownload.do?userNickname="+like[i]+"' alt='프로필이미지'>";
+                        like_article_content += "</a>";
+                        like_article_content += "<div class='like_nickName'>"+like[i]+"</div></div></div>";
+                        content += like_article_content;
+                    }
+                }
 
-                        <div class="sprite_more_icon" data-name="more">
-                            <ul class="toggle_box">
-                                <li><input type="submit" class="follow" value="팔로우" data-name="follow"></li>
-                                <li>수정</li>
-                                <li>삭제</li>
-                            </ul>
-                        </div>
-                    </header>
-
-                    <div class="img_section">
-                        <div class="trans_inner">
-                            <div><img src="../../resources/img/img_section/img01.jpg" alt="visual01"></div>
-                        </div>
-                    </div>
-
-                    <div class="bottom_icons">
-                        <div class="left_icons">
-                            <div class="heart_btn">
-                                <div class="sprite_heart_icon_outline" name="39" data-name="heartbeat"></div>
-                            </div>
-                            <div class="sprite_bubble_icon"></div>
-                            <div class="sprite_share_icon" data-name="share"></div>
-                        </div>
-                        <div class="right_icon">
-                            <div class="sprite_bookmark_outline" data-name="bookmark"></div>
-                        </div>
-                    </div>
-
-                    <div class="likes m_text">
-                        좋아요
-                        <span id="like-count-39">2,346</span>
-                        <span id="bookmark-count-39"></span>
-                        개
-                    </div>
-
-                    <div class="comment_container">
-                        <div class="comment" id="comment-list-ajax-post37">
-                            <div class="comment-detail">
-                                <div class="nick_name m_text">dongdong2</div>
-                                <div>강아지가 너무 귀여워요~!</div>
-                            </div>
-                        </div>
-                        <div class="small_heart">
-                            <div class="sprite_small_heart_icon_outline"></div>
-                        </div>
-                    </div>
-
-                    <div class="timer">1시간 전</div>
-
-                    <div class="comment_field" id="add-comment-post37">
-                        <input type="text" placeholder="댓글달기...">
-                        <div class="upload_btn m_text" data-name="comment">게시</div>
-                    </div>
-                </article>
-                <article class="contents">
-                    <header class="top">
-                        <div class="user_container">
-                            <div class="profile_img">
-                                <img src="../../resources/img/thumb.jpeg"  alt="프로필이미지">
-                            </div>
-                            <div class="user_name">
-                                <div class="nick_name m_text">KindTiger</div>
-                                <div class="country s_text">Seoul, South Korea</div>
-                            </div>
-
-                        </div>
-
-                        <div class="sprite_more_icon" data-name="more">
-                            <ul class="toggle_box">
-                                <li><input type="submit" class="follow" value="팔로우" data-name="follow"></li>
-                                <li>수정</li>
-                                <li>삭제</li>
-                            </ul>
-                        </div>
-                    </header>
-
-                    <div class="img_section">
-                        <div class="trans_inner">
-                            <div><img src="../../resources/img/img_section/img01.jpg" alt="visual01"></div>
-                        </div>
-                    </div>
-
-                    <div class="bottom_icons">
-                        <div class="left_icons">
-                            <div class="heart_btn">
-                                <div class="sprite_heart_icon_outline" name="39" data-name="heartbeat"></div>
-                            </div>
-                            <div class="sprite_bubble_icon"></div>
-                            <div class="sprite_share_icon" data-name="share"></div>
-                        </div>
-                        <div class="right_icon">
-                            <div class="sprite_bookmark_outline" data-name="bookmark"></div>
-                        </div>
-                    </div>
-
-                    <div class="likes m_text">
-                        좋아요
-                        <span id="like-count-39">2,346</span>
-                        개
-                    </div>
-
-                    <div class="comment_container">
-                        <div class="comment" id="comment-list-ajax-post37">
-                            <div class="comment-detail">
-                                <div class="nick_name m_text">dongdong2</div>
-                                <div>강아지가 너무 귀여워요~!</div>
-                            </div>
-                        </div>
-                        <div class="small_heart">
-                            <div class="sprite_small_heart_icon_outline"></div>
-                        </div>
-                    </div>
-
-                    <div class="timer">1시간 전</div>
-
-                    <div class="comment_field" id="add-comment-post37">
-                        <input type="text" placeholder="댓글달기...">
-                        <div class="upload_btn m_text" data-name="comment">게시</div>
-                    </div>
-                </article>
-                <article class="contents">
-                    <header class="top">
-                        <div class="user_container">
-                            <div class="profile_img">
-                                <img src="../../resources/img/thumb.jpeg" alt="프로필이미지">
-                            </div>
-                            <div class="user_name">
-                                <div class="nick_name m_text">KindTiger</div>
-                                <div class="country s_text">Seoul, South Korea</div>
-                            </div>
-
-                        </div>
-
-                        <div class="sprite_more_icon" data-name="more">
-                            <ul class="toggle_box">
-                                <li><input type="submit" class="follow" value="팔로우" data-name="follow"></li>
-                                <li>수정</li>
-                                <li>삭제</li>
-                            </ul>
-                        </div>
-                    </header>
-
-                    <div class="img_section">
-                        <div class="trans_inner">
-                            <div><img src="../../resources/img/img_section/img01.jpg" alt="visual01"></div>
-                        </div>
-                    </div>
-
-                    <div class="bottom_icons">
-                        <div class="left_icons">
-                            <div class="heart_btn">
-                                <div class="sprite_heart_icon_outline" name="39" data-name="heartbeat"></div>
-                            </div>
-                            <div class="sprite_bubble_icon"></div>
-                            <div class="sprite_share_icon" data-name="share"></div>
-                        </div>
-                        <div class="right_icon">
-                            <div class="sprite_bookmark_outline" data-name="bookmark"></div>
-                        </div>
-                    </div>
-
-                    <div class="likes m_text">
-                        좋아요
-                        <span id="like-count-39">2,346</span>
-                        개
-                    </div>
-
-                    <div class="comment_container">
-                        <div class="comment" id="comment-list-ajax-post37">
-                            <div class="comment-detail">
-                                <div class="nick_name m_text">dongdong2</div>
-                                <div>강아지가 너무 귀여워요~!</div>
-                            </div>
-                        </div>
-                        <div class="small_heart">
-                            <div class="sprite_small_heart_icon_outline"></div>
-                        </div>
-                    </div>
-
-                    <div class="timer">1시간 전</div>
-
-                    <div class="comment_field" id="add-comment-post37">
-                        <input type="text" placeholder="댓글달기...">
-                        <div class="upload_btn m_text" data-name="comment">게시</div>
-                    </div>
-                </article>
-                <article class="contents">
-                    <header class="top">
-                        <div class="user_container">
-                            <div class="profile_img">
-                                <img src="../../resources/img/thumb.jpeg" alt="프로필이미지">
-                            </div>
-                            <div class="user_name">
-                                <div class="nick_name m_text">KindTiger</div>
-                                <div class="country s_text">Seoul, South Korea</div>
-                            </div>
-
-                        </div>
-
-                        <div class="sprite_more_icon" data-name="more">
-                            <ul class="toggle_box">
-                                <li><input type="submit" class="follow" value="팔로우" data-name="follow"></li>
-                                <li>수정</li>
-                                <li>삭제</li>
-                            </ul>
-                        </div>
-                    </header>
-
-                    <div class="img_section">
-                        <div class="trans_inner">
-                            <div><img src="../../resources/img/img_section/img01.jpg" alt="visual01"></div>
-                        </div>
-                    </div>
-
-                    <div class="bottom_icons">
-                        <div class="left_icons">
-                            <div class="heart_btn">
-                                <div class="sprite_heart_icon_outline" name="39" data-name="heartbeat"></div>
-                            </div>
-                            <div class="sprite_bubble_icon"></div>
-                            <div class="sprite_share_icon" data-name="share"></div>
-                        </div>
-                        <div class="right_icon">
-                            <div class="sprite_bookmark_outline" data-name="bookmark"></div>
-                        </div>
-                    </div>
-
-                    <div class="likes m_text">
-                        좋아요
-                        <span id="like-count-39">2,346</span>
-                        개
-                    </div>
-
-                    <div class="comment_container">
-                        <div class="comment" id="comment-list-ajax-post37">
-                            <div class="comment-detail">
-                                <div class="nick_name m_text">dongdong2</div>
-                                <div>강아지가 너무 귀여워요~!</div>
-                            </div>
-                        </div>
-                        <div class="small_heart">
-                            <div class="sprite_small_heart_icon_outline"></div>
-                        </div>
-                    </div>
-
-                    <div class="timer">1시간 전</div>
-
-                    <div class="comment_field" id="add-comment-post37">
-                        <input type="text" placeholder="댓글달기...">
-                        <div class="upload_btn m_text" data-name="comment">게시</div>
-                    </div>
-                </article>
-
-
-
+                like_article.innerHTML = content;
+            },
+            error:function (XMLHttpRequest, textStatus, errorThrown){
+                console.log("가져오기 실패");
+            }
+        });
+    }
+</script>
+<body>
+<main>
+    <c:forEach var="post" items="${postMap.postList}">
+        <!--좋아요 모달창 -->
+        <div class="like_modal" id="like_modal${post.postId}">
+            <div class="like_modal_content">
+                <div class="like_modal_header">
+                    <div class="like_header_subject">좋아요</div>
+                    <div class="like_header_closebtn" onclick="close_like_modal(${post.postId})"><span>X</span></div>
+                </div>
+                <div id="like_modal_body${post.postId}" class="like_modal_body">
+                </div>
             </div>
-            <input type="hidden" id="page" value="1">
-
-
         </div>
-    </section>
+        <!-- 좋아요 모달창 --->
+        <!-- 댓글 모달창 -->
+        <div class="modal" id="modal${post.postId}">
+            <div class="close_modal" onclick="close_modal('${post.postId}')">X</div>
+            <div class="modal_content">
+                <div class="modal_header">
+                    <div class="modal_header_feed">
+                        <div class="modal_profile">
+                            <a href="${contextPath}/main/profile/userProfile.do?userNickname=${post.userNickname}">
+                                <img
+                                    class="modal_profile_32px"
+                                    src="/main/post/profileImageDownload.do?userNickname=${post.userNickname}" alt="모달창 상단 작성자 프로필 이미지">
+                            </a>
+                        </div>
+                        <div class="modal_nickname">${post.userNickname}</div>
+                    </div>
+                    <div class="modal_menu_icon"><i class="fa-solid fa-ellipsis"></i></div>
+                </div>
+                <div class="modal_body" id="modal_body${post.postId}">
+                </div>
+                <div class="modal_box_chat">
+                    <span class="icon-smile"><i class="fa-regular fa-face-smile"></i></span>
+                    <div class="addReplyComment">
+                        <input  id="modal_inputComment${post.postId}"
+                                class="modal_input-chat"
+                                type="text"
+                                value=""
+                                placeholder="댓글 달기..."
+                        />
+                        <button id="btn-chat${post.postId}" class="btn-chat" onclick="add_modal_Comment(${post.postId},'${loginNickname}')">게시</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 댓글 모달창 -->
+    <article class="post">
+        <div>
+            <article class="box-feed">
+                <div class="head-feed">
+                    <!-- 수정 삭제 메뉴 -->
+                    <c:if test="${loginNickname == post.userNickname}">
+                        <div id="menu_box${post.postId}" class="wrap-menu">
+                            <div class="modify-menu">
+                                <div class="modify-img"><i class="fa-regular fa-pen-to-square"></i></div>
+                                <p class="modify-word">수정</p>
+                            </div>
+                            <div class="delete-menu" onclick="deletePost('/main/post/deletePost.do',${post.postId})">
+                                <div class="delete-img"><i class="fa-regular fa-trash-can"></i></div>
+                                <p class="delete-word">삭제</p>
+                            </div>
+                        </div>
+                    </c:if>
+                    <!-- 수정 삭제 메뉴 -->
+                    <div class="profile-feed">
+                        <a href='${contextPath}/main/profile/userProfile.do?userNickname=${post.userNickname}'>
+                            <img
+                                    class="img-profile-32px"
+                                    src="${contextPath}/main/post/profileImageDownload.do?userNickname=${post.userNickname}"
+                                    alt="프로필 이미지"
+                            />
+                        </a>
+                        <div>
+                            <p class="userName-feed">${post.userNickname}</p>
+                            <p class="location-feed">${post.uploadDate}</p>
+                        </div>
+                    </div>
+                    <span id="more${post.postId}" class="icon-more" onclick="show_menu(${post.postId},0)">
+                        <i class="fa-solid fa-ellipsis"></i>
+                    </span>
+                </div>
+                <div>
+                    <div class="slider">
+                        <c:forEach var="image" items="${postMap.imageList}">
+                            <c:if test="${post.postId == image.postId}">
+                                <div class="img">
+                                    <img class="img-feed" src="/main/post/imageDownload.do?imageFileName=${image.fileName}&postId=${post.postId}" alt="피드 이미지" />
+                                </div>
+                            </c:if>
+                        </c:forEach>
+                    </div>
+                </div>
 
-
-
-</section>
+                <c:forEach var="likeBook" items="${postMap.likeBookList}">
+                    <c:if test="${post.postId == likeBook.contentNo}">
+                        <div class="icon-feed">
+                            <div>
+                                <c:choose>
+                                    <c:when test="${likeBook.likeCheck == 1}">
+                                        <span id="icon-like-pushed" class="icon-like-pushed"  onclick="likeClick(${likeBook.likeCheck},${post.postId},'${loginNickname}', this,'${likeBook.likeCnt}')">
+                                            <i class="fa-solid fa-heart"></i>
+                                        </span>
+                                    </c:when>
+                                    <c:when test="${likeBook.likeCheck == 0}">
+                                        <span id="icon-like" class="icon" onclick="likeClick(${likeBook.likeCheck},${post.postId},'${loginNickname}', this,'${likeBook.likeCnt}')">
+                                            <i class="fa-regular fa-heart"></i>
+                                        </span>
+                                    </c:when>
+                                </c:choose>
+                                <span class="icon" onclick="show_all_comment(${post.postId},'${loginNickname}')"><i class="fa-regular fa-comment"></i></span>
+                                <span class="icon"><i class="fa-regular fa-share-from-square"></i></span>
+                            </div>
+                            <c:choose>
+                                <c:when test="${likeBook.bookmarkCheck == 0}">
+                                    <span class="icon" onclick="bookClick(${likeBook.bookmarkCheck},${post.postId},'${loginNickname}', this)"><i class="fa-regular fa-bookmark"></i></span>
+                                </c:when>
+                                <c:when test="${likeBook.bookmarkCheck == 1}">
+                                    <span class="icon-book-pushed" onclick="bookClick(${likeBook.bookmarkCheck},${post.postId},'${loginNickname}', this)"><i class="fa-solid fa-bookmark"></i></span>
+                                </c:when>
+                            </c:choose>
+                        </div>
+                        <div class="content">${post.content}</div>
+                        <div id="tags">
+                            <c:forEach var="tags" items="${postMap.tagsList}">
+                                <c:if test="${tags.postId == post.postId}">
+                                    <c:forEach var="tag" items="${tags.hashTag}">
+                                        #${tag}
+                                    </c:forEach>
+                                </c:if>
+                            </c:forEach>
+                        </div>
+                        <p id="like-cnt${post.postId}" class="text-like" onclick="show_like_modal(${post.postId},'${loginNickname}')">좋아요 ${likeBook.likeCnt}개</p>
+                        <p class="show_all_comment" id="${post.postId}" onclick="show_all_comment(${post.postId},'${loginNickname}')">전체 댓글 보기..</p>
+                    </c:if>
+                </c:forEach>
+                <div class="comment_box" id="comment_box${post.postId}">
+                </div>
+                <div class="box-chat">
+                    <span class="icon-smile"><i class="fa-regular fa-face-smile"></i></span>
+                        <%--<img class="img-icon" src="src/icon/smile.png" alt="이모지 아이콘" />--%>
+                    <div class="addComment">
+                        <input  id="inputComment${post.postId}"
+                                class="input-chat"
+                                type="text"
+                                placeholder="댓글 달기..."
+                        />
+                        <button class="btn-chat" onclick="addComment(${post.postId},'${loginNickname}')">게시</button>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </article>
+    </c:forEach>
+</main>
 
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="../../resources/js/logout.js"></script>
+
 </body>
 </html>
-

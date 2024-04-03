@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%--<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>--%>
 
 <html>
 <head>
@@ -18,7 +18,7 @@
     <!-- 검색 -->
     <a href="#" class="side_icon"><i class="fa-solid fa-magnifying-glass "></i></a>
     <!-- 홈 -->
-    <a class="side_icon"><i onclick="location.href='http://localhost:8081/main'" class="fa-solid fa-house"></i></a>
+    <a class="side_icon"><i onclick="location.href='http://localhost:8081/main/post/mainPost.do'" class="fa-solid fa-house"></i></a>
     <!-- 업로드 -->
     <a class="side_icon"><i onclick="location.href='http://localhost:8081/main/post/uploadPost.do'" id="uploadBtn" class="fa-solid fa-plus"></i></a>
     <!-- 내프로필 -->

@@ -32,21 +32,21 @@
     </select>
 
     <!-- 두 사용자의 accountId로 채팅방 조회 -->
-    <select id="findRoomByUserIds" parameterType="map" resultMap="roomResult">
+    <select id="findRoomByUserIds" parameterType="String" resultMap="roomResult">
         SELECT * FROM ROOM
         WHERE ROOM_METANAME = #{roomMetaName}
     </select>
 
     <!-- 새로운 채팅방 정보를 DB에 저장 -->
-    <insert id="createRoom" parameterType="org.example.message.dto.RoomDTO">
+    <insert id="createRoom" parameterType="RoomDTO">
         INSERT INTO ROOM (ROOM_NAME, ROOM_METANAME, ROOM_RECEIVERNAME, CREATED_AT)
         VALUES (#{roomName}, #{roomMetaName}, #{roomReceiverName}, CURRENT_TIMESTAMP)
     </insert>
 
     <!-- 채팅방 참여자 추가 -->
     <insert id="addParticipant" parameterType="map" useGeneratedKeys="true" keyProperty="roomId">
-        INSERT INTO PARTICIPANTS (ROOM_ID, ACCOUNT_ID, USER_ID, USER_NAME, JOINED_AT)
-        VALUES (#{roomId}, #{accountId}, #{userId}, #{userName}, CURRENT_TIMESTAMP)
+        INSERT INTO PARTICIPANTS (ROOM_ID, ACCOUNT_ID, USER_ID, USER_NAME)
+        VALUES ('${roomId}', '${accountId}', '${userId}', '${userName}')
     </insert>
 
     <!-- 발신자 accountId로 참여하고 있는 모든 채팅방 조회 -->
@@ -69,8 +69,8 @@
     <select id="findOpponentName" parameterType="map" resultType="String">
         SELECT p.user_name
         FROM participants p
-        WHERE p.room_id = #{roomId}
-          AND p.account_id != #{myAccountId}
+        WHERE p.room_id = ${roomId}
+          AND p.account_id != ${myAccountId}
           AND ROWNUM = 1
     </select>
 

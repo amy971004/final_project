@@ -12,29 +12,10 @@
     <link rel="stylesheet" href="../../resources/css/reset.css">
     <link rel="stylesheet" href="../../resources/css/nav.css">
     <link rel="stylesheet" href="../../resources/css/chatRooms.css">
+    <%@ include file="header.jsp"%>
+
 </head>
 <body>
-<div class="sideBar">
-    <a href="#" class="side_icon" style="padding-top: 20px;font-size: 25px">L</a>
-    <!-- 검색 -->
-    <a href="#" class="side_icon"><i class="fa-solid fa-magnifying-glass "></i></a>
-    <!-- 홈 -->
-    <a class="side_icon"><i onclick="location.href='http://localhost:8081/main'" class="fa-solid fa-house"></i></a>
-    <!-- 업로드 -->
-    <a class="side_icon"><i onclick="location.href='http://localhost:8081/main/post/uploadPost.do'" id="uploadBtn" class="fa-solid fa-plus"></i></a>
-    <!-- 내프로필 -->
-    <a class="side_icon"><i onclick="location.href='http://localhost:8081/main/profile/profileView.do'" class="fa-regular fa-user"></i></a>
-    <!-- 메세지 -->
-    <a class="side_icon"><i onclick="location.href='http://localhost:8081/main/chatRooms'" class="fa-regular fa-message"></i></a>
-    <!-- 알림 -->
-    <a href="#" class="side_icon"><i class="fa-solid fa-bell "></i></a>
-    <!-- 북마크 -->
-    <a href="#" class="side_icon"><i class="fa-regular fa-bookmark "></i></a>
-    <!-- 테스트용 나중에 지워야함 -->
-    <a href="#" class="side_icon"><i onclick="location.href='http://localhost:8081/main/roomTest.do'" class="fa-regular fa-bookmark "></i></a>
-    <!-- 로그아웃 -->
-    <a class="side_icon"><i id="logoutBtn" class="fa-solid fa-arrow-right-from-bracket"></i></a>
-</div>
 <main id="mainContents">
     <div id="m1">
         <%--        <div id="roomList" data-userAccountId="${user.accountID}">--%>

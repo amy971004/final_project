@@ -60,8 +60,9 @@ public class RoomServiceImpl implements RoomService {
         // DB에 채팅방 정보 저장
         dao.createRoom(newRoom);
 
+        // 시발 insert만 하고 안가져와놓고 newroom을 쳐가져와서 roomId 없음
         // 새로 생성된 채팅방 정보를 반환합니다.
-        return newRoom;
+        return dao.findRoomByUserIds(roomMetaName);
     }
 
     // 발신자 accountId로 내가 참여하고있는 모든 채팅방 불러오기

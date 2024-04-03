@@ -176,7 +176,7 @@ public class PostControllerImpl implements PostController {
             tagsList.add(tagDTO);
 
         }
-        ModelAndView mav = new ModelAndView("mainPost");
+        ModelAndView mav = new ModelAndView("main");
         //postMap.put("tagsMap",tagsMap);
         postMap.put("postList", postList); // 게시물리스트
         postMap.put("tagsList", tagsList); // 태그리스트
