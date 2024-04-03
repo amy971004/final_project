@@ -3,6 +3,7 @@ package org.example.post.dao;
 import org.example.post.dto.CommentDTO;
 import org.example.post.dto.ImageDTO;
 import org.example.post.dto.PostDTO;
+import org.example.profile.dto.ProfileDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,8 @@ public interface PostDAO {
 
     // 회원 닉네임 가져오기
     String selectNickname(String accountID);
+    // 프로필 가져오기
+    ProfileDTO selectProfile(String accountId);
 
     // 설지연 -----------------------------------------
     List<PostDTO> postList();

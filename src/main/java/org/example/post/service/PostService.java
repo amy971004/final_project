@@ -3,6 +3,7 @@ package org.example.post.service;
 import org.example.post.dto.CommentDTO;
 import org.example.post.dto.ImageDTO;
 import org.example.post.dto.PostDTO;
+import org.example.profile.dto.ProfileDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,8 @@ public interface PostService {
     String selectNickname(String accountID);
     // 게시물 번호 가져오기
     int selectPostId();
+    // 프로필 가져오기
+    ProfileDTO selectProfile(String accountId);
 
     // 설지연 ------------------------------------------------------
     List<PostDTO> postList();

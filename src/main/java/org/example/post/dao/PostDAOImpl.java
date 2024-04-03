@@ -4,6 +4,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.example.post.dto.CommentDTO;
 import org.example.post.dto.ImageDTO;
 import org.example.post.dto.PostDTO;
+import org.example.profile.dto.ProfileDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -42,6 +43,11 @@ public class PostDAOImpl implements PostDAO {
     @Override
     public String selectNickname(String accountID) {
         return sqlSession.selectOne("mapper.post.selectNickname", accountID);
+    }
+
+    @Override
+    public ProfileDTO selectProfile(String accountId) {
+        return sqlSession.selectOne("mapper.profile.profileView", accountId);
     }
 
 
