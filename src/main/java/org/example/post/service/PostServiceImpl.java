@@ -4,6 +4,7 @@ import org.example.post.dao.PostDAO;
 import org.example.post.dto.CommentDTO;
 import org.example.post.dto.ImageDTO;
 import org.example.post.dto.PostDTO;
+import org.example.profile.dto.ProfileDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +50,12 @@ public class PostServiceImpl implements PostService {
     @Override
     public int selectPostId() {
         return dao.selectPostId();
+    }
+
+    // 프로필 가져오기
+    @Override
+    public ProfileDTO selectProfile(String accountId) {
+        return dao.selectProfile(accountId);
     }
 
     // 설지연 -------------------------------------------------------

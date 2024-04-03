@@ -55,7 +55,7 @@
 
     <!-- 설지연  -->
     <!--게시물 가져오기(게시물번호, 닉네임, 게시글, 업로드날짜-->
-    <!--<select id="postList" resultMap="postResult">
+    <select id="postList" resultMap="postResult">
 		<![CDATA[
         select * from SNS_POST order by UPLOADDATE desc
         ]]>
@@ -109,5 +109,5 @@
         <![CDATA[
         insert into SNS_LIKE values (#{newLikeId},#{postId},#{loginNickname},sysdate)
         ]]>
-    </insert>-->
+    </insert>
 </mapper>

@@ -1,98 +1,156 @@
 @charset "UTF-8";
 
 body {
-     margin: 0;
-     padding: 0;
- }
-div {
-    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+hr{
+    margin: 2px 0 0 0;
+    height: 1px;
+    border: 0;
+    background-color: #cccccc;
+}
+table {
+    margin: 0 auto;
+    border: solid 1px #cccccc;
+    border-radius: 20px;
+    position: relative;
+    top: 140px;
+    background-color: #ffffff;
 }
 button {
-    border-radius: 10px;
     padding: 10px 10px;
     background-color: #ffffff;
     color: #000000;
-    border: solid #9ba0ab 1px;
+    border: none;
 }
 button:hover{
     color: #6c757d;
+    cursor: pointer;
 }
- #upload_from_box{
-     text-align: center;
- }
- #content_box{
-     padding: 20px 0;
- }
- #content_box #content_input {
-     resize: none;
- }
- #preview_box{
-     position: relative;
-     width: 460px;
-     height: 200px;
-     border-radius: 10px;
-     top: 50px;
-     left: 35%;
- }
- .image_div{
-     float: left;
-     margin: 5px 5px;
-     height: 73px;
- }
- #preview_image {
-     max-width: 100px;
-     height: 70px;
-     margin: 3px;
- }
- .image_div:hover #txt{
-     opacity: 0.6;
-     display: block;
- }
- #txt{
-     background-color: #000000;
-     margin: 0;
-     text-align: center;
-     position: relative;
-     bottom: 80px;
-     border: solid 1px #000000;
-     color: #ffffff;
-     padding: 26px 0;
-     display: none;
- }
- #image_upload_box {
-     margin-top: 10px;
- }
- #image_upload_box .fa-images{
-     padding-right: 5px;
- }
- #image_upload_box #image_upload_btn {
-     border: solid 1px #9ba0ab ;
-     border-radius: 10px;
-     padding: 10px 10px;
- }
+#upload_from_box{
+    text-align: center;
+    width: 100vw;
+    height: 100vh;
+}
+/**************유저 프로필 사진 + 닉네임 ***********/
+.userProfile{
+    position: relative;
+    bottom: 35px;
+}
+.userProfile img {
+    position: inherit;
+    right: 98px;
+    margin: 0 auto;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+.userProfile .userNickname{
+    position: inherit;
+    right: 90px;
+    bottom: 20px;
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+}
+/******************* 글 작성 **********************/
+.content_box{
+    position: relative;
+    bottom: 25px;
+    padding: 0;
+}
+.content_box::placeholder{
+    font-size: 20px;
+}
+.content_box #content_input {
+    width: 300px;
+    height: 200px;
+    font-size: 15px;
+    resize: none;
+    border: none;
+    font-family: inherit;
+}
+.content_box #content_input:focus{
+    outline: none;
+}
+/*********************** 글자 수 표시 *********************/
+.text_count_box{
+    position: relative;
+    bottom: 28px;
+}
+.text_count_box .text_count{
+    position: inherit;
+    left: 110px;
+    color: #a1a1a1;
+    font-weight: 100;
+    font-size: 14px;
+
+}
+/******************* 이미지 미리보기 **********************/
+.image_preview{
+    background-image: url("../img/uploadPost/imageRegular.svg");
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.slider {
+    width:400px;
+    height: 400px;
+    margin-right: 5px;
+}
+.slider div{
+    margin: 0 auto;
+    width: 400px;
+    height: 400px;
+}
+img {
+    width: inherit;
+    height: inherit;
+    margin: 0 auto;
+    object-fit: cover;
+}
+/********************* 이미지 업로드 버튼 *********************8*/
+.image_upload_box {
+    margin: 0;
+}
+.image_upload_box .fa-images{
+    padding-right: 5px;
+}
+.image_upload_box #image_upload_btn {
+    border: solid 1px #9ba0ab;
+    border-radius: 10px;
+    padding: 10px 10px;
+    font-size: 14px;
+}
 label:hover{
     color: #6c757d;
 }
-/*#back_page_box{*/
-/*     position: relative;*/
-/*     bottom: 475px;*/
-/*     right: 145px;*/
-/* }*/
-/*#back_page_box .fa-arrow-right-from-bracket{
-    padding-right: 5px;
-}*/
- #upload-btn{
-     position: relative;
-     top: 60px;
- }
+.text1_box{
+    position: relative;
+    top: 15px;
+}
+.text1_box .text1{
+    font-size: 12px;
+}
+/********************* 게시물 업로드 버튼 *************************/
+#upload-btn{
+    position: relative;
+    left: 200px;
+    font-size: 16px;
+
+}
 .fa-arrow-up-from-bracket{
-     padding-right: 5px;
- }
+    font-size: 16px;
+    padding-left: 5px;
+}
+/************************** 취소 버튼  *************************/
 #cancel_btn{
     position: relative;
-    top: 60px;
+    right: 200px;
     outline: none;
+    font-size: 16px;
 }
 .fa-xmark{
+    font-size: 16px;
     padding-right: 5px;
 }

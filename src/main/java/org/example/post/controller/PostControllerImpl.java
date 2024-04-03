@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.example.post.dto.*;
 import org.example.post.service.PostService;
+import org.example.profile.dto.ProfileDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,8 +56,13 @@ public class PostControllerImpl implements PostController {
     // @GetMapping 애노테이션을 사용하여 HTTP GET 요청을 "/post/postUpload" 경로에 매핑합니다.
     @RequestMapping("/uploadPost.do")
     public ModelAndView showUploadPost(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        HttpSession session = request.getSession();
+        String accountId = (String)session.getAttribute("accountID");
+        ProfileDTO profileDTO = service.selectProfile(accountId);
+        ModelAndView mav = new ModelAndView("uploadPost");
+        mav.addObject("profile", profileDTO);
         // 게시물 업로드 폼이 있는 "uploadPost.jsp" 페이지로 이동
-        return new ModelAndView("uploadPost");
+        return mav;
     }
 
     // 파일을 업로드하는 요청을 처리합니다.
@@ -114,7 +120,9 @@ public class PostControllerImpl implements PostController {
             String account_id = service.selectNickname(accountID);
             // 게시물에 대한 정보 Map에 저장
             postInfo.put("imageFileInfo",imageFileInfo);
-            postInfo.put("content", content);
+            // 게시물에 내용 중 모든 엔터는 -> <br>로 변경
+            String temp = content.replaceAll("\r\n","<br>");
+            postInfo.put("content", temp);
             postInfo.put("userNickname", account_id);
 
             service.addPost(postInfo);
@@ -123,7 +131,7 @@ public class PostControllerImpl implements PostController {
             PrintWriter out = response.getWriter();
             out.println("<script>");
             out.println("alert('업로드 성공');");
-            out.println("location.href='/main';");
+            out.println("location.href='/main/post/mainPost.do';");
             out.println("</script>");
             out.close();
 
@@ -143,7 +151,7 @@ public class PostControllerImpl implements PostController {
                 PrintWriter out = response.getWriter();
                 out.println("<script>");
                 out.println("alert('업로드 실패');");
-                out.println("history.go(-1)");
+                out.println("location.href='/main';");
                 out.println("</script>");
                 out.close();
                 e.printStackTrace();
