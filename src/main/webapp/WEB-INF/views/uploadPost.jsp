@@ -4,12 +4,6 @@
 <html>
 <head>
     <link rel="stylesheet" href="../../resources/css/uploadPost.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="../../resources/css/nav.css">
-    <link rel="stylesheet" href="../../resources/css/reset.css">
-</head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>새 게시물 업로드</title>
@@ -185,7 +179,7 @@
                                 <img src="../../resources/img/profile/defaultProfile.png" alt="기본 프로필 사진">
                             </c:when>
                             <c:otherwise>
-                                <img src="${contextPath}/main/profile/download.do?imageFileName=${profile.profileImg}&userId=${profile.userId}" alt="">
+                                <img src="${contextPath}/main/profile/download.do?imageFileName=${profile.profileImg}&accountId=${profile.accountId}" alt="">
                             </c:otherwise>
                         </c:choose>
                         <span class="userNickname">${profile.userNickname}</span>
@@ -209,6 +203,5 @@
         </table>
     </form>
 </div>
-<script src="../../resources/js/logout.js"></script>
 </body>
 </html>

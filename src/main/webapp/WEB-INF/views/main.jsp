@@ -5,12 +5,8 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath }" />
 
 <!-- 슬라이더 -->
-<link href="../../resources/css/bxslider.css" rel="stylesheet">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
-<%--<script src="http://code.jquery.com/jquery-latest.min.js"></script>--%>
 
-<script src='../../resources/js/post.js'></script>
+<link href="../../resources/css/bxslider.css" rel="stylesheet">
 <link href="../../resources/css/post.css" rel="stylesheet">
 <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -247,6 +243,9 @@
 
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="../../resources/js/logout.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+<script src='../../resources/js/post.js'></script>
 
 </body>
 </html>
