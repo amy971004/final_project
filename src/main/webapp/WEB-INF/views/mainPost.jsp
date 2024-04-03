@@ -56,12 +56,20 @@
                     like.splice(like.indexOf(arr[j]),1);
                 }
                 for(let i=0;i<like.length;i++){
-                    let like_article_content = "<div class='like_article'>";
-                    like_article_content += "<div class='like_profile'>";
-                    like_article_content += "<img class='img-profile-32px' src='/main/post/profileImageDownload.do?userNickname="+like[i]+"' alt='프로필이미지'>";
-                    like_article_content += "<div class='like_nickName'>"+like[i]+"</div></div>";
-                    like_article_content += "<input class='follow_btn' type='button' value='팔로우' onclick='follow(\"${loginNickname}\",\""+like[i]+"\",this)'></div>";
-                    content += like_article_content;
+                    if(like[i] !== loginNickname){
+                        let like_article_content = "<div class='like_article'>";
+                        like_article_content += "<div class='like_profile'>";
+                        like_article_content += "<img class='img-profile-32px' src='/main/post/profileImageDownload.do?userNickname="+like[i]+"' alt='프로필이미지'>";
+                        like_article_content += "<div class='like_nickName'>"+like[i]+"</div></div>";
+                        like_article_content += "<input class='follow_btn' type='button' value='팔로우' onclick='follow(\"${loginNickname}\",\""+like[i]+"\",this)'></div>";
+                        content += like_article_content;
+                    }else if(like[i] === loginNickname){
+                        let like_article_content = "<div class='like_article'>";
+                        like_article_content += "<div class='like_profile'>";
+                        like_article_content += "<img class='img-profile-32px' src='/main/post/profileImageDownload.do?userNickname="+like[i]+"' alt='프로필이미지'>";
+                        like_article_content += "<div class='like_nickName'>"+like[i]+"</div></div></div>";
+                        content += like_article_content;
+                    }
                 }
 
                 like_article.innerHTML = content;
@@ -180,7 +188,7 @@
                                         </span>
                                     </c:when>
                                 </c:choose>
-                                <span class="icon" onclick="show_comment_box(${post.postId},0,this)"><i class="fa-regular fa-comment"></i></span>
+                                <span class="icon" onclick="show_all_comment(${post.postId},'${loginNickname}')"><i class="fa-regular fa-comment"></i></span>
                                 <span class="icon"><i class="fa-regular fa-share-from-square"></i></span>
                             </div>
                             <c:choose>
@@ -207,21 +215,7 @@
                     </c:if>
                 </c:forEach>
                 <div class="comment_box" id="comment_box${post.postId}">
-                   <%-- <c:forEach var="comment" items="${postMap.commentList}">--%>
-                        <%--<c:if test="${comment.postId == post.postId}">--%>
-<%--                            <div>
-                                <div class="comment">
-                                    <b class="writer">${comment.user_Nickname}&nbsp;</b>
-                                    <span class="post-comment">
-                                            ${comment.postComment}
-                                    </span>
-                                </div>
-                            </div>--%>
-<%--                        </c:if>
-                    </c:forEach>--%>
                 </div>
-                    <%--                <div class="box-comment"></div>--%>
-
                 <div class="box-chat">
                     <span class="icon-smile"><i class="fa-regular fa-face-smile"></i></span>
                         <%--<img class="img-icon" src="src/icon/smile.png" alt="이모지 아이콘" />--%>

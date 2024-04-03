@@ -85,4 +85,7 @@ public interface PostDAO {
 
     // 팔로우 취소 메서드
     void delteFollow(Map<String, Object> followingInfo);
+
+    // 댓글 삭제 메서드
+    void deleteComment(int commentId);
 }

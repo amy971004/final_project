@@ -205,5 +205,10 @@ public class PostDAOImpl implements PostDAO {
         sqlSession.delete("mapper.post.deleteFollow",followingInfo);
     }
 
+    @Override
+    public void deleteComment(int commentId) {
+        sqlSession.delete("mapper.post.deleteComment",commentId);
+    }
+
 
 }

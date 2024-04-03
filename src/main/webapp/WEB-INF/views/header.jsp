@@ -23,7 +23,7 @@
     <!-- 알림 -->
     <a href="#" class="no-underline"><i class="fa-solid fa-bell "></i></a>
     <!-- 북마크 -->
-    <a href="#" class="no-underline"><i class="fa-regular fa-bookmark "></i></a>
+    <a href="#" class="no-underline"><i onclick="location.href='http://localhost:8081/main/post/bookMark.do'" class="fa-regular fa-bookmark "></i></a>
     <!-- 업로드 -->
     <a class="no-underline"><i onclick="location.href='http://localhost:8081/main/post/uploadPost.do'" id="uploadBtn" class="fa-solid fa-plus"></i></a>
     <!-- 내프로필 -->

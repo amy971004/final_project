@@ -173,4 +173,10 @@ public class PostServiceImpl implements PostService {
         dao.delteFollow(followingInfo);
         
     }
+
+    // 댓글 삭제 메서드
+    @Override
+    public void deleteComment(int commentId) {
+        dao.deleteComment(commentId);
+    }
 }
