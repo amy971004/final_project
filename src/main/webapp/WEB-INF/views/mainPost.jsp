@@ -44,7 +44,9 @@
                         if(like.includes(follow[i])){
                             let like_article_content = "<div class='like_article'>";
                             like_article_content += "<div class='like_profile'>";
+                            like_article_content += "<a href='${contextPath}/main/profile/userProfile.do?userNickname=" + follow[i] + "'>";
                             like_article_content += "<img class='img-profile-32px' src='/main/post/profileImageDownload.do?userNickname="+follow[i]+"' alt='프로필이미지'>";
+                            like_article_content += "</a>";
                             like_article_content += "<div class='like_nickName'>"+follow[i]+"</div></div>";
                             like_article_content += "<input class='following_btn' type='button' value='팔로잉' onclick='following(\"${loginNickname}\",\""+follow[i]+"\",this)'></div>";
                             content += like_article_content;
@@ -59,7 +61,9 @@
                 for(let i=0;i<like.length;i++){
                     let like_article_content = "<div class='like_article'>";
                     like_article_content += "<div class='like_profile'>";
+                    like_article_content += "<a href='${contextPath}/main/profile/userProfile.do?userNickname=" + like[i] + "'>";
                     like_article_content += "<img class='img-profile-32px' src='/main/post/profileImageDownload.do?userNickname="+like[i]+"' alt='프로필이미지'>";
+                    like_article_content += "</a>";
                     like_article_content += "<div class='like_nickName'>"+like[i]+"</div></div>";
                     like_article_content += "<input class='follow_btn' type='button' value='팔로우' onclick='follow(\"${loginNickname}\",\""+like[i]+"\",this)'></div>";
                     content += like_article_content;
@@ -95,9 +99,11 @@
                 <div class="modal_header">
                     <div class="modal_header_feed">
                         <div class="modal_profile">
-                            <img
+                            <a href="${contextPath}/main/profile/userProfile.do?userNickname=${post.userNickname}">
+                                <img
                                     class="modal_profile_32px"
-                                    src="/main/post/profileImageDownload.do?userNickname=${post.userNickname}">
+                                    src="/main/post/profileImageDownload.do?userNickname=${post.userNickname}" alt="모달창 상단 작성자 프로필 이미지">
+                            </a>
                         </div>
                         <div class="modal_nickname">${post.userNickname}</div>
                     </div>
@@ -139,11 +145,13 @@
                     </c:if>
                     <!-- 수정 삭제 메뉴 -->
                     <div class="profile-feed">
-                        <img
-                                class="img-profile-32px"
-                                src="${contextPath}/main/post/profileImageDownload.do?userNickname=${post.userNickname}"
-                                alt="프로필 이미지"
-                        />
+                        <a href='${contextPath}/main/profile/userProfile.do?userNickname=${post.userNickname}'>
+                            <img
+                                    class="img-profile-32px"
+                                    src="${contextPath}/main/post/profileImageDownload.do?userNickname=${post.userNickname}"
+                                    alt="프로필 이미지"
+                            />
+                        </a>
                         <div>
                             <p class="userName-feed">${post.userNickname}</p>
                             <p class="location-feed">${post.uploadDate}</p>

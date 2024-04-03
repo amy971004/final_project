@@ -68,4 +68,19 @@ public class ProfileDAOImpl implements ProfileDAO{
         return sqlSession.selectList("mapper.profile.likes", postId);
     }
 
+    @Override
+    public List<FollowDTO> followView(String nickname) {
+        return sqlSession.selectList("mapper.profile.followView", nickname);
+    }
+
+    @Override
+    public List<FollowDTO> followingView(String userNickname) {
+        return sqlSession.selectList("mapper.profile.followingView", userNickname);
+    }
+
+    @Override
+    public String findAccountId(String userNickname) {
+        return sqlSession.selectOne("mapper.profile.findUserAccountId", userNickname);
+    }
+
 }

@@ -92,7 +92,7 @@
     </select>-->
 
     <select id="postView" parameterType="String" resultMap="postResult">
-        select * from SNS_POST where USER_NICKNAME = #{userNickname}
+        select * from SNS_POST where USER_NICKNAME = #{userNickname} order by UPLOADDATE desc
     </select>
 
     <select id="imageView" resultMap="imageResult">
@@ -109,6 +109,14 @@
 
     <select id="likes" parameterType="String" resultMap="likeResult">
         select * from SNS_LIKE where POSTID=${postId} order by LIKETIME desc
+    </select>
+    
+    <select id="followView" parameterType="String" resultMap="followResult">
+        select * from SNS_FOLLOW where FOLLOWERUSERID=#{nickname}
+    </select>
+
+    <select id="followingView" parameterType="String" resultMap="followResult">
+        select * from SNS_FOLLOW where USER_NICKNAME=#{userNickname}
     </select>
 
 </mapper>

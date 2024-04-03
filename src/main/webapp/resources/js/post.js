@@ -260,9 +260,11 @@ function show_all_comment(postId, loginNickname) {
                     let comment_content = "<div id='comment" + postId + "'>";
                     comment_content += "<div class='modal_comment_box'>";
                     comment_content += "<div class='modal_comment_profileImage'>";
+                    comment_content += "<a href='/main/profile/userProfile.do?userNickname=" + data[i].user_Nickname + "'>";
                     comment_content += "<img class='modal_profile_32px'";
                     comment_content += "src='/main/post/profileImageDownload.do?userNickname="+data[i].user_Nickname+"'";
                     comment_content += "alt='프로필 이미지'/>";
+                    comment_content += "</a>";
                     comment_content += "</div>";
                     comment_content += "<div class='modal_comment_content'>";
                     comment_content += "<span class='modal_comment_nickname'>"+data[i].user_Nickname+"&nbsp;</span>";
@@ -278,9 +280,11 @@ function show_all_comment(postId, loginNickname) {
                     let comment_content = "<div id='reply" + postId + "'>";
                     comment_content += "<div id='reply" + data[i].commentId + "' class='modal_comment_replybox' style='margin-left: 50px'>";
                     comment_content += "<div class='modal_comment_profileImage'>";
+                    comment_content += "<a href='/main/profile/userProfile.do?userNickname=" + data[i].user_Nickname + "'>";
                     comment_content += "<img class='modal_profile_32px'";
                     comment_content += "src='/main/post/profileImageDownload.do?userNickname=" + data[i].user_Nickname + "'";
                     comment_content += "alt='프로필 이미지'/>";
+                    comment_content += "</a>";
                     comment_content += "</div>";
                     comment_content += "<div class='modal_comment_content'>";
                     comment_content += "<span class='modal_comment_nickname'>" + data[i].user_Nickname + "&nbsp;</span>";

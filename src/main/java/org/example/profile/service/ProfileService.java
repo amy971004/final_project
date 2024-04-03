@@ -28,4 +28,10 @@ public interface ProfileService {
     List<LikeDTO> likeView();
 
     List<LikeDTO> likes(String postId);
+
+    List<FollowDTO> followView(String nickname);
+
+    List<FollowDTO> followingView(String userNickname);
+
+    String findAccountId(String userNickname);
 }

@@ -1,93 +1,93 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false"%>
 <html lang="en" xmlns:c="http://www.w3.org/1999/XSL/Transform" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-<link href="../../resources/css/profile.css" rel="stylesheet" type="text/css" />
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <link href="../../resources/css/profile.css" rel="stylesheet" type="text/css" />
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<link href="../../resources/css/main.css" rel="stylesheet" type="text/css" />
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="../../resources/css/main.css" rel="stylesheet" type="text/css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="../../resources/css/reset.css">
-<link rel="stylesheet" href="../../resources/css/common.css">
-<link rel="stylesheet" href="../../resources/css/style.css">
-<link rel="stylesheet" href="../../resources/css/nav.css">
-<c:set var="contextPath" value="${pageContext.request.contextPath }" />
-<style>
-    /* modal */
-    .modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 9999;
-        background: rgba(0, 0, 0, 0.5);
-        justify-content: center;
-        align-items: center;
-    }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../../resources/css/reset.css">
+    <link rel="stylesheet" href="../../resources/css/common.css">
+    <link rel="stylesheet" href="../../resources/css/style.css">
+    <link rel="stylesheet" href="../../resources/css/nav.css">
+    <c:set var="contextPath" value="${pageContext.request.contextPath }" />
+    <style>
+        /* modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
 
-    .modal-dialog {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+        .modal-dialog {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-    .modal-content {
-        position: relative;
-        width: 400px;
-        height: 500px;
-        background: white;
-        padding: 24px 16px;
-        border-radius: 4px;
-        overflow-y: auto;
+        .modal-content {
+            position: relative;
+            width: 400px;
+            height: 500px;
+            background: white;
+            padding: 24px 16px;
+            border-radius: 4px;
+            overflow-y: auto;
 
-    }
+        }
 
-    .modal_table{
-        width:100%;
-        height: auto;
-        display: grid;
-        gap: 10px;
-    }
-    .modal_table tbody {
-        width:100%;
-        height:80px;
-    }
+        .modal_table{
+            width:100%;
+            height: auto;
+            display: grid;
+            gap: 10px;
+        }
+        .modal_table tbody {
+            width:100%;
+            height:80px;
+        }
 
-    .modal_table tr {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        margin-bottom: 10px;
-    }
-    .modal-title {
-        display: inline-block;
-        font-size: 24px;
-        font-weight: bold;
-        text-align:left;
-    }
-    #modal-close {
-        position: absolute;
-        top: 24px;
-        right: 16px;
-        cursor: pointer;
-    }
-    #modal_userImg{
-        width:50px;
-        height:50px;
-        border-radius: 75%;
-    }
-    #modal_userID{
-        width:200px;
-    }
-    #modal_userFollow{
-        margin:10px;
-        text-align: right;
-        right: 16px;
-    }
-</style>
+        .modal_table tr {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            margin-bottom: 10px;
+        }
+        .modal-title {
+            display: inline-block;
+            font-size: 24px;
+            font-weight: bold;
+            text-align:left;
+        }
+        #modal-close {
+            position: absolute;
+            top: 24px;
+            right: 16px;
+            cursor: pointer;
+        }
+        #modal_userImg{
+            width:50px;
+            height:50px;
+            border-radius: 75%;
+        }
+        #modal_userID{
+            width:200px;
+        }
+        #modal_userFollow{
+            margin:10px;
+            text-align: right;
+            right: 16px;
+        }
+    </style>
     <title>프로필</title>
 </head>
 <body>
@@ -133,8 +133,8 @@
 
                 <h1 class="profile-user-name">${profile.userId} / ${profile.userNickname}</h1>
 
-                <button class="btn profile-edit-btn" onclick="location.href='http://localhost:8081/main/profile/modprofile.do?id=${profile.userId}'">Edit Profile</button>
-                <button class="btn profile-settings-btn" onclick="location.href='http://localhost:8081/main/profile/editImg.do'">Edit Image</button>
+                <button class="btn profile-edit-btn" onclick="location.href='/*메시지 전송 연결*/'">Send Message</button>
+                <button class="btn profile-settings-btn" onclick="location.href='/*팔로우 버튼*/'">팔로우</button>
 
             </div>
 
@@ -220,7 +220,7 @@
 
 
 
-                           <li class="gallery-item-comments" onclick="show_all_comment(${post.postId}, ${profile.userNickname})"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true">
+                            <li class="gallery-item-comments" onclick="show_all_comment(${post.postId}, ${profile.userNickname})"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true">
 
                             </i>
                                 <c:choose>

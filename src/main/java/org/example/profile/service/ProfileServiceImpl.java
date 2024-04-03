@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class ProfileServiceImpl implements ProfileService{
+public class ProfileServiceImpl implements ProfileService {
     @Autowired
     private ProfileDAO dao;
 
@@ -65,4 +65,20 @@ public class ProfileServiceImpl implements ProfileService{
     public List<LikeDTO> likes(String postId) {
         return dao.likes(postId);
     }
+
+    @Override
+    public List<FollowDTO> followView(String nickname) {
+        return dao.followView(nickname);
+    }
+
+    @Override
+    public List<FollowDTO> followingView(String userNickname) {
+        return dao.followingView(userNickname);
+    }
+
+    @Override
+    public String findAccountId(String userNickname) {
+        return dao.findAccountId(userNickname);
+    }
+
 }

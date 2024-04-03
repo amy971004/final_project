@@ -49,6 +49,8 @@ public class ProfileControllerImpl implements ProfileController{
         List<ImageDTO> imageDTO = service.imageView();
         List<CommentDTO> commentDTO = service.commentView();
         List<LikeDTO> likeDTO = service.likeView();
+        List<FollowDTO> followDTO = service.followView(dto.getUserNickname());
+        List<FollowDTO> followingDTO = service.followingView(dto.getUserNickname());
 
         ModelAndView mav = new ModelAndView("profile");
         mav.addObject("profile", dto);
@@ -57,6 +59,8 @@ public class ProfileControllerImpl implements ProfileController{
         profileMap.put("imageDTO", imageDTO);
         profileMap.put("commentDTO", commentDTO);
         profileMap.put("likeDTO", likeDTO);
+        profileMap.put("followDTO", followDTO);
+        profileMap.put("followingDTO", followingDTO);
         mav.addObject("profileMap", profileMap);
 
         return mav;
@@ -208,6 +212,32 @@ public class ProfileControllerImpl implements ProfileController{
         out.close();*/
     }
 
+    @Override
+    @RequestMapping("/main/profile/userProfile.do")
+    public ModelAndView userProfile(String userNickname, HttpServletResponse response, HttpServletRequest request) throws Exception {
+        String accountId = service.findAccountId(userNickname);
+        ProfileDTO dto = service.profileView(accountId);
+        List<PostDTO> postDTO = service.postView(userNickname);
+        List<ImageDTO> imageDTO = service.imageView();
+        List<CommentDTO> commentDTO = service.commentView();
+        List<LikeDTO> likeDTO = service.likeView();
+        List<FollowDTO> followDTO = service.followView(userNickname);
+        List<FollowDTO> followingDTO = service.followingView(userNickname);
+
+        ModelAndView mav = new ModelAndView("userProfile");
+        mav.addObject("profile", dto);
+        Map<String, Object> profileMap = new HashMap<>();
+        profileMap.put("postDTO", postDTO);
+        profileMap.put("imageDTO", imageDTO);
+        profileMap.put("commentDTO", commentDTO);
+        profileMap.put("likeDTO", likeDTO);
+        profileMap.put("followDTO", followDTO);
+        profileMap.put("followingDTO", followingDTO);
+        mav.addObject("profileMap", profileMap);
+
+        return mav;
+    }
+
     private BufferedImage resizeImage(BufferedImage originalImage) {
         BufferedImage resizedImage = new BufferedImage(179, 179, BufferedImage.TYPE_INT_RGB);
         Graphics2D graphics2D = resizedImage.createGraphics();
@@ -220,6 +250,12 @@ public class ProfileControllerImpl implements ProfileController{
     public ResponseEntity<?> likes(@RequestParam("postId") String postId) throws Exception {
         List<LikeDTO> likeuser = service.likes(postId);
         return ResponseEntity.ok().body(likeuser);
+    }
+
+    @PostMapping("/main/profile/follower.do")
+    public ResponseEntity<?> follower(@RequestParam("nickname") String nickname) throws Exception{
+        List<FollowDTO> follower = service.followView(nickname);
+        return ResponseEntity.ok().body(follower);
     }
 
 }
