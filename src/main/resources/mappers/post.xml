@@ -212,10 +212,18 @@
         select FOLLOWERUSERID from SNS_FOLLOW where USER_NICKNAME=#{loginNickname}
         ]]>
     </select>
-    
+
+    <!--팔로우 취소-->
     <delete id="deleteFollow" parameterType="java.util.Map">
         <![CDATA[
         delete from SNS_FOLLOW where USER_NICKNAME=#{loginId} and FOLLOWERUSERID=#{followingUserId}
+        ]]>
+    </delete>
+
+    <!-- 댓글 삭제 -->
+    <delete id="deleteComment" parameterType="int">
+        <![CDATA[
+        delete from SNS_COMMENT where COMMENTID=#{commentId}
         ]]>
     </delete>
 </mapper>

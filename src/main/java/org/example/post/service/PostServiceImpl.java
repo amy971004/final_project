@@ -178,4 +178,10 @@ public class PostServiceImpl implements PostService {
     public String findUserAccountId(String userNickname) {
         return dao.findUserAccountId(userNickname);
     }
+
+    // 댓글 삭제 메서드
+    @Override
+    public void deleteComment(int commentId) {
+        dao.deleteComment(commentId);
+    }
 }

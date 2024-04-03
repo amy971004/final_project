@@ -87,4 +87,7 @@ public interface PostDAO {
     void delteFollow(Map<String, Object> followingInfo);
 
     String findUserAccountId(String userNickname);
+
+    // 댓글 삭제 메서드
+    void deleteComment(int commentId);
 }

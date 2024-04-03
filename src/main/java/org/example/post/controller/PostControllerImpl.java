@@ -379,8 +379,28 @@ public class PostControllerImpl implements PostController {
     @ResponseBody
     @RequestMapping(value = "/getComment.do", method = RequestMethod.GET)
     public List<CommentDTO> getComment(int postId) {
-        System.out.println(postId);
         List<CommentDTO> comment = service.getCommentList(postId);
         return comment;
+    }
+
+    // 댓글 삭제 메서드
+    @ResponseBody
+    @RequestMapping(value = "/deleteComment.do", method = RequestMethod.GET)
+    public void deleteComment (int commentId){
+        System.out.println(commentId);
+
+        service.deleteComment(commentId);
+    }
+
+    // 북마크 페이지
+    @RequestMapping("/bookMark.do")
+    public ModelAndView bookMark(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        // 로그인된 계정의 닉네임
+        HttpSession session = request.getSession();
+        String accountId = (String) session.getAttribute("accountID");
+        String loginNickname = loginNickname(accountId);
+
+
+        return new ModelAndView("bookMark");
     }
 }

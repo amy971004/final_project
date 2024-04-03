@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="../../resources/css/common.css">
     <link rel="stylesheet" href="../../resources/css/style.css">
 </head>
-<body>
 <div class="sideBar">
     <a href="#" class="side_icon" style="padding-top: 20px;font-size: 25px">L</a>
     <!-- 검색 -->

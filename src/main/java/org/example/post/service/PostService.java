@@ -69,4 +69,7 @@ public interface PostService {
 
     // 팔로우 취소 메서드
     void deleteFollow(Map<String, Object> followingInfo);
+
+    // 댓글 삭제 메서드
+    void deleteComment(int commentId);
 }
