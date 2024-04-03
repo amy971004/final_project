@@ -1,10 +1,16 @@
 body {
-    padding: 0;
     margin: 0;
+    padding: 0;
+    font-family: "Open Sans", Arial, sans-serif;
+    min-height: 100vh;
+    background-color: #fafafa;
+    color: #262626;
 }
-.logo {
+.sideBar {
     display: flex; /* Flexbox 사용 */
     position: fixed;
+    left: 0;
+    top: 0;
     flex-direction: column; /* 항목을 세로로 정렬 */
     align-items: center; /* 중앙 정렬 */
     height: 100%; /* 전체 화면 높이 */
@@ -14,16 +20,16 @@ body {
     box-shadow: 2px 0px 5px rgba(0,0,0,0.1); /* 사이드바에 그림자 추가 */
 }
 
-.no-underline {
+.side_icon {
     display: flex;
     justify-content: center;
     align-items: center;
     text-decoration: none; /* 링크 밑줄 제거 */
     color: black; /* 아이콘 색상 */
-    padding: 50px 0; /* 아이콘 간 여백 */
+    padding: min(max(5vh, 30px), 60px) 0; /* 아이콘 간 여백 */
 }
 
-.no-underline i {
+.side_icon i {
     position: fixed;
     font-size: 20px;
     transition: color, font-size 0.5s;
@@ -32,7 +38,6 @@ body {
 /* 로고 특별 처리 */
 .logo a:first-child {
     padding-bottom: 40px; /* 로고와 다음 아이콘 사이의 여백 */
-
 }
 
 /* 로그아웃 버튼 특별 처리 */
@@ -41,7 +46,7 @@ body {
     padding: 20px 0; /* 상하 여백 */
 }
 
-.no-underline > i:hover {
+.side_icon > i:hover {
     cursor: pointer; /* 아이콘에 마우스 오버 시 커서 변경 */
     font-size: 25px;
     color: white;
@@ -49,4 +54,8 @@ body {
 
 #logoutBtn:hover {
     color: red;
+}
+#mainContents {
+    margin-left: 80px;
+    min-height: 100vh;
 }

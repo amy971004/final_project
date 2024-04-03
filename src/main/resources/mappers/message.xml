@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.message">
+
+    <resultMap id="mesResult" type="org.example.message.dto.MessageDTO">
+        <result property="messageId" column="MESSAGE_ID" />
+        <result property="roomId" column="ROOM_ID" />
+        <result property="senderId" column="SENDER_ID" />
+        <result property="senderUserId" column="SENDER_USERID" />
+        <result property="senderUserName" column="SENDER_USERNAME" />
+        <result property="messageText" column="MESSAGE_TEXT" />
+        <result property="sentAt" column="SENT_AT" />
+        <result property="readStatus" column="READ_STATUS" />
+    </resultMap>
+
+    <resultMap id="memberResult" type="org.example.member.dto.MemberDTO">
+        <result property="accountID" column="ACCOUNT_ID" />
+        <result property="userId" column="USER_ID" />
+        <result property="userPw" column="USER_PW" />
+        <result property="userNickname" column="USER_NICKNAME" />
+        <result property="userName" column="USER_NAME" />
+        <result property="userEmail" column="USER_EMAIL" />
+        <result property="userBirthday" column="USER_BIRTHDAY" />
+        <result property="userPhoneNumber" column="USER_PHONENUMBER" />
+        <result property="userJoinDate" column="USER_JOINDATE" />
+        <result property="profileImg" column="PROFILEIMG" />
+        <result property="introduction" column="INTRODUCTION" />
+        <result property="ROLE" column="USER_ROLE" />
+    </resultMap>
+
+    <!-- roomId로 해당 채팅방의 모든 참가자의 account_id를 조회 -->
+    <select id="getParticipantsByRoomId" parameterType="String" resultType="java.lang.String">
+        SELECT account_id
+        FROM participants
+        WHERE ROOM_ID = #{roomId}
+    </select>
+
+    <!-- 메세지 추가 -->
+    <insert id="saveMessage" parameterType="org.example.message.dto.MessageDTO">
+        <![CDATA[
+        insert into MESSAGES (ROOM_ID, SENDER_ID, SENDER_USERID, SENDER_USERNAME, MESSAGE_TEXT, SENT_AT)
+        values (
+                   #{roomId}, #{senderId},
+                   #{senderUserId}, #{senderUserName},
+                   #{messageText}, sysdate)
+        ]]>
+    </insert>
+
+    <!-- roomId로 해당 채팅방의 모든 메시지 조회 -->
+    <select id="getMessagesByRoomId" parameterType="String" resultMap="mesResult">
+        SELECT * FROM MESSAGES
+        WHERE ROOM_ID = #{roomId}
+        ORDER BY SENT_AT
+    </select>
+
+    <!-- 각 채팅방의 마지막 메세지 가져오기-->
+    <select id="getLastMessageByRoomId" parameterType="String" resultMap="mesResult">
+        SELECT * FROM (
+                          SELECT * FROM MESSAGES WHERE ROOM_ID = #{roomId} ORDER BY SENT_AT DESC
+                      ) WHERE ROWNUM = 1
+    </select>
+
+
+</mapper>

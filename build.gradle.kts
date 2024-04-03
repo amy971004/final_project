@@ -4,8 +4,6 @@ plugins {
     kotlin("jvm")
 }
 
-
-
 group = "org.example"
 version = "1.0-SNAPSHOT"
 
@@ -41,6 +39,7 @@ dependencies {
     // Jakarta Standard Tag Library
     implementation ("jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:2.0.0")
     implementation ("org.glassfish.web:jakarta.servlet.jsp.jstl:2.0.0")
+    implementation ("jakarta.platform:jakarta.jakartaee-api:8.0.0")
 
     // MyBatis - 데이터베이스 연동
     implementation("org.mybatis:mybatis:3.5.15")
@@ -55,7 +54,8 @@ dependencies {
 
     // JSON 처리
     // implementation("com.googlecode.json-simple:json-simple:1.1.1")
-    implementation("com.google.code.gson:gson:2.10.1")
+    // implementation("com.google.code.gson:gson:2.10.1")
+    implementation("org.json:json:20240303")
 
     // SLF4J - 로깅 추상화 레이어
     implementation ("org.slf4j:slf4j-api:2.0.3")
@@ -78,8 +78,9 @@ dependencies {
     // Jackson Databind
     implementation ("com.fasterxml.jackson.core:jackson-databind:2.16.0")
 
+
     // Log4j
-    implementation ("log4j:log4j:1.2.17")
+    implementation("log4j:log4j:1.2.17")
 
 
     // jackson

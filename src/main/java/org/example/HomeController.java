@@ -47,24 +47,15 @@ public class HomeController {
         String role = (String) session.getAttribute("ROLE");
         String accountID = (String) session.getAttribute("accountID");
 
-        logger.info("################### 메인페이지 요청 ###################");
-        logger.info("ROLE: " + role);
-        logger.info("accountID: " + accountID);
         // 권한이 있을 경우 (관리자 or 회원)
         if (role != null) {
 
             // 권한이 관리자일 때
             if ("ADMIN".equals(role)) {
-                logger.info("################### 관리자 ###################");
-                logger.info("ROLE: " + role);
-                logger.info("accountID: " + accountID);
                 return new ModelAndView("admin");
             }
             // 권한이 회원일 때
             else if ("USER".equals(role)) {
-                logger.info("################### 일반 사용자 ###################");
-                logger.info("ROLE: " + role);
-                logger.info("accountID: " + accountID);
                 return new ModelAndView("main");
             }
 
@@ -101,4 +92,5 @@ public class HomeController {
     @ResponseBody
     public void returnNoFavicon() {
     }
+
 }

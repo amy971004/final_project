@@ -13,6 +13,9 @@
         <typeAlias type="org.example.profile.dto.ProfileDTO" alias="profileDTO"/>
         <typeAlias type="org.example.post.dto.FollowDTO" alias="followDTO"/>
         <typeAlias type="org.example.post.dto.bookmarkDTO" alias="bookmarkDTO"/>
+        <typeAlias type="org.example.message.dto.MessageDTO" alias="MessageDTO"/>
+        <typeAlias type="org.example.message.dto.RoomDTO" alias="RoomDTO"/>
+        <typeAlias type="org.example.message.dto.ParticipantsDTO" alias="ParticipantsDTO"/>
     </typeAliases>
 
 
@@ -35,6 +38,11 @@
         <mapper resource="mappers/post.xml"/>
         <!-- 프로필 관련 매퍼 파일 -->
         <mapper resource="mappers/profile.xml"/>
+        <!-- 메세지 관련 매퍼 파일 -->
+        <mapper resource="mappers/message.xml"/>
+        <!-- 채팅방 관련 매퍼 파일 -->
+        <mapper resource="mappers/room.xml"/>
+
     </mappers>
 
 </configuration>

@@ -2,10 +2,10 @@ package org.example.member.dao;
 
 import org.apache.ibatis.session.SqlSession;
 import org.example.member.dto.MemberDTO;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.xml.stream.events.Namespace;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -110,6 +110,12 @@ public class MemberDAOImpl implements MemberDAO{
     @Override
     public int emailAuthFail(String userId) throws Exception {
         return sqlSession.selectOne("mapper.member.updateAuthFail", userId);
+    }
+
+    // 전달받은 accountId로 일치하는 회원정보 가져오기
+    @Override
+    public MemberDTO findMemberByAccountId(String accountId) {
+        return sqlSession.selectOne("mapper.member.findMemberByAccountId", accountId);
     }
 
 }
