@@ -16,7 +16,7 @@
 
 </head>
 <body>
-<main id="mainContents">
+<main id="mainContents" style="left: 0; position: fixed">
     <div id="m1">
         <%--        <div id="roomList" data-userAccountId="${user.accountID}">--%>
         <div id="roomList">
@@ -37,7 +37,7 @@
             <div id="roomListBottom">
                 <ul>
                     <c:forEach var="room" items="${rooms}">
-                        <div class="rooms" onclick="selectRoom('${room.roomId}');" data-roomId="${room.roomId}">
+                        <div class="rooms" onclick="selectRoom('${room.roomId}','${room.opponentName}');" data-roomId="${room.roomId}">
                             <div class="roomsContainer">
                                 <div class="rcA1">
                                     <i class="fa-sharp fa-solid fa-circle-user fa-5x" ></i>

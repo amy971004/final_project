@@ -36,8 +36,9 @@ public class RoomControllerImpl implements RoomController{
     }
 
     @Override
-    @PostMapping("/findRoom.do")
-    public ModelAndView findRoom(@RequestParam("receiverId") String receiverId, HttpSession session) {
+    @ResponseBody
+    @RequestMapping("/findRoom.do")
+    public String findRoom(@RequestParam("receiverId") String receiverId, HttpSession session) {
         // 세션에서 발신자의 accountId 가져오기
         String senderAccountId = (String) session.getAttribute("accountID");
         // 수신자의 accountId 가져오기
@@ -51,15 +52,16 @@ public class RoomControllerImpl implements RoomController{
         RoomDTO roomDTO = service.findOrCreateChatRoom(senderAccountId, receiverAccountId, sendUser.getUserName(), receiverUer.getUserName());
 
         if (roomDTO != null){
-            // 채팅 창여자 목록 테이플에 추가
-            roomDAO.addParticipant(roomDTO.getRoomId(), senderAccountId, sendUser.getUserId(), sendUser.getUserName());
-            roomDAO.addParticipant(roomDTO.getRoomId(), receiverAccountId, receiverUer.getUserId(), receiverUer.getUserName());
+            int result1 = roomDAO.findParticipantsByRoomId(roomDTO.getRoomId());
+            if (result1 == 0) {
+                roomDAO.addParticipant(roomDTO.getRoomId(), senderAccountId, sendUser.getUserId(), sendUser.getUserName());
+                roomDAO.addParticipant(roomDTO.getRoomId(), receiverAccountId, receiverUer.getUserId(), receiverUer.getUserName());
+            }
+            return "SUCCESS";
         }
 
         // 채팅방으로 이동
-        // ModelAndView modelAndView = new ModelAndView("/OK");
-        // modelAndView.addObject("chatRoomId", roomDTO.getRoomId());
-        return new ModelAndView("OK");
+        return "SUCCESS";
     }
 
     // 채팅방 전체 목록 보기
@@ -81,15 +83,22 @@ public class RoomControllerImpl implements RoomController{
     }
 
     // roomId 로 Room 정보 가져오기
+//    @Override
+//    @GetMapping("/main/chatRooms/getRoomInfo.do")
+//    @ResponseBody
+//    public RoomDTO getRoomByRoomId(@RequestParam("roomId") String roomId, HttpSession session) {
+//        RoomDTO room = roomDAO.getRoomByRoomId(roomId);
+//        String myAccountId = (String) session.getAttribute("accountID");
+//        String opponentName = roomDAO.findOpponentName(roomId, myAccountId);
+//        room.setOpponentName(opponentName);
+//        return room;
+//    }
+
     @Override
     @GetMapping("/main/chatRooms/getRoomInfo.do")
     @ResponseBody
     public RoomDTO getRoomByRoomId(@RequestParam("roomId") String roomId, HttpSession session) {
-        RoomDTO room = roomDAO.getRoomByRoomId(roomId);
-        String myAccountId = (String) session.getAttribute("accountID");
-        String opponentName = roomDAO.findOpponentName(roomId, myAccountId);
-        room.setOpponentName(opponentName);
-        return room;
+        return roomDAO.getRoomByRoomId(roomId);
     }
 
     // roomId 로 해당 Room 삭제하기

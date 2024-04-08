@@ -1,4 +1,4 @@
-<%--<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>--%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 
 <html>
 <head>
@@ -12,11 +12,12 @@
     <link rel="stylesheet" href="../../resources/css/common.css">
     <link rel="stylesheet" href="../../resources/css/style.css">
     <link rel="stylesheet" href="../../resources/css/nav.css">
+    <link rel="stylesheet" href="../../resources/css/search.css">
 </head>
 <div class="sideBar">
     <a href="#" class="side_icon" style="padding-top: 20px;font-size: 25px">L</a>
     <!-- 검색 -->
-    <a href="#" class="side_icon"><i class="fa-solid fa-magnifying-glass "></i></a>
+    <a class="side_icon"><i class="fa-solid fa-magnifying-glass " onclick="$('#searchBackground').show()"></i></a>
     <!-- 홈 -->
     <a class="side_icon"><i onclick="location.href='http://localhost:8081/main/post/mainPost.do'" class="fa-solid fa-house"></i></a>
     <!-- 업로드 -->
@@ -31,6 +32,30 @@
     <a href="#" class="side_icon"><i class="fa-regular fa-bookmark "></i></a>
     <!-- 로그아웃 -->
     <a class="side_icon"><i id="logoutBtn" class="fa-solid fa-arrow-right-from-bracket"></i></a>
+</div>
+<div id="searchBackground" style="display: none">
+    <div id="searchC">
+        <div id="searchT">
+            <div id="searchBox">
+                <input id="searchInput" type="text" placeholder="검색">
+                <i id="searchBtn" class="searchI fa-solid fa-magnifying-glass " style="cursor: pointer"></i>
+            </div>
+        </div>
+        <!-- 본문 1 -->
+        <div id="searchM1">
+            <!-- 카테고리 선택 -->
+            <div id="cate1" class="M1-1"><h5>유저</h5></div>
+            <div id="cate2" class="M1-1"><h5>게시판</h5></div>
+            <div id="cate3" class="M1-1"><h5>태그</h5></div>
+            <div id="searchPoint" style="display: none"></div>
+        </div>
+        <div id="searchM2">
+
+        </div>
+        <div id="searchB">
+
+        </div>
+    </div>
 </div>
 <script>
 

@@ -21,6 +21,7 @@
 /* 채팅방 목록 하단 */
 #roomListBottom {
     background-color: #f5f5f5;
+    width: 500px;
     height: calc(100vh - 150px);
     overflow-y:scroll;
 }
@@ -315,4 +316,11 @@
 .deleteBtn:hover {
     background-color: red;
     color: white;
+}
+#recName {
+    font-size: 16px;
+}
+#recRoomName {
+    font-size: 20px;
+    padding-top: 6px;
 }

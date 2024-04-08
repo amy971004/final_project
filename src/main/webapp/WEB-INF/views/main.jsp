@@ -1,5 +1,4 @@
 <%@ page import="org.example.post.dto.PostDTO" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="header.jsp"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath }" />
@@ -84,7 +83,7 @@
     }
 </script>
 <body>
-<main>
+<main style="left: 80px">
     <c:forEach var="post" items="${postMap.postList}">
         <!--좋아요 모달창 -->
         <div class="like_modal" id="like_modal${post.postId}">
@@ -195,7 +194,7 @@
                                         </span>
                                     </c:when>
                                 </c:choose>
-                                <span class="icon" onclick="show_all_comment(${post.postId},'${loginNickname}')"><i class="fa-regular fa-comment"></i></span>
+                                <span class="icon commentBtn" onclick="show_all_comment(${post.postId},'${loginNickname}')"><i class="fa-regular fa-comment"></i></span>
                                 <span class="icon"><i class="fa-regular fa-share-from-square"></i></span>
                             </div>
                             <c:choose>
@@ -246,6 +245,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 <script src='../../resources/js/post.js'></script>
+<script src='../../resources/js/search.js'></script>
 
 </body>
 </html>
