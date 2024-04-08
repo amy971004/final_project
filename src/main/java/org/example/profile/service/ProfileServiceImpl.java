@@ -81,4 +81,9 @@ public class ProfileServiceImpl implements ProfileService {
         return dao.findAccountId(userNickname);
     }
 
+    @Override
+    public int deletePost(int postId) {
+        return dao.deletePost(postId);
+    }
+
 }

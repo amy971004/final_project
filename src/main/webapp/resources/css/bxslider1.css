@@ -8,8 +8,11 @@
 }
 .bx-wrapper img {
     max-width: 100%;
-    max-height: 100%;
     display: block;
+    max-height: 100%; /* 이미지의 최대 높이를 창의 높이와 동일하게 설정 */
+    width: 300px; /* 이미지의 고정된 너비 설정 */
+    height: 300px; /* 이미지의 고정된 높이 설정 */
+    object-fit: contain; /* 이미지가 영역 내에 맞게 유지되도록 설정 */
 }
 .bxslider {
     margin: 0;
@@ -21,6 +24,8 @@ ul.bxslider {
 .bx-viewport {
     /*fix other elements on the page moving (on Chrome)*/
     -webkit-transform: translatez(0);
+    height: 100%; /* 창의 높이에 맞게 조정 */
+    width: 100%; /* 창의 너비에 맞게 조정 */
 }
 /** THEME
 ===================================*/

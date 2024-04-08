@@ -4,10 +4,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.example.post.dto.*;
+import org.example.post.service.PostService;
+import org.example.post.service.PostServiceImpl;
 import org.example.profile.dto.ProfileDTO;
 import org.example.profile.service.ProfileService;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -23,16 +27,17 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.stream.Stream;
 
 
 @Controller
 public class ProfileControllerImpl implements ProfileController{
     @Autowired
     private ProfileService service;
+    @Autowired
+    private PostService service1;
 
     private static final String BOARD_REPO = "C:\\project\\profile";
 
@@ -51,6 +56,30 @@ public class ProfileControllerImpl implements ProfileController{
         List<LikeDTO> likeDTO = service.likeView();
         List<FollowDTO> followDTO = service.followView(dto.getUserNickname());
         List<FollowDTO> followingDTO = service.followingView(dto.getUserNickname());
+        List<TagDTO> tagsList = new ArrayList<>(); //태그 저장하는 리스트
+        List<likeBookDTO> likeBookList = new ArrayList<>(); // 좋아요 북마크 저장하는 리스트
+        int contentNo = 0;
+        for (PostDTO post : postDTO) {
+            contentNo = post.getPostId();
+            likeBookDTO likebook = new likeBookDTO();
+            // 좋아요 여부 (0,1)
+            likebook.setContentNo(post.getPostId());
+
+            likebook.setLikeCheck(service1.likeCheck(dto.getUserNickname(), contentNo));
+            // 좋아요 갯수
+            likebook.setLikeCnt(service1.likeCnt(contentNo));
+            // 북마크 여부 (0,1)
+            likebook.setBookmarkCheck(service1.bookmarkCheck(dto.getUserNickname(), contentNo));
+            likeBookList.add(likebook);
+
+            // 태그 가져오기
+            List<String> tag = service1.getTag(contentNo);
+            TagDTO tagDTO = new TagDTO();
+            tagDTO.setPostId(contentNo);
+            tagDTO.setHashTag(tag);
+            tagsList.add(tagDTO);
+
+        }
 
         ModelAndView mav = new ModelAndView("profile");
         mav.addObject("profile", dto);
@@ -61,6 +90,8 @@ public class ProfileControllerImpl implements ProfileController{
         profileMap.put("likeDTO", likeDTO);
         profileMap.put("followDTO", followDTO);
         profileMap.put("followingDTO", followingDTO);
+        profileMap.put("tagsList", tagsList); // 태그리스트
+        profileMap.put("likeBookList", likeBookList); // 좋아요, 북마크 여부 리스트
         mav.addObject("profileMap", profileMap);
 
         return mav;
@@ -167,14 +198,34 @@ public class ProfileControllerImpl implements ProfileController{
         // 경로에 사용자의 accountId로 하는 디렉터리가 없다면 디렉터리 생성
         if (!Files.exists(directory)) {
             Files.createDirectories(directory);
+        }else{
+            // 이미지를 업로드하기 전에 해당 폴더의 파일들을 모두 삭제
+            // 메모리 최소화
+            deleteFilesInDirectory(directory);
         }
         fileName = UUID.randomUUID().toString() + fileExtension;
         Path path = Paths.get(UPLOAD_DIR + fileName);
-        if (Files.exists(path)) {
-            Files.delete(path);
-        }
         Files.write(path, file.getBytes());
         return fileName;
+    }
+
+    private void deleteFilesInDirectory(Path directory) {
+        // 디렉토리가 존재하고 디렉토리인지 확인
+        if (Files.exists(directory) && Files.isDirectory(directory)) {
+            // 디렉토리 내의 모든 파일을 가져와서 삭제
+            try (Stream<Path> files = Files.list(directory)) {
+                files.forEach(path -> {
+                    try {
+                        Files.delete(path);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
     }
 
 
@@ -215,7 +266,11 @@ public class ProfileControllerImpl implements ProfileController{
     @Override
     @RequestMapping("/main/profile/userProfile.do")
     public ModelAndView userProfile(String userNickname, HttpServletResponse response, HttpServletRequest request) throws Exception {
+        HttpSession session = request.getSession();
+        String MyaccountId = (String) session.getAttribute("accountID");
+
         String accountId = service.findAccountId(userNickname);
+        String loginNickname = service1.loginNickname(MyaccountId);
         ProfileDTO dto = service.profileView(accountId);
         List<PostDTO> postDTO = service.postView(userNickname);
         List<ImageDTO> imageDTO = service.imageView();
@@ -223,8 +278,32 @@ public class ProfileControllerImpl implements ProfileController{
         List<LikeDTO> likeDTO = service.likeView();
         List<FollowDTO> followDTO = service.followView(userNickname);
         List<FollowDTO> followingDTO = service.followingView(userNickname);
+        List<TagDTO> tagsList = new ArrayList<>(); //태그 저장하는 리스트
+        List<likeBookDTO> likeBookList = new ArrayList<>(); // 좋아요 북마크 저장하는 리스트
+        int contentNo = 0;
+        for (PostDTO post : postDTO) {
+            contentNo = post.getPostId();
+            likeBookDTO likebook = new likeBookDTO();
+            // 좋아요 여부 (0,1)
+            likebook.setContentNo(post.getPostId());
+            likebook.setLikeCheck(service1.likeCheck(dto.getUserNickname(), contentNo));
+            // 좋아요 갯수
+            likebook.setLikeCnt(service1.likeCnt(contentNo));
+            // 북마크 여부 (0,1)
+            likebook.setBookmarkCheck(service1.bookmarkCheck(dto.getUserNickname(), contentNo));
+            likeBookList.add(likebook);
 
+            // 태그 가져오기
+            List<String> tag = service1.getTag(contentNo);
+            TagDTO tagDTO = new TagDTO();
+            tagDTO.setPostId(contentNo);
+            tagDTO.setHashTag(tag);
+            tagsList.add(tagDTO);
+
+        }
         ModelAndView mav = new ModelAndView("userProfile");
+        mav.addObject("loginNickname", loginNickname);
+        mav.addObject("MyaccountId", MyaccountId);
         mav.addObject("profile", dto);
         Map<String, Object> profileMap = new HashMap<>();
         profileMap.put("postDTO", postDTO);
@@ -233,10 +312,14 @@ public class ProfileControllerImpl implements ProfileController{
         profileMap.put("likeDTO", likeDTO);
         profileMap.put("followDTO", followDTO);
         profileMap.put("followingDTO", followingDTO);
+        profileMap.put("tagsList", tagsList); // 태그리스트
+        profileMap.put("likeBookList", likeBookList); // 좋아요, 북마크 여부 리스트
         mav.addObject("profileMap", profileMap);
 
         return mav;
     }
+
+
 
     private BufferedImage resizeImage(BufferedImage originalImage) {
         BufferedImage resizedImage = new BufferedImage(179, 179, BufferedImage.TYPE_INT_RGB);
@@ -258,6 +341,75 @@ public class ProfileControllerImpl implements ProfileController{
         return ResponseEntity.ok().body(follower);
     }
 
+    @Override
+    @PostMapping("/main/profile/following.do")
+    public ResponseEntity<?> following(String userNickname, HttpServletResponse response, HttpServletRequest request) throws Exception {
+        List<FollowDTO> following = service.followingView(userNickname);
+        return ResponseEntity.ok().body(following);
+    }
+
+    // 마이프로필에서 게시물 삭제하기
+    @RequestMapping(value = "/main/profile/deletePost.do",method = RequestMethod.POST)
+    public ResponseEntity<?> deletePost(
+            int postId,
+            HttpServletRequest request,
+            HttpServletResponse response)throws Exception {
+        String message = null;
+        ResponseEntity<?> resEnt = null;
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("Content-Type", "text/html;charset=utf-8");
+        try {
+            int result = service.deletePost(postId);
+            if (result >= 1){
+                message = "<script>";
+                message += "alert('게시물이 삭제 되었습니다.');";
+                message += "location.href='/main/profile/profileView.do';";
+                message += "</script>";
+                resEnt = new  ResponseEntity<>(message, responseHeaders, HttpStatus.OK);
+            }else{
+                message = "<script>";
+                message += "alert('게시물이 삭제되지 않았습니다. 다시 시도해 주세요.');";
+                message += "location.href='/main/profile/profileView.do';";
+                message += "</script>";
+                resEnt = new  ResponseEntity<>(message, responseHeaders, HttpStatus.CREATED);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return resEnt;
+    }
+
+    // 유저프로필에서 게시물 삭제하기
+    @RequestMapping(value = "/main/profile/deleteUserPost.do",method = RequestMethod.POST)
+    public ResponseEntity<?> deleteUserPost(
+            int postId,
+            HttpServletRequest request,
+            HttpServletResponse response)throws Exception {
+        String message = null;
+        ResponseEntity<?> resEnt = null;
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("Content-Type", "text/html;charset=utf-8");
+        try {
+            int result = service.deletePost(postId);
+            message = "<script>";
+            if (result >= 1){
+                message += "alert('게시물이 삭제 되었습니다.');";
+                message += "location.href='/main/profile/userProfile.do';";
+                message += "</script>";
+                resEnt = new  ResponseEntity<>(message, responseHeaders, HttpStatus.OK);
+            }else{
+                message += "alert('게시물이 삭제되지 않았습니다. 다시 시도해 주세요.');";
+                message += "location.href='/main/profile/userProfile.do';";
+                message += "</script>";
+                resEnt = new  ResponseEntity<>(message, responseHeaders, HttpStatus.CREATED);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return resEnt;
+    }
 }
 
 

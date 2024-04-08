@@ -3,7 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="header.jsp"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath }" />
-
+<head>
+    <title>메인</title>
+</head>
 <!-- 슬라이더 -->
 
 <link href="../../resources/css/bxslider.css" rel="stylesheet">

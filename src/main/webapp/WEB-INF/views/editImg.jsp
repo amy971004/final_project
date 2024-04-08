@@ -9,7 +9,7 @@
 
 <html>
 <head>
-    <title>Edit Profile Image</title>
+    <title>프로필 이미지 및 소개 수정</title>
 </head>
 <body>
     <h2>Edit Image</h2>

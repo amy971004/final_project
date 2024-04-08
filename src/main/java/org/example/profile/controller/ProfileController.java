@@ -72,5 +72,9 @@ public interface ProfileController {
     public ModelAndView userProfile(@RequestParam("userNickname") String userNickname,
                                     HttpServletResponse response,
                                     HttpServletRequest request) throws Exception;
+
+    public ResponseEntity<?> following (@RequestParam("nickname") String userNickname,
+                                        HttpServletResponse response,
+                                        HttpServletRequest request) throws Exception;
 }
 

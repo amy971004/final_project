@@ -83,4 +83,9 @@ public class ProfileDAOImpl implements ProfileDAO{
         return sqlSession.selectOne("mapper.profile.findUserAccountId", userNickname);
     }
 
+    @Override
+    public int deletePost(int postId) {
+        return sqlSession.delete("mapper.post.deletePost",postId);
+    }
+
 }

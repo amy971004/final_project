@@ -6,92 +6,17 @@
     <%@ include file="header.jsp"%>
     <link href="../../resources/css/main.css" rel="stylesheet" type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="../../resources/css/bxslider1.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../../resources/css/reset.css">
     <link rel="stylesheet" href="../../resources/css/common.css">
     <link rel="stylesheet" href="../../resources/css/style.css">
     <link rel="stylesheet" href="../../resources/css/nav.css">
     <c:set var="contextPath" value="${pageContext.request.contextPath }" />
-    <script src="../../resources/js/profile.js"></script>
-
-    <style>
-        /* modal */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 9999;
-            background: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-dialog {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            position: relative;
-            width: 400px;
-            height: 500px;
-            background: white;
-            padding: 24px 16px;
-            border-radius: 4px;
-            overflow-y: auto;
-
-        }
-
-        .modal_table{
-            width:100%;
-            height: auto;
-            display: grid;
-            gap: 10px;
-        }
-        .modal_table tbody {
-            width:100%;
-            height:80px;
-        }
-
-        .modal_table tr {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            margin-bottom: 10px;
-        }
-        .modal-title {
-            display: inline-block;
-            font-size: 24px;
-            font-weight: bold;
-            text-align:left;
-        }
-        #modal-close {
-            position: absolute;
-            top: 24px;
-            right: 16px;
-            cursor: pointer;
-        }
-        #modal_userImg{
-            width:50px;
-            height:50px;
-            border-radius: 75%;
-        }
-        #modal_userID{
-            width:200px;
-        }
-        #modal_userFollow{
-            margin:10px;
-            text-align: right;
-            right: 16px;
-        }
-    </style>
-    <title>프로필</title>
+    <title>${profile.userNickname}프로필</title>
 </head>
 <body>
+
 <!--프로필 섹션-->
 <header>
 
@@ -114,10 +39,31 @@
             <div class="profile-user-settings">
 
                 <h1 class="profile-user-name">${profile.userId} / ${profile.userNickname}</h1>
+                <c:choose>
+                    <c:when test="${profile.accountId == MyaccountId}">
+                        <button class="btn profile-edit-btn" onclick="location.href='http://localhost:8081/main/profile/modprofile.do?id=${profile.userId}'">Edit Profile</button>
+                        <button class="btn profile-settings-btn" onclick="location.href='http://localhost:8081/main/profile/editImg.do'">Edit Image</button>
+                    </c:when>
+                    <c:otherwise>
+                        <button class="btn profile-edit-btn" onclick='sendMessageProc("${profile.userId}")' type="button">Send Message</button>
+                        <c:set var="followExists" value="0" />
+                        <c:forEach var="follow" items="${profileMap.followDTO}">
+                            <c:if test="${follow.userNickname == loginNickname}">
+                                <c:set var="followExists" value="1" />
+                            </c:if>
+                        </c:forEach>
+                        <c:choose>
+                                <c:when test="${followExists == '1'}">
+                                    <button class="btn profile-settings-btn" onclick='following("${loginNickname}","${profile.userNickname}", this)'>팔로잉</button>
+                                </c:when>
+                                <c:otherwise>
+                                    <button class="btn profile-settings-btn" style="background-color: #458eff;" onclick='follow("${loginNickname}","${profile.userNickname}", this)'>팔로우</button>
+                                </c:otherwise>
+                        </c:choose>
 
-                <button class="btn profile-edit-btn" onclick='sendMessageProc("${profile.userId}")' type="button">Send Message</button>
-                <button class="btn profile-settings-btn" onclick="location.href='/*팔로우 버튼*/'">팔로우</button>
 
+                    </c:otherwise>
+                </c:choose>
             </div>
 
             <div class="profile-stats">
@@ -131,14 +77,14 @@
                 </c:forEach>
                 <c:set var="followingCount" value="0" />
                 <c:forEach var="following" items="${profileMap.followingDTO}">
-                    <c:set var="followeringCount" value="${followingCount + 1}"/>
+                    <c:set var="followingCount" value="${followingCount + 1}"/>
                 </c:forEach>
 
 
                 <ul class="profile-count">
                     <li><span class="profile-stat-count">${postCount}</span> posts</li>
-                    <li class="follower"><span  class="profile-stat-count">${followerCount}</span> followers</li>
-                    <li class="following"><span class="profile-stat-count">${followingCount}</span> following</li>
+                    <li class="follower" onclick='show_follower_modal("${profile.userNickname}")'><span  class="profile-stat-count">${followerCount}</span> followers</li>
+                    <li class="following" onclick='show_following_modal("${profile.userNickname}")'><span class="profile-stat-count">${followingCount}</span> following</li>
                 </ul>
 
             </div>
@@ -167,183 +113,151 @@
         <div class="gallery">
             <c:forEach var="post" items="${profileMap.postDTO}">
                 <div class="gallery-item" tabindex="0" data-postId="${post.postId}">
-                    <c:forEach var="image" items="${profileMap.imageDTO}">
-                        <c:if test="${post.postId eq image.postId}">
-                            <img src="${contextPath}/main/post/imageDownload.do?imageFileName=${image.fileName}&postId=${post.postId}" class="gallery-image" alt="">
+                    <div class="head-feed">
+                        <!-- 수정 삭제 메뉴 -->
+                        <c:if test="${loginNickname == post.userNickname}">
+                            <div id="menu_box${post.postId}" class="wrap-menu" style="z-index: 100">
+                                <div class="modify-menu">
+                                    <div class="modify-img"><i class="fa-regular fa-pen-to-square"></i></div>
+                                    <p class="modify-word">수정</p>
+                                </div>
+                                <div class="delete-menu" onclick="deletePost('/main/profile/deleteUserPost.do',${post.postId})">
+                                    <div class="delete-img"><i class="fa-regular fa-trash-can"></i></div>
+                                    <p class="delete-word">삭제</p>
+                                </div>
+                            </div>
+                        </c:if>
+                        <!-- 수정 삭제 메뉴 -->
+                        <div class="profile-feed">
+                            <div>
+                                <p class="location-feed">${post.uploadDate}</p>
+                            </div>
+                        </div>
+                        <span id="more${post.postId}" class="icon-more" onclick="show_menu(${post.postId},0)">
+                        <i class="fa-solid fa-ellipsis"></i>
+                    </span>
+                    </div>
+                    <div class="slider">
+                        <c:forEach var="image" items="${profileMap.imageDTO}">
+                            <c:if test="${post.postId eq image.postId}">
+                                <img src="${contextPath}/main/post/imageDownload.do?imageFileName=${image.fileName}&postId=${post.postId}" class="gallery-image" alt="">
+                            </c:if>
+                        </c:forEach>
+                    </div>
+                    <c:forEach var="likeBook" items="${profileMap.likeBookList}">
+                        <c:if test="${post.postId == likeBook.contentNo}">
+                            <div class="icon-feed">
+                                <div>
+                                    <c:choose>
+                                        <c:when test="${likeBook.likeCheck == 1}">
+                                        <span id="icon-like-pushed" class="icon-like-pushed"  onclick="likeClick(${likeBook.likeCheck},${post.postId},'${loginNickname}', this,'${likeBook.likeCnt}')">
+                                            <i class="fa-solid fa-heart"></i>
+                                        </span>
+                                        </c:when>
+                                        <c:when test="${likeBook.likeCheck == 0}">
+                                        <span id="icon-like" class="icon" onclick="likeClick(${likeBook.likeCheck},${post.postId},'${loginNickname}', this,'${likeBook.likeCnt}')">
+                                            <i class="fa-regular fa-heart"></i>
+                                        </span>
+                                        </c:when>
+                                    </c:choose>
+                                    <span class="icon" onclick="show_all_comment(${post.postId},'${loginNickname}')"><i class="fa-regular fa-comment"></i></span>
+                                    <span class="icon"><i class="fa-regular fa-share-from-square"></i></span>
+                                </div>
+                                <c:choose>
+                                    <c:when test="${likeBook.bookmarkCheck == 0}">
+                                        <span class="icon" onclick="bookClick(${likeBook.bookmarkCheck},${post.postId},'${profile.userNickname}', this)"><i class="fa-regular fa-bookmark"></i></span>
+                                    </c:when>
+                                    <c:when test="${likeBook.bookmarkCheck == 1}">
+                                        <span class="icon-book-pushed" onclick="bookClick(${likeBook.bookmarkCheck},${post.postId},'${profile.userNickname}', this)"><i class="fa-solid fa-bookmark"></i></span>
+                                    </c:when>
+                                </c:choose>
+                            </div>
+                            <div class="content">${post.content}</div>
+                            <div id="tags">
+                                <c:forEach var="tags" items="${profileMap.tagsList}">
+                                    <c:if test="${tags.postId == post.postId}">
+                                        <c:forEach var="tag" items="${tags.hashTag}">
+                                            #${tag}
+                                        </c:forEach>
+                                    </c:if>
+                                </c:forEach>
+                            </div>
+                            <p id="like-cnt${post.postId}" class="text-like" onclick="show_like_modal(${post.postId},'${profile.userNickname}')">좋아요 ${likeBook.likeCnt}개</p>
+                            <p class="show_all_comment" id="${post.postId}" onclick="show_all_comment(${post.postId},'${profile.userNickname}')">전체 댓글 보기..</p>
                         </c:if>
                     </c:forEach>
-                    <div class="gallery-item-info">
-                        <p class="location-feed">${post.content}</p>
-                        <ul>
-                            <c:set var="likeCount" value="0" />
-                            <c:forEach var="like" items="${profileMap.likeDTO}">
-                                <c:if test="${post.postId eq like.postId}">
-                                    <c:set var="likeCount" value="${likeCount + 1}" />
-                                </c:if>
-                            </c:forEach>
-                            <li class="gallery-item-likes" ><span class="visually-hidden">Likes: </span>
-                                <i class="fas fa-heart" aria-hidden="true"></i>
-                                <c:choose>
-                                    <c:when test="${likeCount == null}}">
-                                        0
-                                    </c:when>
-                                    <c:otherwise>
-                                        ${likeCount}
-                                    </c:otherwise>
-                                </c:choose>
-                            </li>
-
-                            <c:set var="commentCount" value="0" />
-                            <c:forEach var="comment" items="${profileMap.commentDTO}">
-                                <c:if test="${post.postId eq comment.postId}">
-                                    <c:set var="commentCount" value="${commentCount + 1}" />
-                                </c:if>
-                            </c:forEach>
-
-
-
-                            <li class="gallery-item-comments" onclick="show_all_comment(${post.postId}, ${profile.userNickname})"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true">
-
-                            </i>
-                                <c:choose>
-                                    <c:when test="${commentCount == null}}">
-                                        0
-                                    </c:when>
-                                    <c:otherwise>
-                                        ${commentCount}
-                                    </c:otherwise>
-                                </c:choose>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
             </c:forEach>
             <!-- End of gallery -->
         </div>
         <!-- End of container -->
     </div>
-
-
 </main>
 <!--좋아요 모달창 -->
-<div class="modal fade" id="followModal" style="display: none;">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content" id="like-content">
-            <div class="modal-header">
-                <%--모달창의 header 부분에 해당한다.--%>
-                <h4 class="modal-title"></h4>
-                <button id="modal-close" type="button" class="close">닫기</button>
+<c:forEach var="post" items="${profileMap.postDTO}">
+    <!--좋아요 모달창 -->
+    <div class="like_modal" id="like_modal${post.postId}">
+        <div class="like_modal_content">
+            <div class="like_modal_header">
+                <div class="like_header_subject">좋아요</div>
+                <div class="like_header_closebtn" onclick="close_like_modal(${post.postId})"><span>X</span></div>
             </div>
-            <hr>
-            <div class="modal-body">
-                <%--모달창의 가운데 내용이 들어가는 곳이다.--%>
-                <table class="modal_table">
-
-                </table>
+            <div id="like_modal_body${post.postId}" class="like_modal_body">
             </div>
-            <div id="count" value="1"></div>
         </div>
     </div>
-</div>
+    <!-- 좋아요 모달창 --->
+    <!-- 댓글 모달창 -->
+    <div class="modal" id="modal${post.postId}">
+        <div class="close_modal" onclick="close_modal('${post.postId}')">X</div>
+        <div class="modal_content">
+            <div class="modal_header">
+                <div class="modal_header_feed">
+                    <div class="modal_profile">
+                        <a href="${contextPath}/main/profile/userProfile.do?userNickname=${post.userNickname}">
+                            <img
+                                    class="modal_profile_32px"
+                                    src="/main/post/profileImageDownload.do?userNickname=${post.userNickname}" alt="모달창 상단 작성자 프로필 이미지">
+                        </a>
+                    </div>
+                    <div class="modal_nickname">${post.userNickname}</div>
+                </div>
+                <div class="modal_menu_icon"><i class="fa-solid fa-ellipsis"></i></div>
+            </div>
+            <div class="modal_body" id="modal_body${post.postId}">
+            </div>
+            <div class="modal_box_chat">
+                <span class="icon-smile"><i class="fa-regular fa-face-smile"></i></span>
+                <div class="addReplyComment">
+                    <input  id="modal_inputComment${post.postId}"
+                            class="modal_input-chat"
+                            type="text"
+                            value=""
+                            placeholder="댓글 달기..."
+                    />
+                    <button id="btn-chat${post.postId}" class="btn-chat" onclick="add_modal_Comment(${post.postId},'${loginNickname}')">게시</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<script>
-    /* 팔로워 모달창*/
-    /*팔로워 버튼 클릭*/
-    const open = document.getElementById("follower");
-    const close = document.getElementById("modal-close");
-    const modal = document.querySelector(".modal");
-
-    close.addEventListener('click', function (){
-        modal.style.display = "none";
-    });
-
-    $('.follower').on('click', function (){
-        const modalBody = document.querySelector('.modal_table');
-        $('.modal-title').text("팔로워");
-        const userNickname =  "${profile.userNickname}";
-        $.ajax({
-            url: '/main/profile/follower.do',
-            type: 'POST',
-            data: { nickname: userNickname }, // 서버에 보낼 데이터
-            dataType: 'json', // 응답 데이터 형식
-            success: function(response) {
-                // 성공적으로 데이터를 받아왔을 때의 동작
-                // 받아온 데이터를 사용하여 모달 창에 좋아요를 누른 사용자의 리스트를 표시하는 함수 호출
-                displayfollowerModal(response);
-            },
-            error: function(xhr, status, error) {
-                // 에러 발생 시 처리
-                console.error('데이터를 불러오는 중 에러 발생:', error);
-            }
-        });
-        modal.style.display = "flex";
-    });
-
-    function displayfollowerModal(followerDTO) {
-        const modalBody = document.querySelector('.modal_table');
-        let followerListHTML = '';
-        followerDTO.forEach(function (follower) {
-            followerListHTML += '<tr>';
-            followerListHTML += '<td style="width:70px; font-size: 24px;"><img id="modal_userImg" src="' + contextPath + '/main/post/profileImageDownload.do?userNickname=' + follower.userNickname + '" alt=""></td>';
-            followerListHTML += '<td id="modal_userID" style="font-size: 24px; text-align: left;">' + follower.userNickname +'</td>';
-            followerListHTML += '<td id="modal_userFollow" style="font-size: 24px; text-align: center"><button type="button" class="btn btn-outline-primary" value="' + follower.userNickname + '">팔로우</button></td>';
-            followerListHTML += '</tr>';
-
-        });
-        modalBody.innerHTML = followerListHTML;
-    }
-
-    /* 좋아요 모달창*/
-    $('.gallery-item-likes').on('click', function (){
-        const postId = $(this).closest('.gallery-item')[0].getAttribute('data-postId');
-        $('.modal-title').text("좋아요");
-        console.log("postId : "+ postId);
-        $.ajax({
-            url: '/main/profile/likes.do',
-            type: 'POST',
-            data: { postId: postId }, // 서버에 보낼 데이터
-            dataType: 'json', // 응답 데이터 형식
-            success: function(response) {
-                // 성공적으로 데이터를 받아왔을 때의 동작
-                // 받아온 데이터를 사용하여 모달 창에 좋아요를 누른 사용자의 리스트를 표시하는 함수 호출
-                displayLikesModal(response);
-            },
-            error: function(xhr, status, error) {
-                // 에러 발생 시 처리
-                console.error('데이터를 불러오는 중 에러 발생:', error);
-            }
-        });
-        modal.style.display = "flex";
-
-    });
-    const contextPath = "${contextPath}";
-    let usernickname = "${profile.userNickname}";
-    function displayLikesModal(likesData) {
-        const modalBody = document.querySelector('.modal_table');
-        let likesListHTML = '';
-        likesData.forEach(function (like) {
-            likesListHTML += '<tr>';
-            likesListHTML += '<td style="width:70px; font-size: 24px;"><img id="modal_userImg" src="' + contextPath + '/main/post/profileImageDownload.do?userNickname=' + like.user_nickname + '" alt=""></td>';
-            likesListHTML += '<td id="modal_userID" style="font-size: 24px; text-align: left;">' + like.user_nickname +'</td>';
-            if (like.user_nickname !== usernickname){
-                likesListHTML += '<td id="modal_userFollow" style="font-size: 24px; text-align: center"><button type="button" class="btn btn-outline-primary" value="' + like.user_nickname + '">팔로우</button></td>';
-            }else{
-                likesListHTML += '<td id="modal_userFollow" style="font-size: 24px; text-align: center"></td>';
-            }
-            likesListHTML += '</tr>';
-
-        });
-        modalBody.innerHTML = likesListHTML;
-    }
-
-
-
-</script>
+    <%-- 팔로우 모달창 --%>
+    <div class="follow_modal">
+        <div class="follow_modal_content">
+            <div class="follow_modal_header">
+                <div class="follow_header_subject">팔로우</div>
+                <div class="follow_header_closebtn" onclick="close_follow_modal()"><span>닫기</span></div>
+            </div>
+            <div id="follow_modal_body" class="follow_modal_body">
+            </div>
+        </div>
+    </div>
+</c:forEach>
 
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="../../resources/js/logout.js"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+<script src='../../resources/js/profile.js'></script>
 </body>
 </html>

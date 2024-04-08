@@ -16,6 +16,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 
 // 회원 컨트롤러의 구현체
 @RestController
@@ -61,17 +62,9 @@ public class MemberControllerImpl implements MemberController{
         // 카카오톡으로 로그인 했을 시 img 태그의 값이 있음
         // 카카오톡으로 로그인 후 image를 따로 지정해줄 수도 있으므로 file == null도 추가해줌
         if(img != null && file == null){
-            try {
-                // getImageUrl로 넘겨주어 이미지를 저장 후 디비에 저장할 이름을 가져옴
-                String imageName = getImageUrl(img, member.getUserId());
-                member.setProfileImg(imageName);
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-
+            member.setProfileImg("kakao.jpeg");
         }else {
-            // 웹 접근 가능한 경로 내에 이미지 저장 폴더를 설정
-            String saveDirectory = "C:\\profile\\" + member.getUserId() + "\\";
+
             //        String saveDirectory2 = saveDirectory.replace("ROOT\\", "userProfile\\");
 
             //        파일명 중복시
@@ -81,33 +74,50 @@ public class MemberControllerImpl implements MemberController{
             //        String filePath = Paths.get(saveDirectory, newFileName).toString();
 
             // 폴더 생성 로직을 추가합니다.
-            Path directory = Paths.get(saveDirectory);
-            if (!Files.exists(directory)) {
-                Files.createDirectories(directory);
-            }
             String fileName = file.getOriginalFilename();
-            Path path = Paths.get(saveDirectory + fileName);
-            if (Files.exists(path)) {
-                Files.delete(path);
-            }
-            Files.write(path, file.getBytes());
             member.setProfileImg(fileName);
         }
-
         // 회원 정보 및 이미지 경로 데이터베이스에 저장
         int result = service.addMember(member);
+
+        // 이미지 저장을 위해 위 내용 데이터베이스에 저장 후 accountId 추출 후 파일 생성
+        String accountId = service.findByAccountID_useId(member.getUserId());
+
+        if (Objects.equals(member.getProfileImg(), "kakao.jpeg")) {
+            // getImageUrl로 넘겨주어 이미지를 저장 후 디비에 저장할 이름을 가져옴
+            getImageUrl(img, accountId);
+        }else {
+            // 웹 접근 가능한 경로 내에 이미지 저장 폴더를 설정
+            String saveDirectory = "C:\\project\\profile\\" + accountId + "\\";
+            if (file != null) {
+                String fileName = file.getOriginalFilename();
+
+                Path directory = Paths.get(saveDirectory);
+                if (!Files.exists(directory)) {
+                    Files.createDirectories(directory);
+                }
+
+                Path path = Paths.get(saveDirectory + fileName);
+                if (Files.exists(path)) {
+                    Files.delete(path);
+                }
+                Files.write(path, file.getBytes());
+            }
+        }
+
+
 
         // 처리 후 리다이렉트 또는 뷰 반환
         return new ModelAndView("redirect:/");
     }
 
-    private String getImageUrl(String imageUrl, String id) throws IOException{
+    private void getImageUrl(String imageUrl, String id) throws IOException{
         // 카카오톡 이미지 url로 새로운 객체 생성
         URL url = new URL(imageUrl);
 
         // 위에서 생성한 url을 사용하여 웹상의 이미지를 읽어와 bufferedImage 객체로 변환
         BufferedImage image = ImageIO.read(url);
-        String filePath = "c:/profile/" + id + "/kakao.jpeg";
+        String filePath = "c:/project/profile/" + id + "/kakao.jpeg";
         File file = new File(filePath);
         if(!file.exists()){
             file.mkdirs();
@@ -115,8 +125,6 @@ public class MemberControllerImpl implements MemberController{
 
         // BufferedImage 객체인 이미지(image)를 jpeg 형식으로 file(경로)에 쓴다(저장).
         ImageIO.write(image, "jpeg", file);
-
-        return "kakao.jpeg";
     }
 
     // 회원가입 유효성 검증 (아이디 중복 확인) - javascript - JQuery AJAX

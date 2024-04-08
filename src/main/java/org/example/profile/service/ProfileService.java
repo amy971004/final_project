@@ -34,4 +34,6 @@ public interface ProfileService {
     List<FollowDTO> followingView(String userNickname);
 
     String findAccountId(String userNickname);
+
+    int deletePost(int postId);
 }
