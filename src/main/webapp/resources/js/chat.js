@@ -8,7 +8,7 @@ $(document).ready(function() {
 });
 
 // 채팅방을 선택하는 함수
-function selectRoom(roomId) {
+function selectRoom(roomId, opponentName) {
 
     // 이미 연결이 열려 있는 경우, 기존 연결을 종료
     if (chatSocket && chatSocket.readyState === WebSocket.OPEN) {
@@ -36,7 +36,7 @@ function selectRoom(roomId) {
         success: function(roomInfo) {
             let recName = $('#recName');
             let recRoomName = $('#recRoomName');
-            recName.text(roomInfo.opponentName);
+            recName.text(opponentName);
             recRoomName.text(roomInfo.roomName);
         },
         error: function(error) {

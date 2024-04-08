@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 // 회원 데이터 액세스 객체의 구현체
@@ -116,6 +117,11 @@ public class MemberDAOImpl implements MemberDAO{
     @Override
     public MemberDTO findMemberByAccountId(String accountId) {
         return sqlSession.selectOne("mapper.member.findMemberByAccountId", accountId);
+    }
+
+    @Override
+    public List<MemberDTO> searchUser(String userName) {
+        return sqlSession.selectList("mapper.member.searchUser", userName);
     }
 
 }

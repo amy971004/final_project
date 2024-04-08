@@ -100,6 +100,17 @@ CREATE TABLE SNS_COMMENT (
     FOREIGN KEY (POSTID) REFERENCES sns_post(POSTID) ON DELETE CASCADE,
     FOREIGN KEY (USER_NICKNAME) REFERENCES USERS(USER_NICKNAME) ON DELETE CASCADE on update cascade
 );
+위에 오류나서 수정
+CREATE TABLE SNS_COMMENT (
+                             COMMENTID NUMBER PRIMARY KEY,
+                             PARENTNO NUMBER,
+                             POSTID NUMBER,
+                             USER_NICKNAME VARCHAR2(20),
+                             POSTCOMMENT VARCHAR2(500) NOT NULL,
+                             WRITEDATE DATE DEFAULT SYSDATE NOT NULL,
+                             FOREIGN KEY (POSTID) REFERENCES sns_post(POSTID) ON DELETE CASCADE,
+                             FOREIGN KEY (USER_NICKNAME) REFERENCES USERS(USER_NICKNAME) ON DELETE CASCADE
+);
 
 // 북마크 테이블
 CREATE TABLE SNS_BOOKMARK (

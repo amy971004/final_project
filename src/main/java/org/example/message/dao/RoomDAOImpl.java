@@ -98,6 +98,7 @@ public class RoomDAOImpl implements RoomDAO {
         sqlSession.delete("mapper.room.deleteMessages", roomId);
 
         int result1 = sqlSession.delete("mapper.room.deleteParticipants", roomId);
+
         if (0 < result1){
             int result2 = sqlSession.delete("mapper.room.deleteRoom", roomId);
             return 0 < result2;
@@ -105,6 +106,11 @@ public class RoomDAOImpl implements RoomDAO {
             return false;
         }
 
+    }
+
+    @Override
+    public int findParticipantsByRoomId(String roomId) {
+        return sqlSession.selectOne("mapper.room.findParticipantsByRoomId", roomId);
     }
 
 

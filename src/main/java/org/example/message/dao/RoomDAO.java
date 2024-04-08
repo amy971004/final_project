@@ -32,4 +32,5 @@ public interface RoomDAO {
     // roomId 로 해당 Room 삭제하기
     boolean deleteRoom(String roomId);
 
+    int findParticipantsByRoomId(String roomId);
 }

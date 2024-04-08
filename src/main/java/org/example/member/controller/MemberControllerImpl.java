@@ -2,6 +2,7 @@ package org.example.member.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.example.member.dao.MemberDAO;
 import org.example.member.dto.MemberDTO;
 import org.example.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +18,20 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
+import java.util.List;
+import java.util.Objects;
 
 // 회원 컨트롤러의 구현체
 @RestController
 public class MemberControllerImpl implements MemberController{
 
     private final MemberService service;
+    private final MemberDAO dao;
 
     @Autowired
-    public MemberControllerImpl(MemberService service) {
+    public MemberControllerImpl(MemberService service, MemberDAO dao) {
         this.service = service;
+        this.dao = dao;
     }
 
     // 로그인
@@ -220,6 +225,14 @@ public class MemberControllerImpl implements MemberController{
     @RequestMapping("/emailSend.do")
     public String sendMail(String userEmail, String userName) throws Exception {
         return service.sendMail(userEmail, userName);
+    }
+
+    // 검색기능
+    @Override
+    @ResponseBody
+    @RequestMapping("/main/post/userSearch.do")
+    public List<MemberDTO> search(String userName) throws Exception {
+        return dao.searchUser(userName);
     }
 
 }

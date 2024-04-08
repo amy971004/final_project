@@ -14,7 +14,7 @@ public interface RoomController {
     ModelAndView websocketTestPage();
 
     @RequestMapping("/findRoom.do")
-    ModelAndView findRoom(@RequestParam("receiverId") String receiverId, HttpSession session);
+    String findRoom(@RequestParam("receiverId") String receiverId, HttpSession session);
 
     // 채팅방 전체 목록 보기
     @RequestMapping("/chatRooms")

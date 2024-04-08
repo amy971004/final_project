@@ -9,7 +9,7 @@ footer {
     left: 50px;
     width: calc(100% - 50px);
     height: 150px;
-    background-color: #f8f9fa
+    background-color: #f8f9fa;
 }
 #footer_hr {
     margin: 0;

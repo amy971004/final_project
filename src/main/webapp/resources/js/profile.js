@@ -168,15 +168,15 @@ function sendMessageProc(receiverId) {
         type: "POST", // 요청의 유형을 POST로 지정합니다.
         data: {receiverId: receiverId}, // 'receiverId'를 데이터로 추가합니다.
         success: function(response) {
-            if(confirm("채팅방 생성이 완료되었습니다.")){
-                // 로그인 페이지로 리다이렉트
+            if(response === "SUCCESS"){
+                alert("채팅방 생성이 완료되었습니다.");
                 window.location.href = '/main/chatRooms';
-            }else {
-                window.history.replaceState(null, null, window.location.pathname);
+            } else {
+                alert("오류가 발생했습니다. - 생성 오류 -");
             }
         },
         error: function(xhr, status, error) {
-            alert("오류가 발생했습니다.");
+            alert("오류가 발생했습니다. - 기타 오류 -");
         }
     });
 }

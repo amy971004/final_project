@@ -94,4 +94,12 @@
         DELETE FROM ROOM WHERE ROOM_ID = #{roomId}
     </delete>
 
+    <!-- 참가자 확인 -->
+    <select id="findParticipantsByRoomId" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM PARTICIPANTS
+        WHERE ROOM_ID = #{roomId}
+    </select>
+
+
 </mapper>
