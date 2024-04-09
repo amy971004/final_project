@@ -141,7 +141,7 @@
                         <div id="menu_box${post.postId}" class="wrap-menu">
                             <div class="modify-menu">
                                 <div class="modify-img"><i class="fa-regular fa-pen-to-square"></i></div>
-                                <p class="modify-word">수정</p>
+                                <a href="${contextPath}/main/post/postDetail.do?postId=${post.postId}" class="modify-btn"><p class="modify-word">수정</p></a>
                             </div>
                             <div class="delete-menu" onclick="deletePost('/main/post/deletePost.do',${post.postId})">
                                 <div class="delete-img"><i class="fa-regular fa-trash-can"></i></div>

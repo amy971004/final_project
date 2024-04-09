@@ -222,3 +222,8 @@ img{
 .comments_wrap {
     clear: both;
 }
+/* 수정 버튼 */
+.modify-btn {
+    text-decoration: none;
+    color: #000000;
+}

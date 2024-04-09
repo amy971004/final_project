@@ -18,6 +18,11 @@ public interface PostService {
     int selectPostId();
     // 프로필 가져오기
     ProfileDTO selectProfile(String accountId);
+    // 해당 게시물 정보들 가져오기
+    Map<String, Object> postDetail(int postId);
+    // 게시물 수정
+    void updatePost(Map<String, Object> postInfo);
+
 
     // 설지연 ------------------------------------------------------
     List<PostDTO> postList();
@@ -75,4 +80,6 @@ public interface PostService {
 
     // 댓글 삭제 메서드
     void deleteComment(int commentId);
+
+
 }

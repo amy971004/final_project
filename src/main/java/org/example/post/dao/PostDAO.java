@@ -3,6 +3,7 @@ package org.example.post.dao;
 import org.example.post.dto.CommentDTO;
 import org.example.post.dto.ImageDTO;
 import org.example.post.dto.PostDTO;
+import org.example.post.dto.TagDTO;
 import org.example.profile.dto.ProfileDTO;
 
 import java.util.List;
@@ -16,6 +17,9 @@ public interface PostDAO {
     // 이미지 정보 저장
     void addImage(List<ImageDTO> imageFileInfo);
 
+    // 해시태그 저장
+    void addTag(List<Map<String, Object>> tagInfo);
+
     // 게시물 번호 가져오기
     int selectPostId();
 
@@ -26,6 +30,13 @@ public interface PostDAO {
     String selectNickname(String accountID);
     // 프로필 가져오기
     ProfileDTO selectProfile(String accountId);
+    // 해당 게시물 가져오기
+    PostDTO getPost(int postId);
+    // 해당 이미지 가져오기
+    List<ImageDTO> getImage(int postId);
+    // 게시물 수정
+    void updatePost(Map<String, Object> postInfo);
+    // 해시태그 삭제
 
     // 설지연 -----------------------------------------
     List<PostDTO> postList();
@@ -93,4 +104,6 @@ public interface PostDAO {
 
     // 댓글 삭제 메서드
     void deleteComment(int commentId);
+
+    void delTag(int postId);
 }

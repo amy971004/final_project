@@ -4,10 +4,15 @@ import org.example.post.dao.PostDAO;
 import org.example.post.dto.CommentDTO;
 import org.example.post.dto.ImageDTO;
 import org.example.post.dto.PostDTO;
+import org.example.post.dto.TagDTO;
 import org.example.profile.dto.ProfileDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,10 +23,23 @@ public class PostServiceImpl implements PostService {
     private PostDAO dao;
 
     @Override
+    @Transactional
     public void addPost(Map<String, Object> postInfo) {
         // 게시물 번호 가져오기
         int postId = dao.selectPostId();
         System.out.println("가져온 게시물 번호 : " + postId);
+        // 게시물 정보 추가
+        dao.addPost(postInfo);
+        // 해시태그 정보 추가
+        List<Map<String, Object>> tagInfo = (List<Map<String, Object>>) postInfo.get("tagInfo");
+        // 해시태그 정보가 있으면 추가
+        if(tagInfo != null && !tagInfo.isEmpty()){
+            for (Map<String, Object> tags : tagInfo) {
+                System.out.println(tags.get("postId"));
+                System.out.println(tags.get("hashTag"));
+            }
+            dao.addTag(tagInfo);
+        }
         // 이미지에 대한 정보 가져오기
         List<ImageDTO> imageFileInfo = (List<ImageDTO>) postInfo.get("imageFileInfo");
         // 이미지 번호 가져오기
@@ -34,8 +52,6 @@ public class PostServiceImpl implements PostService {
             System.out.println("게시물 번호 : " + imageDTO.getPostId());
             System.out.println("이미지 번호 : " + imageDTO.getImageNo());
         }
-        // 게시물 정보 추가
-        dao.addPost(postInfo);
         // 이미지 정보 추가
         dao.addImage(imageFileInfo);
     }
@@ -56,6 +72,50 @@ public class PostServiceImpl implements PostService {
     @Override
     public ProfileDTO selectProfile(String accountId) {
         return dao.selectProfile(accountId);
+    }
+
+    @Override
+    public Map<String, Object> postDetail(int postId) {
+        Map<String, Object> postInfo = new HashMap<>();
+        // 게시물 가져오기
+        PostDTO postDTO = dao.getPost(postId);
+        postInfo.put("postDTO", postDTO);
+        // 이미지 가져오기
+        List<ImageDTO> imageDTO = dao.getImage(postId);
+        postInfo.put("imageDTO", imageDTO);
+        // 해시 태그 가져오기
+        List<String> tagList = dao.getTag(postId);
+        List<TagDTO> tagDTO = new ArrayList<>();
+        TagDTO tag = new TagDTO();
+        tag.setPostId(postId);
+        tag.setHashTag(tagList);
+        tagDTO.add(tag);
+        postInfo.put("tagDTO", tagDTO);
+
+        return postInfo;
+    }
+
+    @Override
+    @Transactional
+    public void updatePost(Map<String, Object> postInfo) {
+        // 게시물 수정
+        dao.updatePost(postInfo);
+        List<Map<String, Object>> tagInfo = (List<Map<String, Object>>)postInfo.get("tagInfo");
+        // 태그가 비어있지 않으면 실행
+        if(tagInfo != null && !tagInfo.isEmpty()){
+            for (Map<String, Object> tags : tagInfo) {
+                System.out.println(tags.get("postId"));
+                System.out.println(tags.get("hashTag"));
+            }
+            // 전 해시 태그 삭제
+            dao.delTag((int)postInfo.get("postId"));
+            // 해시 태그 추가
+            dao.addTag(tagInfo);
+        }
+        // 해시태그가 없으면 삭제
+        if(tagInfo == null){
+            dao.delTag((int)postInfo.get("postId"));
+        }
     }
 
     // 설지연 -------------------------------------------------------

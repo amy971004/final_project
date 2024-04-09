@@ -23,11 +23,10 @@
         <result property="user_Nickname" column="USER_NICKNAME" />
     </resultMap>
 
-
     <!-- 게시물 추가(이미지는 따로 저장) -->
     <insert id="addPost" parameterType="postDTO">
         <![CDATA[
-                INSERT INTO SNS_POST VALUES (postId_seq.nextval, #{userNickname}, #{content}, sysdate)
+                INSERT INTO SNS_POST VALUES (#{postId}, #{userNickname}, #{content}, sysdate)
                 ]]>
     </insert>
 
@@ -38,9 +37,16 @@
         </foreach>
     </insert>
 
+    <!-- 해시태그 추가 -->
+    <insert id="addTag" parameterType="java.util.Map">
+        <foreach item="item" collection="list" open="insert all" separator=" " close="select * from dual">
+            into sns_tag values(#{item.postId}, #{item.hashTag})
+        </foreach>
+    </insert>
+
     <!-- 게시물 번호 -->
     <select id="selectPostId" resultType="int">
-        <![CDATA[ select case when max(postid) is null then 1 else max(postId) + 1 end from SNS_POST]]>
+        <![CDATA[ select nvl(max(postId)+1,1) end from SNS_POST]]>
     </select>
 
     <!-- 이미지 번호 -->
@@ -52,6 +58,27 @@
     <select id="selectNickname" resultType="String" parameterType="String">
         <![CDATA[ select USER_NICKNAME from USERS where ACCOUNT_ID = #{accountID} ]]>
     </select>
+
+    <!-- 해당 게시물 가져오기 -->
+    <select id="getPost" parameterType="int" resultMap="postResult">
+        <![CDATA[ select * from SNS_POST where POSTID = #{postId}]]>
+    </select>
+
+    <!-- 해당 이미지 가져오기 -->
+    <select id="getImage" parameterType="int" resultMap="imageResult">
+        <![CDATA[ select * from SNS_IMAGE where POSTID = #{postId}]]>
+    </select>
+
+    <!-- 게시물 수정 -->
+    <update id="updatePost" parameterType="postDTO">
+        <![CDATA[ update SNS_POST set CONTENT = #{content} where POSTID = #{postId}]]>
+    </update>
+
+    <!-- 태그 삭제 -->
+    <delete id="delTag" parameterType="int">
+        <![CDATA[ delete from SNS_TAG where POSTID = #{postId}]]>
+    </delete>
+
 
     <!-- 설지연  -->
     <!--게시물 가져오기(게시물번호, 닉네임, 게시글, 업로드날짜-->
