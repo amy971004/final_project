@@ -62,8 +62,6 @@ CREATE TABLE Messages (
 commit;
 
 ####################################### 게시물 테이블 #######################################
-alter table sns_POST modify postId default null;
-alter table sns_POST modify content varchar2(4000);
 // 게시물 테이블
 CREATE TABLE  sns_POST(
               postId number PRIMARY KEY,
