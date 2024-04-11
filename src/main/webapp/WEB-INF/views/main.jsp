@@ -120,7 +120,7 @@
                         </div>
                         <div>
                             <p class="userName-feed">${post.userNickname}</p>
-                            <p class="location-feed">${post.date}</p>
+                            <p class="location-feed">${post.uploadDate}</p>
                         </div>
                         <%--<div class="modal_nickname">${post.userNickname}</div>--%>
                     </div>
@@ -171,7 +171,7 @@
                         </a>
                         <div>
                             <p class="userName-feed">${post.userNickname}</p>
-                            <p class="location-feed">${post.date}</p>
+                            <p class="location-feed">${post.uploadDate}</p>
                         </div>
                     </div>
                     <span id="more${post.postId}" class="icon-more" onclick="show_menu(${post.postId},0)">

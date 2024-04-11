@@ -2,15 +2,15 @@ plugins {
     id("java")
     id("war")
     kotlin("jvm")
-}
-
-tasks {
+} 
+// 인텔리제이 커뮤니티 버전만 아래 주석 풀기
+/*tasks {
     val warTask = named<War>("war")
     val explodedWar by registering(Copy::class) {
         into("$buildDir/exploded")
         from(warTask.map { it.archiveFile.get() })
     }
-}
+}*/
 
 group = "org.example"
 version = "1.0-SNAPSHOT"

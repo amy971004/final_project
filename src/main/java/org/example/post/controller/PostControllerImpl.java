@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.ws.rs.POST;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -294,6 +293,7 @@ public class PostControllerImpl implements PostController {
 /*        System.out.println("month:"+month);
         System.out.println("day:"+day);
         System.out.println(date);*/
+        System.out.println(1);
         if((month=='0') && (day=='0')){
             d = date.substring(6,7)+"월 "+ date.substring(9,10)+"일";
         }else if((month!='0') && (day!='0')){
