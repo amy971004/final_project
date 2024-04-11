@@ -19,6 +19,8 @@
     <a class="side_icon"><i class="fa-solid fa-magnifying-glass " onclick="$('#searchBackground').show()"></i></a>
     <!-- 홈 -->
     <a class="side_icon"><i onclick="location.href='http://localhost:8081/main/post/mainPost.do'" class="fa-solid fa-house"></i></a>
+    <!-- 팔로우 목록 게시물 -->
+    <a class="side_icon"><i onclick="location.href='http://localhost:8081/main/post/followPost.do'" class="fa-solid fa-user-plus"></i></a>
     <!-- 업로드 -->
     <a class="side_icon"><i onclick="location.href='http://localhost:8081/main/post/uploadPost.do'" id="uploadBtn" class="fa-solid fa-plus"></i></a>
     <!-- 내프로필 -->
@@ -28,7 +30,7 @@
     <!-- 알림 -->
     <a href="#" class="side_icon"><i class="fa-solid fa-bell "></i></a>
     <!-- 북마크 -->
-    <a href="#" class="side_icon"><i class="fa-regular fa-bookmark "></i></a>
+    <a href="#" class="side_icon"><i onclick="location.href='http://localhost:8081/main/post/bookMark.do'" class="fa-regular fa-bookmark "></i></a>
     <!-- 로그아웃 -->
     <a class="side_icon"><i id="logoutBtn" class="fa-solid fa-arrow-right-from-bracket"></i></a>
 </div>

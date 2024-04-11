@@ -5,11 +5,14 @@ import lombok.Data;
 import java.sql.Date;
 
 @Data
-public class PostDTO {
+public class BookMarkDTO2 {
+    private int bookMarkId;
     private int postId;
+    private Date writeDate;
     private String userNickname;
-    private String content;
-    private Date uploadDate;
+    private String fileName;
+    private int commentCnt;
+    private int likeCnt;
     private String date;
 
 }

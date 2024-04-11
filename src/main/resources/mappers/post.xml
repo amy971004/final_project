@@ -2,10 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.post">
     <resultMap id="postResult" type="postDTO">
-        <result property="postId" column="postId" />
+        <result property="postId" column="POSTID" />
         <result property="userNickname" column="USER_NICKNAME" />
-        <result property="content" column="content" />
-        <result property="uploadDate" column="uploadDate" />
+        <result property="content" column="CONTENT" />
+        <result property="uploadDate" column="UPLOADDATE" />
+        <result property="date" column="DATE" />
     </resultMap>
     <resultMap id="imageResult" type="imageDTO">
         <result property="postId" column="postId" />
@@ -23,11 +24,10 @@
         <result property="user_Nickname" column="USER_NICKNAME" />
     </resultMap>
 
-
     <!-- 게시물 추가(이미지는 따로 저장) -->
     <insert id="addPost" parameterType="postDTO">
         <![CDATA[
-                INSERT INTO SNS_POST VALUES (postId_seq.nextval, #{userNickname}, #{content}, sysdate)
+                INSERT INTO SNS_POST VALUES (#{postId}, #{userNickname}, #{content}, sysdate)
                 ]]>
     </insert>
 
@@ -38,9 +38,16 @@
         </foreach>
     </insert>
 
+    <!-- 해시태그 추가 -->
+    <insert id="addTag" parameterType="java.util.Map">
+        <foreach item="item" collection="list" open="insert all" separator=" " close="select * from dual">
+            into sns_tag values(#{item.postId}, #{item.hashTag})
+        </foreach>
+    </insert>
+
     <!-- 게시물 번호 -->
     <select id="selectPostId" resultType="int">
-        <![CDATA[ select case when max(postid) is null then 1 else max(postId) + 1 end from SNS_POST]]>
+        <![CDATA[ select nvl(max(postId)+1,1) end from SNS_POST]]>
     </select>
 
     <!-- 이미지 번호 -->
@@ -53,13 +60,34 @@
         <![CDATA[ select USER_NICKNAME from USERS where ACCOUNT_ID = #{accountID} ]]>
     </select>
 
+    <!-- 해당 게시물 가져오기 -->
+    <select id="getPost" parameterType="int" resultMap="postResult">
+        <![CDATA[ select * from SNS_POST where POSTID = #{postId}]]>
+    </select>
+
+    <!-- 해당 이미지 가져오기 -->
+    <select id="getImage" parameterType="int" resultMap="imageResult">
+        <![CDATA[ select * from SNS_IMAGE where POSTID = #{postId}]]>
+    </select>
+
+    <!-- 게시물 수정 -->
+    <update id="updatePost" parameterType="postDTO">
+        <![CDATA[ update SNS_POST set CONTENT = #{content} where POSTID = #{postId}]]>
+    </update>
+
+    <!-- 태그 삭제 -->
+    <delete id="delTag" parameterType="int">
+        <![CDATA[ delete from SNS_TAG where POSTID = #{postId}]]>
+    </delete>
+
+
     <!-- 설지연  -->
     <!--게시물 가져오기(게시물번호, 닉네임, 게시글, 업로드날짜-->
     <select id="postList" resultMap="postResult">
-		<![CDATA[
+      <![CDATA[
         select * from SNS_POST order by UPLOADDATE desc
         ]]>
-	</select>
+   </select>
 
     <select id="likeCheck" parameterType="java.util.Map" resultType="int">
         <![CDATA[
@@ -159,7 +187,7 @@
     <!--이미지 전체리스트 가져오기 -->
     <select id="getImageList" resultType="org.example.post.dto.ImageDTO">
         <![CDATA[
-        select * from SNS_IMAGE
+        select * from SNS_IMAGE order by POSTID asc, IMAGENO asc
         ]]>
     </select>
 
@@ -223,7 +251,80 @@
     <!-- 댓글 삭제 -->
     <delete id="deleteComment" parameterType="int">
         <![CDATA[
-        delete from SNS_COMMENT where COMMENTID=#{commentId}
+        delete from SNS_COMMENT where COMMENTID IN
+                                      (SELECT COMMENTID FROM SNS_COMMENT START WITH COMMENTID=#{commentId} CONNECT BY PRIOR COMMENTID=PARENTNO)
+        ]]>
+    </delete>
+
+    <!-- 북마크된 postId 가져오기 -->
+    <select id="getBookMarkId" parameterType="String" resultType="int">
+        <![CDATA[
+        select POSTID from SNS_BOOKMARK where USER_NICKNAME=#{loginNickname} order by BOOKMARKTIME desc
+        ]]>
+    </select>
+
+    <!-- 저장된 파일의 첫번째 이미지이름 가져오기 -->
+    <select id="getFirstFileName" parameterType="int" resultType="String">
+        <![CDATA[
+        select FILENAME from SNS_IMAGE where POSTID=#{postId} and IMAGENO=1
+        ]]>
+    </select>
+
+    <!-- 게시물 전체 댓글 수 -->
+    <select id="getCommentCnt" parameterType="int" resultType="int">
+        <![CDATA[
+        select count(*) from SNS_COMMENT where POSTID=#{postId}
+        ]]>
+    </select>
+
+    <!--북마크 게시물 이미지 정보 가져오기 -->
+    <select id="getPostImage" parameterType="java.util.List" resultType="org.example.post.dto.ImageDTO">
+        <![CDATA[
+        select * from SNS_IMAGE where POSTID in
+        ]]>
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        order by IMAGENO asc
+    </select>
+
+    <select id="getUserNickname" parameterType="int" resultType="String">
+        <![CDATA[
+        select USER_NICKNAME from SNS_POST where POSTID=#{postId}
+        ]]>
+    </select>
+
+    <select id="getWriteDate" resultType="java.sql.Date" parameterType="int">
+        <![CDATA[
+        select UPLOADDATE from SNS_POST where POSTID=#{postId}
+        ]]>
+    </select>
+
+    <select id="getBookMarkId2" resultType="int" parameterType="java.util.Map">
+        <![CDATA[
+        select BOOKMARKID from SNS_BOOKMARK where POSTID=#{postId} and USER_NICKNAME=#{loginNickname}
+        ]]>
+    </select>
+
+    <delete id="bookMarkCancle" parameterType="int">
+        <![CDATA[
+        delete from SNS_BOOKMARK where BOOKMARKID=#{bookMarkId}
+        ]]>
+    </delete>
+
+    <select id="follow_postList" parameterType="java.util.List" resultMap="postResult">
+        <![CDATA[
+        select * from SNS_POST where USER_NICKNAME in
+        ]]>
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        order by UPLOADDATE desc
+    </select>
+
+    <delete id="followCancle" parameterType="java.util.Map">
+        <![CDATA[
+        delete from SNS_FOLLOW where USER_NICKNAME=#{loginNickname} and FOLLOWERUSERID=#{followerUserId}
         ]]>
     </delete>
 </mapper>

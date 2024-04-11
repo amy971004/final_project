@@ -4,10 +4,12 @@ import org.apache.ibatis.session.SqlSession;
 import org.example.post.dto.CommentDTO;
 import org.example.post.dto.ImageDTO;
 import org.example.post.dto.PostDTO;
+import org.example.post.dto.TagDTO;
 import org.example.profile.dto.ProfileDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,32 +24,56 @@ public class PostDAOImpl implements PostDAO {
     public void addPost(Map<String, Object> postInfo) {
         sqlSession.insert("mapper.post.addPost", postInfo);
     }
-
     // 게시물 정보 저장
     @Override
     public void addImage(List<ImageDTO> imageFileInfo) {
         sqlSession.insert("mapper.post.addImage", imageFileInfo);
     }
-
+    // 해시 태그 저장
+    @Override
+    public void addTag(List<Map<String, Object>> tagInfo) {
+        sqlSession.insert("mapper.post.addTag", tagInfo);
+    }
     // 게시물 번호 가져오기
     @Override
     public int selectPostId() {
         return sqlSession.selectOne("mapper.post.selectPostId");
     }
-
+    // 이미지 번호 가져오기
     @Override
     public int selectImageNo() {
         return sqlSession.selectOne("mapper.post.selectImageNo");
     }
-
+    // 닉네임 가져오기
     @Override
     public String selectNickname(String accountID) {
         return sqlSession.selectOne("mapper.post.selectNickname", accountID);
     }
-
+    // 프로필 가져오기
     @Override
     public ProfileDTO selectProfile(String accountId) {
         return sqlSession.selectOne("mapper.profile.profileView", accountId);
+    }
+    // 해당 게시물 정보 가져오기
+    @Override
+    public PostDTO getPost(int postId) {
+        return sqlSession.selectOne("mapper.post.getPost",postId);
+    }
+    // 해당 이미지 정보 가져오기
+    @Override
+    public List<ImageDTO> getImage(int postId) {
+        return sqlSession.selectList("mapper.post.getImage", postId);
+    }
+    // 게시물 수정
+    @Override
+    public void updatePost(Map<String, Object> postInfo) {
+        sqlSession.update("mapper.post.updatePost", postInfo);
+    }
+
+    // 해시 태그 삭제
+    @Override
+    public void delTag(int postId) {
+        sqlSession.delete("mapper.post.delTag", postId);
     }
 
 
@@ -211,6 +237,7 @@ public class PostDAOImpl implements PostDAO {
         sqlSession.delete("mapper.post.deleteFollow",followingInfo);
     }
 
+    // 댓글 삭제
     @Override
     public void deleteComment(int commentId) {
         sqlSession.delete("mapper.post.deleteComment",commentId);
@@ -221,5 +248,64 @@ public class PostDAOImpl implements PostDAO {
     public String findUserAccountId(String userNickname) {
         return sqlSession.selectOne("mapper.profile.findUserAccountId", userNickname);
     }
+
+    // 북마크한 postId 가져오기
+    @Override
+    public List<Integer> getBookMarkPostId(String loginNickname) {
+        return sqlSession.selectList("mapper.post.getBookMarkId",loginNickname);
+    }
+
+    // 저장된 파일의 첫번째 이미지이름 가져오기
+    @Override
+    public String getFirstFileName(int postId) {
+        return sqlSession.selectOne("mapper.post.getFirstFileName",postId);
+    }
+
+    // 게시물의 댓글 수 가져오기
+    @Override
+    public int getCommentCnt(int postId) {
+
+        return sqlSession.selectOne("mapper.post.getCommentCnt",postId);
+    }
+
+    @Override
+    public List<ImageDTO> getPostImage(List<Integer> bookMarkPostId) {
+        return sqlSession.selectList("mapper.post.getPostImage",bookMarkPostId);
+    }
+
+    @Override
+    public String getUserNickname(int postId) {
+        return sqlSession.selectOne("mapper.post.getUserNickname",postId);
+    }
+
+    @Override
+    public Date getWriteDate(int postId) {
+        return sqlSession.selectOne("mapper.post.getWriteDate",postId);
+    }
+
+    @Override
+    public int getBookMarkId(String loginNickname, int postId) {
+        Map<String,Object> bookId = new HashMap<>();
+        bookId.put("loginNickname",loginNickname);
+        bookId.put("postId",postId);
+        return sqlSession.selectOne("mapper.post.getBookMarkId2",bookId);
+    }
+
+    @Override
+    public void bookMarkCancle(int bookMarkId) {
+        sqlSession.delete("mapper.post.bookMarkCancle",bookMarkId);
+    }
+
+    // 팔로우한 포스트 리스트
+    @Override
+    public List<PostDTO> follow_postList(List<String> followList) {
+        return sqlSession.selectList("mapper.post.follow_postList",followList);
+    }
+
+    @Override
+    public void followCancle(Map<String, Object> followInfo) {
+        sqlSession.delete("mapper.post.followCancle",followInfo);
+    }
+
 
 }

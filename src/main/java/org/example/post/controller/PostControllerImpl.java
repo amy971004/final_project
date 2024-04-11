@@ -8,24 +8,29 @@ import jakarta.servlet.http.HttpSession;
 import org.example.post.dto.*;
 import org.example.post.service.PostService;
 import org.example.profile.dto.ProfileDTO;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.ws.rs.POST;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Date;
 import java.util.*;
 
 // 클래스 선언부입니다. @Controller 애노테이션을 사용하여 이 클래스가 컨트롤러임을 나타냅니다.
 @Controller
 @RequestMapping("/main/post")
+@EnableTransactionManagement
 public class PostControllerImpl implements PostController {
     private static final String IMAGE_PATH = "C:\\project\\post";
     private static final String PROFILE_IMAGE_PATH ="C:\\project\\profile";
@@ -50,17 +55,30 @@ public class PostControllerImpl implements PostController {
     // 파일을 업로드하는 요청을 처리합니다.
     // @PostMapping 애노테이션을 사용하여 HTTP POST 요청을 "/upload" 경로에 매핑합니다.
     @PostMapping("/upload.do")
-    public void upload(String content, MultipartFile[] file,  HttpServletRequest request, HttpServletResponse response) throws Exception{
-
+    public void upload(String content, MultipartFile[] file, String hashTags ,HttpServletRequest request, HttpServletResponse response) throws Exception{
 
         // 게시물 정보 저장
         Map<String, Object> postInfo = new HashMap<String, Object>();
         // 이미지에 대한 정보 저장
         List<ImageDTO> imageFileInfo = new ArrayList<ImageDTO>();
+        // 해시태그에 대한 정보 저장
+        List<Map<String, Object>> tagInfo = new ArrayList<Map<String, Object>>();
 
         // 게시물 번호 가져오기
         int postNo = service.selectPostId();
+        // 해시태그가 있으면 추가
+        if(hashTags != null && !hashTags.isEmpty()){
+            // 해시태그를 , 을 기준으로 배열에 저장
+            String[] tagList = hashTags.split(",");
+            for(String tag : tagList){
+                Map<String, Object> tags = new HashMap<String, Object>();
+                tags.put("postId", postNo);
+                tags.put("hashTag", tag);
 
+                tagInfo.add(tags);
+            }
+            postInfo.put("tagInfo", tagInfo);
+        }
         // 지정 경로에 폴더가 없으면 자동생성.
         File directory = new File(IMAGE_PATH + '/' + postNo);
         if (!directory.exists()) {
@@ -96,22 +114,23 @@ public class PostControllerImpl implements PostController {
             HttpSession session = request.getSession();
             String accountID = (String)session.getAttribute("accountID");
             // 회원 닉네임 가져오기
-            String account_id = service.selectNickname(accountID);
+            String userNickname = service.selectNickname(accountID);
+            // 게시물에 내용 중 모든 엔터는 -> <br>로 변경
+            String content2 = content.replaceAll("\r\n","<br>");
             // 게시물에 대한 정보 Map에 저장
             postInfo.put("imageFileInfo",imageFileInfo);
-            // 게시물에 내용 중 모든 엔터는 -> <br>로 변경
-            String temp = content.replaceAll("\r\n","<br>");
-            postInfo.put("content", temp);
-            postInfo.put("userNickname", account_id);
+            postInfo.put("postId", postNo);
+            postInfo.put("content", content2);
+            postInfo.put("userNickname", userNickname);
 
             service.addPost(postInfo);
 
             response.setContentType("text/html;charset=utf-8");
             PrintWriter out = response.getWriter();
-            out.println("<script>");
-            out.println("alert('업로드 성공');");
-            out.println("location.href='/main/post/mainPost.do';");
-            out.println("</script>");
+            out.print("<script>");
+            out.print("alert('업로드 성공');");
+            out.print("location.href='/main/post/mainPost.do';");
+            out.print("</script>");
             out.close();
 
         } catch (Exception e) {
@@ -128,15 +147,82 @@ public class PostControllerImpl implements PostController {
                 }
                 response.setContentType("text/html;charset=utf-8");
                 PrintWriter out = response.getWriter();
-                out.println("<script>");
-                out.println("alert('업로드 실패');");
-                out.println("location.href='/main';");
-                out.println("</script>");
+                out.print("<script>");
+                out.print("alert('업로드 실패');");
+                out.print("location.href='/main/post/mainPost.do';");
+                out.print("</script>");
                 out.close();
                 e.printStackTrace();
             }
         }
     }
+
+    // 해당 게시물 정보 가져오기
+    @Override
+    @RequestMapping("/postDetail.do")
+    public ModelAndView postDetail(int postId, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        ModelAndView mav = new ModelAndView("postDetail");
+
+        HttpSession session = request.getSession();
+        String accountId = (String)session.getAttribute("accountID");
+        // 프로필 가져오기
+        ProfileDTO profileDTO = service.selectProfile(accountId);
+        mav.addObject("profile", profileDTO);
+        // 게시물 + 이미지 + 태그 가져오기
+        Map<String, Object> postInfo = service.postDetail(postId);
+        mav.addObject("postInfo", postInfo);
+
+        return mav;
+    }
+
+    // 해당 게시물 수정
+    @Override
+    @RequestMapping(value ="/update.do", method = RequestMethod.POST)
+    public ResponseEntity update(String content, String hashTags, int postId, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        Map<String, Object> postInfo = new HashMap<>();
+        List<Map<String, Object>> tagInfo = new ArrayList<Map<String, Object>>();
+
+        // 해시태그가 있으면 추가
+        if(hashTags != null && !hashTags.isEmpty()){
+            // 해시태그를 , 을 기준으로 배열에 저장
+            String[] tagList = hashTags.split(",");
+            for(String tag : tagList){
+                Map<String, Object> tags = new HashMap<String, Object>();
+                tags.put("postId", postId);
+                tags.put("hashTag", tag);
+
+                tagInfo.add(tags);
+            }
+            postInfo.put("tagInfo", tagInfo);
+        }
+        postInfo.put("content", content);
+        postInfo.put("postId", postId);
+
+        String message = null;
+        ResponseEntity resEnt = null;
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("Content-Type", "text/html;charset=utf-8");
+
+        try {
+            service.updatePost(postInfo);
+            message = "<script>";
+            message += "alert('게시물이 수정되었습니다.');";
+            message += "location.href='/main/post/mainPost.do';";
+            message += "</script>";
+            resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.OK);
+        }catch (Exception e){
+            message = "<script>";
+            message += "alert('게시물이 수정되지 않았습니다.');";
+            message += "location.href='/main/post/mainPost.do';";
+            message += "</script>";
+            resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+            e.printStackTrace();
+        }
+
+        return resEnt;
+    }
+
 
     // 설지연 ------------------------------------------------------------
 
@@ -156,7 +242,7 @@ public class PostControllerImpl implements PostController {
 
         // 전체 게시물 가져오기
         List<PostDTO> postList = service.postList(); // 기본 게시물 리스트
-     //   List<CommentDTO> commentList = service.getCommentList(); // 전체 댓글 가져오기
+        //   List<CommentDTO> commentList = service.getCommentList(); // 전체 댓글 가져오기
         List<ImageDTO> imageList = service.getImageList(); // 전체 이미지 정보 가져오기
 
         List<TagDTO> tagsList = new ArrayList<>(); //태그 저장하는 리스트
@@ -183,18 +269,41 @@ public class PostControllerImpl implements PostController {
             tagDTO.setHashTag(tag);
             tagsList.add(tagDTO);
 
+            String date = post.getUploadDate().toString();
+            String d = getString(date);
+            post.setDate(d);
         }
         ModelAndView mav = new ModelAndView("main");
         //postMap.put("tagsMap",tagsMap);
         postMap.put("postList", postList); // 게시물리스트
         postMap.put("tagsList", tagsList); // 태그리스트
         postMap.put("likeBookList", likeBookList); // 좋아요, 북마크 여부 리스트
-      //  postMap.put("commentList", commentList); //전체 댓글 리스트
+        //  postMap.put("commentList", commentList); //전체 댓글 리스트
         postMap.put("imageList", imageList); // 전체 이미지 정보
         mav.addObject("postMap", postMap);
         mav.addObject("loginNickname", loginNickname);
 
         return mav;
+    }
+
+    @NotNull
+    private static String getString(String date) {
+        String d = null;
+        char month = date.charAt(5);
+        char day = date.charAt(8);
+/*        System.out.println("month:"+month);
+        System.out.println("day:"+day);
+        System.out.println(date);*/
+        if((month=='0') && (day=='0')){
+            d = date.substring(6,7)+"월 "+ date.substring(9,10)+"일";
+        }else if((month!='0') && (day!='0')){
+            d = date.substring(5,7)+"월 "+ date.substring(8,10)+"일";
+        }else if(month != '0'){
+            d = date.substring(5,7)+"월 "+ date.substring(9,10)+"일";
+        }else{
+            d = date.substring(6,7)+"월 "+ date.substring(8,10)+"일";
+        }
+        return d;
     }
 
     // 로그인된 계정의 닉네임 가져오기
@@ -279,7 +388,7 @@ public class PostControllerImpl implements PostController {
     // 프로필 이미지 가져오기
     @RequestMapping("profileImageDownload.do")
     public void profileImageDownload(@RequestParam("userNickname") String userNickname,
-                              HttpServletResponse response) throws Exception {
+                                     HttpServletResponse response) throws Exception {
         String accountId = service.findUserAccountId(userNickname);
         String profileImg = service.getProfileImg(userNickname);
         OutputStream out = response.getOutputStream();
@@ -407,8 +516,149 @@ public class PostControllerImpl implements PostController {
         HttpSession session = request.getSession();
         String accountId = (String) session.getAttribute("accountID");
         String loginNickname = loginNickname(accountId);
+        // 북마크 정보를 저장하는 리스트
+        List<BookMarkDTO2> bookMarkDTOList = new ArrayList<>();
+
+        // 북마크한 PostId 가져오기
+        List<Integer> bookMarkPostId = service.getBookMarkPostId(loginNickname);
+
+        List<ImageDTO> postImageList = service.getPostImage(bookMarkPostId);
+
+        for(int postId : bookMarkPostId){
+
+            BookMarkDTO2 bookMarkDTO = new BookMarkDTO2();
+
+            // 북마크 아이디 가져오기
+            int bookMarkId = service.getBookMarkId(loginNickname,postId);
+
+            // 저장된 파일의 첫번째 이미지이름 가져오기
+            String firtstFileName = service.getFirstFileName(postId);
+
+            // 게시물의 댓글 수 가져오기
+            int commentCnt = service.getCommentCnt(postId);
+
+            // 게시물의 좋아요 수 가져오기
+            int likeCnt = service.likeCnt(postId);
+
+            // 작성자 닉네임 가져오기
+            String userNickname = service.getUserNickname(postId);
+
+            // 작성 날짜 가져오기
+            Date wirteDate = service.getWriteDate(postId);
+
+            String date = wirteDate.toString();
+            String d = getString(date);
+            bookMarkDTO.setDate(d);
 
 
-        return new ModelAndView("bookMark");
+            bookMarkDTO.setPostId(postId);
+            bookMarkDTO.setFileName(firtstFileName);
+            bookMarkDTO.setCommentCnt(commentCnt);
+            bookMarkDTO.setLikeCnt(likeCnt);
+            bookMarkDTO.setUserNickname(userNickname);
+            bookMarkDTO.setWriteDate(wirteDate);
+            bookMarkDTO.setBookMarkId(bookMarkId);
+
+
+            bookMarkDTOList.add(bookMarkDTO);
+
+        }
+
+        ModelAndView mav = new ModelAndView("bookMark");
+        mav.addObject("bookMarkDTOList",bookMarkDTOList);
+        mav.addObject("postImageList", postImageList);
+        mav.addObject("loginNickname",loginNickname);
+
+        return mav;
+    }
+
+    // 북마크 페이지 -> 북마크 취소 메서드
+    @ResponseBody
+    @RequestMapping(value = "/bookMarkCancle.do", method = RequestMethod.GET)
+    public void bookMarkCancle (int bookMarkId){
+        System.out.println(bookMarkId);
+        service.bookMarkCancle(bookMarkId);
+
+    }
+
+    // 팔로우한 게시물 출력
+    @RequestMapping("/followPost.do")
+    public ModelAndView followPost(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        ModelAndView mav = new ModelAndView();
+        // 로그인된 계정의 닉네임 가져오기
+        HttpSession session = request.getSession();
+        String accountId = (String) session.getAttribute("accountID");
+        String loginNickname = loginNickname(accountId);
+        // 팔로우한 목록 가져오기
+        List<String> followList = service.getfollowList(loginNickname);
+
+        if(followList.size() != 0){
+            // 팔로우한 게시물 가져오기
+            List<PostDTO> follow_postList = service.follow_postList(followList); // 기본 게시물 리스트
+
+            /*List<ImageDTO> imageList = service.getImageList(); // 전체 이미지 정보 가져오기*/
+
+            List<TagDTO> tagsList = new ArrayList<>(); //태그 저장하는 리스트
+            List<likeBookDTO> likeBookList = new ArrayList<>(); // 좋아요 북마크 저장하는 리스트
+            Map<String, Object> postMap = new HashMap<>(); // 게시물 전체정보 저장하는 map
+            List<Integer> postId = new ArrayList<>(); // 포스트 번호를 저장할 리스트
+
+            int contentNo = 0;
+            for (PostDTO post : follow_postList) {
+                System.out.println(post.getUserNickname());
+                System.out.println(post.getContent());
+                System.out.println(post.getUploadDate());
+                System.out.println(post.getPostId());
+
+                postId.add(post.getPostId());
+                /*contentNo = post.getPostId();*/
+                likeBookDTO likebook = new likeBookDTO();
+                // 좋아요 여부 (0,1)
+                likebook.setContentNo(post.getPostId());
+                likebook.setLikeCheck(service.likeCheck(loginNickname, post.getPostId()));
+                // 좋아요 갯수
+                likebook.setLikeCnt(service.likeCnt(post.getPostId()));
+                // 북마크 여부 (0,1)
+                likebook.setBookmarkCheck(service.bookmarkCheck(loginNickname, post.getPostId()));
+                likeBookList.add(likebook);
+
+                // 태그 가져오기
+                List<String> tag = service.getTag(post.getPostId());
+                TagDTO tagDTO = new TagDTO();
+                tagDTO.setPostId(post.getPostId());
+                tagDTO.setHashTag(tag);
+                tagsList.add(tagDTO);
+
+                String date = post.getUploadDate().toString();
+                String d = getString(date);
+                post.setDate(d);
+                System.out.println(d);
+
+            }
+
+            List<ImageDTO> postImageList = service.getPostImage(postId);
+            mav = new ModelAndView("followPost");
+            postMap.put("postList", follow_postList); // 게시물리스트
+            postMap.put("tagsList", tagsList); // 태그리스트
+            postMap.put("likeBookList", likeBookList); // 좋아요, 북마크 여부 리스트
+            //  postMap.put("commentList", commentList); //전체 댓글 리스트
+            postMap.put("imageList", postImageList); // 전체 이미지 정보
+            mav.addObject("postMap", postMap);
+            mav.addObject("loginNickname", loginNickname);
+        }else {
+            mav = new ModelAndView("noneFollow");
+        }
+
+        return mav;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/followCancle.do",method = RequestMethod.GET)
+    public void followCancle (String loginNickname, String followerUserId){
+        Map<String,Object> followInfo = new HashMap<>();
+        followInfo.put("loginNickname",loginNickname);
+        followInfo.put("followerUserId",followerUserId);
+
+        service.followCancle(followInfo);
     }
 }
