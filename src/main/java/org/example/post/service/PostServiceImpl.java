@@ -11,10 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Date;
+import java.util.*;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -250,5 +248,57 @@ public class PostServiceImpl implements PostService {
     @Override
     public void deleteComment(int commentId) {
         dao.deleteComment(commentId);
+    }
+
+    // 북마크된 postId 가져오기
+    @Override
+    public List<Integer> getBookMarkPostId(String loginNickname) {
+        return dao.getBookMarkPostId(loginNickname);
+    }
+
+    // 저장된 파일의 첫번째 이미지이름 가져오기
+    @Override
+    public String getFirstFileName(int postId) {
+        return dao.getFirstFileName(postId);
+    }
+    // 게시물의 댓글 수 가져오기
+    @Override
+    public int getCommentCnt(int postId) {
+        return dao.getCommentCnt(postId);
+    }
+
+    @Override
+    public List<ImageDTO> getPostImage(List<Integer> bookMarkPostId) {
+        return dao.getPostImage(bookMarkPostId);
+    }
+
+    @Override
+    public String getUserNickname(int postId) {
+        return dao.getUserNickname(postId);
+    }
+
+    @Override
+    public Date getWriteDate(int postId) {
+        return dao.getWriteDate(postId);
+    }
+
+    @Override
+    public int getBookMarkId(String loginNickname, int postId) {
+        return dao.getBookMarkId(loginNickname, postId);
+    }
+
+    @Override
+    public void bookMarkCancle(int bookMarkId) {
+        dao.bookMarkCancle(bookMarkId);
+    }
+
+    @Override
+    public List<PostDTO> follow_postList(List<String> followList) {
+        return dao.follow_postList(followList);
+    }
+
+    @Override
+    public void followCancle(Map<String, Object> followInfo) {
+        dao.followCancle(followInfo);
     }
 }

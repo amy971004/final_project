@@ -84,10 +84,10 @@
     <!-- 설지연  -->
     <!--게시물 가져오기(게시물번호, 닉네임, 게시글, 업로드날짜-->
     <select id="postList" resultMap="postResult">
-		<![CDATA[
+      <![CDATA[
         select * from SNS_POST order by UPLOADDATE desc
         ]]>
-	</select>
+   </select>
 
     <select id="likeCheck" parameterType="java.util.Map" resultType="int">
         <![CDATA[
@@ -252,7 +252,7 @@
     <delete id="deleteComment" parameterType="int">
         <![CDATA[
         delete from SNS_COMMENT where COMMENTID IN
-        (SELECT COMMENTID FROM SNS_COMMENT START WITH COMMENTID=#{commentId} CONNECT BY PRIOR COMMENTID=PARENTNO)
+                                      (SELECT COMMENTID FROM SNS_COMMENT START WITH COMMENTID=#{commentId} CONNECT BY PRIOR COMMENTID=PARENTNO)
         ]]>
     </delete>
 
@@ -290,7 +290,7 @@
 
     <select id="getUserNickname" parameterType="int" resultType="String">
         <![CDATA[
-            select USER_NICKNAME from SNS_POST where POSTID=#{postId}
+        select USER_NICKNAME from SNS_POST where POSTID=#{postId}
         ]]>
     </select>
 

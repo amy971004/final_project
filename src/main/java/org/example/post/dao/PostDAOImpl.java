@@ -69,7 +69,12 @@ public class PostDAOImpl implements PostDAO {
     public void updatePost(Map<String, Object> postInfo) {
         sqlSession.update("mapper.post.updatePost", postInfo);
     }
+
     // 해시 태그 삭제
+    @Override
+    public void delTag(int postId) {
+        sqlSession.delete("mapper.post.delTag", postId);
+    }
 
 
     // 설지연 -------------------------------------------------------------
@@ -236,11 +241,6 @@ public class PostDAOImpl implements PostDAO {
     @Override
     public void deleteComment(int commentId) {
         sqlSession.delete("mapper.post.deleteComment",commentId);
-    }
-
-    @Override
-    public void delTag(int postId) {
-        sqlSession.delete("mapper.post.delTag", postId);
     }
 
 

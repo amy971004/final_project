@@ -5,6 +5,7 @@ import org.example.post.dto.ImageDTO;
 import org.example.post.dto.PostDTO;
 import org.example.profile.dto.ProfileDTO;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -81,5 +82,29 @@ public interface PostService {
     // 댓글 삭제 메서드
     void deleteComment(int commentId);
 
+    // 북마크된 postId 가져오기
+    List<Integer> getBookMarkPostId(String loginNickname);
 
+    // 저장된 파일의 첫번째 이미지이름 가져오기
+    String getFirstFileName(int postId);
+
+    // 게시물의 댓글 수 가져오기
+    int getCommentCnt(int postId);
+
+
+    List<ImageDTO> getPostImage(List<Integer> bookMarkPostId);
+
+    String getUserNickname(int postId);
+
+    Date getWriteDate(int postId);
+
+    int getBookMarkId(String loginNickname, int postId);
+
+    void bookMarkCancle(int bookMarkId);
+
+    // 팔로우한 게시물 목록
+    List<PostDTO> follow_postList(List<String> followList);
+
+    void followCancle(Map<String, Object> followInfo);
 }
+
