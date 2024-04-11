@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" isELIgnored="false" %>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -10,6 +11,7 @@
     <link rel="stylesheet" href="../../resources/css/style.css">
     <link rel="stylesheet" href="../../resources/css/nav.css">
     <link rel="stylesheet" href="../../resources/css/search.css">
+    <title>인스타그램</title>
 </head>
 <div class="sideBar">
     <a href="#" class="side_icon" style="padding-top: 20px;font-size: 25px">L</a>
@@ -54,7 +56,6 @@
         </div>
     </div>
 </div>
-<script>
-
-</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="../../resources/js/search.js"></script>
 

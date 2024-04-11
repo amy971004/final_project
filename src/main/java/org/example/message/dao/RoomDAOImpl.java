@@ -1,6 +1,7 @@
 package org.example.message.dao;
 
 import org.apache.ibatis.session.SqlSession;
+import org.example.member.dto.MemberDTO;
 import org.example.message.dto.MessageDTO;
 import org.example.message.dto.RoomDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,6 +112,16 @@ public class RoomDAOImpl implements RoomDAO {
     @Override
     public int findParticipantsByRoomId(String roomId) {
         return sqlSession.selectOne("mapper.room.findParticipantsByRoomId", roomId);
+    }
+
+    @Override
+    public List<String> findReceiver(String senderAccountId) {
+        return sqlSession.selectList("mapper.room.findReceiver", senderAccountId);
+    }
+
+    @Override
+    public MemberDTO selectReceiver(String accountId) {
+        return sqlSession.selectOne("mapper.room.selectReceiver", accountId);
     }
 
 

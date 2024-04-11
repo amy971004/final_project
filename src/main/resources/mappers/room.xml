@@ -57,7 +57,7 @@
     <!--        ORDER BY r.created_at DESC-->
     <!--    </select>-->
     <select id="findAllRoomsByAccountId" parameterType="String" resultMap="roomResult">
-        SELECT r.*, p.user_name AS opponentName
+        SELECT r.*, p.user_name AS opponentName, p.ACCOUNT_ID AS opponentAccountId
         FROM room r
                  JOIN participants p ON r.room_id = p.room_id
         WHERE p.account_id != #{senderAccountId}
@@ -99,6 +99,20 @@
         SELECT COUNT(*)
         FROM PARTICIPANTS
         WHERE ROOM_ID = #{roomId}
+    </select>
+
+    <select id="findReceiver" parameterType="String" resultType="String">
+        SELECT p.ACCOUNT_ID
+        FROM room r
+                 JOIN participants p ON r.room_id = p.room_id
+        WHERE p.account_id != #{senderAccountId}
+          AND r.room_id IN (
+            SELECT room_id FROM participants WHERE account_id = #{senderAccountId}
+        )
+    </select>
+
+    <select id="selectReceiver" parameterType="String" resultMap="memberResult">
+        select * from USERS where ACCOUNT_ID=#{accountId}
     </select>
 
 

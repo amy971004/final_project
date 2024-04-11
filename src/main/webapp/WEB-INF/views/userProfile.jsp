@@ -1,9 +1,10 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false"%>
 <html lang="en" xmlns:c="http://www.w3.org/1999/XSL/Transform" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<%@ page pageEncoding="UTF-8" language="java" isELIgnored="false" %>
+<%@ include file="header.jsp"%>
 <head>
+    <meta charset="UTF-8">
     <link href="../../resources/css/profile.css" rel="stylesheet" type="text/css" />
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    <%@ include file="header.jsp"%>
     <link href="../../resources/css/main.css" rel="stylesheet" type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="../../resources/css/bxslider1.css" rel="stylesheet">
@@ -13,7 +14,6 @@
     <link rel="stylesheet" href="../../resources/css/style.css">
     <link rel="stylesheet" href="../../resources/css/nav.css">
     <c:set var="contextPath" value="${pageContext.request.contextPath }" />
-    <title>${profile.userNickname}프로필</title>
 </head>
 <body>
 
@@ -83,8 +83,8 @@
 
                 <ul class="profile-count">
                     <li><span class="profile-stat-count">${postCount}</span> posts</li>
-                    <li class="follower" onclick='show_follower_modal("${profile.userNickname}")'><span  class="profile-stat-count">${followerCount}</span> followers</li>
-                    <li class="following" onclick='show_following_modal("${profile.userNickname}")'><span class="profile-stat-count">${followingCount}</span> following</li>
+                    <li class="follower" onclick='show_follower_modal2("${profile.userNickname}","${loginNickname}")'><span  class="profile-stat-count">${followerCount}</span> followers</li>
+                    <li class="following" onclick='show_following_modal2("${profile.userNickname}","${loginNickname}")'><span class="profile-stat-count">${followingCount}</span> following</li>
                 </ul>
 
             </div>
@@ -121,7 +121,8 @@
                                     <div class="modify-img"><i class="fa-regular fa-pen-to-square"></i></div>
                                     <p class="modify-word">수정</p>
                                 </div>
-                                <div class="delete-menu" onclick="deletePost('/main/profile/deleteUserPost.do',${post.postId})">
+                                <%--<div class="delete-menu" onclick="deletePost('/main/profile/deleteUserPost.do','${post.postId}', '${loginNickname}')">--%>
+                                <div class="delete-menu" onclick="location.href = 'http://localhost:8081/main/profile/deleteUserPost1.do?postId=' + '${post.postId}' + '&nickname=' + '${loginNickname}'">
                                     <div class="delete-img"><i class="fa-regular fa-trash-can"></i></div>
                                     <p class="delete-word">삭제</p>
                                 </div>
@@ -160,7 +161,14 @@
                                         </span>
                                         </c:when>
                                     </c:choose>
-                                    <span class="icon" onclick="show_all_comment(${post.postId},'${loginNickname}')"><i class="fa-regular fa-comment"></i></span>
+                                    <c:choose>
+                                        <c:when test="${post.userNickname == loginNickname}">
+                                            <span class="icon" onclick="show_all_comment2(${post.postId},'${loginNickname}')"><i class="fa-regular fa-comment"></i></span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span class="icon" onclick="show_all_comment(${post.postId},'${loginNickname}')"><i class="fa-regular fa-comment"></i></span>
+                                        </c:otherwise>
+                                    </c:choose>
                                     <span class="icon"><i class="fa-regular fa-share-from-square"></i></span>
                                 </div>
                                 <c:choose>

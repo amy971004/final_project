@@ -70,4 +70,9 @@ public class RoomServiceImpl implements RoomService {
         return dao.findAllRoomsWithLastMessage(senderAccountId);
     }
 
+    @Override
+    public List<String> findReceiver(String senderAccountId) {
+        return dao.findReceiver(senderAccountId);
+    }
+
 }

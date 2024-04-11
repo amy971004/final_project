@@ -7,6 +7,29 @@ $(document).ready(function() {
 
 });
 
+// 채팅방 선택시 사용자 정보 가져오는 함수
+function selectReceiver(accountId){
+    $.ajax({
+        url: '/main/chatRooms/selectReceiver.do',
+        type: 'GET',
+        data: {
+            accountId : accountId
+        },
+        success: function (Receiver){
+            let recImg = $('#recImg');
+            let recA = $('#recA');
+            console.log("Receiver 닉네임" + Receiver.userNickname)
+
+            recImg.attr('src', '/main/profile/download.do?imageFileName=' + Receiver.profileImg + '&accountId=' + accountId);
+            recA.attr('href', '/main/profile/userProfile.do?userNickname=' + Receiver.userNickname)
+
+        }, error: function (error) {
+            console.error('Error fetching messages:', error);
+        }
+
+    });
+}
+
 // 채팅방을 선택하는 함수
 function selectRoom(roomId, opponentName) {
 
@@ -36,6 +59,7 @@ function selectRoom(roomId, opponentName) {
         success: function(roomInfo) {
             let recName = $('#recName');
             let recRoomName = $('#recRoomName');
+
             recName.text(opponentName);
             recRoomName.text(roomInfo.roomName);
         },

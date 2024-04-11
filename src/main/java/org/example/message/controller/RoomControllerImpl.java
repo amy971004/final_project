@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -74,10 +75,19 @@ public class RoomControllerImpl implements RoomController{
         // 발신자가 참여하고 있는 모든 채팅방을 조회
         List<RoomDTO> rooms = service.findAllRoomsByAccountId(senderAccountId);
         MemberDTO user = memDAO.findMemberByAccountId(senderAccountId);
+        List<String> receiveUserAccountId = service.findReceiver(senderAccountId);
+
+        // 수신자의 정보 리스트 조회
+        List<MemberDTO> receiveUsers = new ArrayList<>();
+        for (String s : receiveUserAccountId) {
+            MemberDTO receiveUser = memDAO.findMemberByAccountId(s);
+            receiveUsers.add(receiveUser);
+        }
 
         // 조회한 채팅방 목록을 모델에 추가
         model.addAttribute("rooms", rooms);
         model.addAttribute("user", user);
+        model.addAttribute("receiveUsers", receiveUsers);
 
         return new ModelAndView("chatRooms");
     }
@@ -107,6 +117,12 @@ public class RoomControllerImpl implements RoomController{
     @DeleteMapping("/main/chatRooms/deleteRoom.do")
     public boolean deleteRoom(@RequestParam("roomId") String roomId) {
         return roomDAO.deleteRoom(roomId);
+    }
+
+    @GetMapping("/main/chatRooms/selectReceiver.do")
+    @ResponseBody
+    public MemberDTO selectReceiver(@RequestParam("accountId") String accountId){
+        return roomDAO.selectReceiver(accountId);
     }
 
 }

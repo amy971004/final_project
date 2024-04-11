@@ -1,3 +1,4 @@
+<%@ page pageEncoding="UTF-8" language="java" isELIgnored="false" %>
 <%@ page import="org.example.post.dto.PostDTO" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="header.jsp"%>
@@ -241,7 +242,6 @@
     </article>
     </c:forEach>
 </main>
-
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="../../resources/js/logout.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>

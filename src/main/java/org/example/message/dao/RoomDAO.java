@@ -1,5 +1,6 @@
 package org.example.message.dao;
 
+import org.example.member.dto.MemberDTO;
 import org.example.message.dto.RoomDTO;
 
 import java.util.List;
@@ -33,4 +34,8 @@ public interface RoomDAO {
     boolean deleteRoom(String roomId);
 
     int findParticipantsByRoomId(String roomId);
+
+    List<String> findReceiver(String senderAccountId);
+
+    MemberDTO selectReceiver(String accountId);
 }

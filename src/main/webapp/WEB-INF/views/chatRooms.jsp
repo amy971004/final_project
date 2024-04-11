@@ -1,8 +1,9 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page pageEncoding="UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script type="text/javascript">
     let accountId = "<%= session.getAttribute("accountID") %>";
 </script>
+<%@ include file="header.jsp"%>
 <html>
 <head>
     <title>채팅방 목록</title>
@@ -12,7 +13,7 @@
     <link rel="stylesheet" href="../../resources/css/reset.css">
     <link rel="stylesheet" href="../../resources/css/nav.css">
     <link rel="stylesheet" href="../../resources/css/chatRooms.css">
-    <%@ include file="header.jsp"%>
+
 
 </head>
 <body>
@@ -26,7 +27,9 @@
                         <h6 class="T3">메세지</h6>
                     </div>
                     <div id="TLA1">
-                        <i class="fa-sharp fa-solid fa-circle-user fa-6x" ></i>
+                        <a href="/main/profile/userProfile.do?userNickname=${user.userNickname}">
+                            <img style="width: 100px; height: 100px; border-radius: 50%;" src="/main/profile/download.do?imageFileName=${user.profileImg}&accountId=${user.accountID}">
+                        </a>
                     </div>
                     <div id="TLA2">
                         <h6 id="userName" class="T1">${user.userName}</h6>
@@ -37,21 +40,29 @@
             <div id="roomListBottom">
                 <ul>
                     <c:forEach var="room" items="${rooms}">
-                        <div class="rooms" onclick="selectRoom('${room.roomId}','${room.opponentName}');" data-roomId="${room.roomId}">
-                            <div class="roomsContainer">
-                                <div class="rcA1">
-                                    <i class="fa-sharp fa-solid fa-circle-user fa-5x" ></i>
-                                </div>
-                                <div class="rcA2">
-                                    <div class="rcB1">
-                                        <h6 class="roomName">${room.roomName}<button onclick="deleteRoom('${room.roomId}');" class="deleteBtn" type="button">X</button></h6>
-                                        <h6 class="roomReceiverName">${room.opponentName}</h6>
-                                        <div class="roomContents">${room.lastMessage}</div>
-                                        <h6 class="rateDate">${room.formattedLastMessageDate}</h6>
+                        <c:forEach var="receiveUser" items="${receiveUsers}">
+                            <c:if test="${room.opponentAccountId == receiveUser.accountID}">
+                                <div class="rooms" onclick="selectRoom('${room.roomId}','${room.opponentName}'); selectReceiver('${receiveUser.accountID}');" data-roomId="${room.roomId}">
+                                    <div class="roomsContainer">
+                                        <div class="rcA1">
+
+                                            <a href="/main/profile/userProfile.do?userNickname=${receiveUser.userNickname}">
+                                                <img style="width: 100px; height: 100px; border-radius: 50%;" src="/main/profile/download.do?imageFileName=${receiveUser.profileImg}&accountId=${receiveUser.accountID}">
+                                            </a>
+
+                                        </div>
+                                        <div class="rcA2">
+                                            <div class="rcB1">
+                                                <h6 class="roomName">${room.roomName}<button onclick="deleteRoom('${room.roomId}');" class="deleteBtn" type="button">X</button></h6>
+                                                <h6 class="roomReceiverName">${room.opponentName}</h6>
+                                                <div class="roomContents">${room.lastMessage}</div>
+                                                <h6 class="rateDate">${room.formattedLastMessageDate}</h6>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </c:if>
+                        </c:forEach>
                     </c:forEach>
                 </ul>
             </div>
@@ -60,7 +71,9 @@
             <div id="chattingHeader">
                 <div id="chattingHeaderLeft">
                     <div id="chA1">
-                        <i class="fa-sharp fa-solid fa-circle-user fa-2x" ></i>
+                        <a id = "recA" href="">
+                            <img style="width: 60px; height: 60px; border-radius: 50%;" id="recImg" src="../../resources/img/profile/defaultProfile.png" alt="">
+                        </a>
                     </div>
                     <div id="chA2">
                         <h6 id="recName"></h6>

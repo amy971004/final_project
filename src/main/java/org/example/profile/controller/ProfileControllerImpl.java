@@ -50,6 +50,7 @@ public class ProfileControllerImpl implements ProfileController{
         response.setDateHeader("Expires", 0); // Proxies
         HttpSession session = request.getSession();
         ProfileDTO dto = service.profileView((String) session.getAttribute("accountID"));
+        String loginNickname = service1.loginNickname(dto.getAccountId());
         List<PostDTO> postDTO = service.postView(dto.getUserNickname());
         List<ImageDTO> imageDTO = service.imageView();
         List<CommentDTO> commentDTO = service.commentView();
@@ -83,6 +84,7 @@ public class ProfileControllerImpl implements ProfileController{
 
         ModelAndView mav = new ModelAndView("profile");
         mav.addObject("profile", dto);
+        mav.addObject("loginNickname", loginNickname);
         Map<String, Object> profileMap = new HashMap<>();
         profileMap.put("postDTO", postDTO);
         profileMap.put("imageDTO", imageDTO);
@@ -340,6 +342,11 @@ public class ProfileControllerImpl implements ProfileController{
         List<FollowDTO> follower = service.followView(nickname);
         return ResponseEntity.ok().body(follower);
     }
+    @PostMapping("/main/profile/followingCheck.do")
+    public ResponseEntity<?> followingCheck(@RequestParam("loginNickname") String loginNickname) throws Exception{
+        List<FollowDTO> follower = service.followView(loginNickname);
+        return ResponseEntity.ok().body(follower);
+    }
 
     @Override
     @PostMapping("/main/profile/following.do")
@@ -383,6 +390,7 @@ public class ProfileControllerImpl implements ProfileController{
     // 유저프로필에서 게시물 삭제하기
     @RequestMapping(value = "/main/profile/deleteUserPost.do",method = RequestMethod.POST)
     public ResponseEntity<?> deleteUserPost(
+            String loginNickname,
             int postId,
             HttpServletRequest request,
             HttpServletResponse response)throws Exception {
@@ -395,12 +403,42 @@ public class ProfileControllerImpl implements ProfileController{
             message = "<script>";
             if (result >= 1){
                 message += "alert('게시물이 삭제 되었습니다.');";
-                message += "location.href='/main/profile/userProfile.do';";
+                message += "location.href='/main/profile/userProfile.do?userNickname=" + loginNickname + "';";
                 message += "</script>";
                 resEnt = new  ResponseEntity<>(message, responseHeaders, HttpStatus.OK);
             }else{
                 message += "alert('게시물이 삭제되지 않았습니다. 다시 시도해 주세요.');";
-                message += "location.href='/main/profile/userProfile.do';";
+                message += "location.href='/main/profile/userProfile.do?userNickname=" + loginNickname + "';";
+                message += "</script>";
+                resEnt = new  ResponseEntity<>(message, responseHeaders, HttpStatus.CREATED);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return resEnt;
+    }
+    @RequestMapping(value = "/main/profile/deleteUserPost1.do")
+    public ResponseEntity<?> deleteUserPost1(
+            @RequestParam("postId") int postId,
+            @RequestParam("nickname") String loginNickname,
+            HttpServletRequest request,
+            HttpServletResponse response)throws Exception {
+        String message = null;
+        ResponseEntity<?> resEnt = null;
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("Content-Type", "text/html;charset=utf-8");
+        try {
+            int result = service.deletePost(postId);
+            message = "<script>";
+            if (result >= 1){
+                message += "alert('게시물이 삭제 되었습니다.');";
+                message += "location.href='/main/profile/userProfile.do?userNickname=" + loginNickname + "';";
+                message += "</script>";
+                resEnt = new  ResponseEntity<>(message, responseHeaders, HttpStatus.OK);
+            }else{
+                message += "alert('게시물이 삭제되지 않았습니다. 다시 시도해 주세요.');";
+                message += "location.href='/main/profile/userProfile.do?userNickname=" + loginNickname + "';";
                 message += "</script>";
                 resEnt = new  ResponseEntity<>(message, responseHeaders, HttpStatus.CREATED);
             }

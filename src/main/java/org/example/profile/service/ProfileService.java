@@ -36,4 +36,5 @@ public interface ProfileService {
     String findAccountId(String userNickname);
 
     int deletePost(int postId);
+
 }

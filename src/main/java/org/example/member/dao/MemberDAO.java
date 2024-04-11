@@ -50,4 +50,5 @@ public interface MemberDAO {
     MemberDTO findMemberByAccountId(String accountId);
 
     List<MemberDTO> searchUser(String userName);
+
 }

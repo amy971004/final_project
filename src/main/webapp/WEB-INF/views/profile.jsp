@@ -1,10 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page pageEncoding="UTF-8" language="java" isELIgnored="false" %>
 <html lang="en" xmlns:c="http://www.w3.org/1999/XSL/Transform" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<%@ include file="header.jsp"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath }" />
 <head>
-    <meta charset="UTF-8">
     <link href="../../resources/css/profile.css" rel="stylesheet" type="text/css" />
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    <%@ include file="header.jsp"%>
     <link href="../../resources/css/main.css" rel="stylesheet" type="text/css" />
     <link href="../../resources/css/bxslider1.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="../../resources/css/common.css">
     <link rel="stylesheet" href="../../resources/css/style.css">
     <link rel="stylesheet" href="../../resources/css/nav.css">
-    <c:set var="contextPath" value="${pageContext.request.contextPath }" />
     <title>프로필</title>
 </head>
 <body>
@@ -56,7 +55,7 @@
                 </c:forEach>
                 <c:set var="followingCount" value="0" />
                 <c:forEach var="following" items="${profileMap.followingDTO}">
-                    <c:set var="followeringCount" value="${followingCount + 1}"/>
+                    <c:set var="followingCount" value="${followingCount + 1}"/>
                 </c:forEach>
 
 
@@ -117,7 +116,7 @@
                     <div class="slider">
                         <c:forEach var="image" items="${profileMap.imageDTO}">
                             <c:if test="${post.postId eq image.postId}">
-                                <img src="${contextPath}/main/post/imageDownload.do?imageFileName=${image.fileName}&postId=${post.postId}" class="gallery-image" alt="">
+                                <img src="/main/post/imageDownload.do?imageFileName=${image.fileName}&postId=${post.postId}" class="gallery-image" alt="">
                             </c:if>
                         </c:forEach>
                     </div>
@@ -137,7 +136,7 @@
                                         </span>
                                         </c:when>
                                     </c:choose>
-                                    <span class="icon" onclick="show_all_comment(${post.postId},'${profile.userNickname}')"><i class="fa-regular fa-comment"></i></span>
+                                    <span class="icon" onclick="show_all_comment2(${post.postId},'${profile.userNickname}')"><i class="fa-regular fa-comment"></i></span>
                                     <span class="icon"><i class="fa-regular fa-share-from-square"></i></span>
                                 </div>
                                 <c:choose>
@@ -160,7 +159,7 @@
                                 </c:forEach>
                             </div>
                             <p id="like-cnt${post.postId}" class="text-like" onclick="show_like_modal(${post.postId},'${profile.userNickname}')">좋아요 ${likeBook.likeCnt}개</p>
-                            <p class="show_all_comment" id="${post.postId}" onclick="show_all_comment(${post.postId},'${profile.userNickname}')">전체 댓글 보기..</p>
+                            <p class="show_all_comment" id="${post.postId}" onclick="show_all_comment2(${post.postId},'${profile.userNickname}')">전체 댓글 보기..</p>
                         </c:if>
                     </c:forEach>
                 </div>
@@ -193,7 +192,7 @@
             <div class="modal_header">
                 <div class="modal_header_feed">
                     <div class="modal_profile">
-                        <a href="${contextPath}/main/profile/userProfile.do?userNickname=${post.userNickname}">
+                        <a href="/main/profile/userProfile.do?userNickname=${post.userNickname}">
                             <img
                                     class="modal_profile_32px"
                                     src="/main/post/profileImageDownload.do?userNickname=${post.userNickname}" alt="모달창 상단 작성자 프로필 이미지">

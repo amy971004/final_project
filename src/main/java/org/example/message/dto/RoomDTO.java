@@ -17,6 +17,7 @@ public class RoomDTO {
     private String lastMessage; // 마지막 메시지 내용
     private String formattedLastMessageDate;
     private String opponentName; // 상대방 이름
+    private String opponentAccountId;
 
 
 }

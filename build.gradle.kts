@@ -4,6 +4,14 @@ plugins {
     kotlin("jvm")
 }
 
+tasks {
+    val warTask = named<War>("war")
+    val explodedWar by registering(Copy::class) {
+        into("$buildDir/exploded")
+        from(warTask.map { it.archiveFile.get() })
+    }
+}
+
 group = "org.example"
 version = "1.0-SNAPSHOT"
 
