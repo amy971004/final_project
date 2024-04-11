@@ -7,6 +7,8 @@ $(document).ready(function(){
 
 });
 
+
+
 let commentNo = [];
 let commentTarget;
 // 좋아요 버튼
@@ -139,6 +141,7 @@ function add_modal_Comment(postId,loginNickname){
     // 댓글 가져오기
     const commentInput = document.querySelector("#modal_inputComment"+postId);
     let comment = commentInput.value
+
     if(comment == "" || comment.length == 0){
         alert("댓글을 입력해 주세요")
     }else {
@@ -153,25 +156,6 @@ function add_modal_Comment(postId,loginNickname){
                 parentNo : 0
             },
             success: function (res) {
-               /* const commentArea = document.getElementById("comment"+postId);
-                console.log(commentArea);
-                let div = document.createElement('div');
-                div.style.margin ='0 15px 5px 15px';
-                div.style.display ='flex';
-                let writer = document.createElement('b');
-                let post_comment = document.createElement('span');
-
-                writer.innerHTML = loginNickname+'&nbsp;'
-                writer.setAttribute('class','writer');
-                post_comment.innerText = comment;
-                post_comment.setAttribute('class','post_comment');
-                post_comment.style.wordBreak = 'break-all';
-
-                div.appendChild(writer);
-                div.appendChild(post_comment);
-
-                commentArea.appendChild(div);*/
-
                 show_all_comment(postId, loginNickname);
                 commentInput.value = "";
             },
@@ -183,23 +167,6 @@ function add_modal_Comment(postId,loginNickname){
 }
 
 
-// 댓글 상자 보이기, 숨기기
-/*function show_comment_box(postId,num,target){
-    const commentArea = document.getElementById("comment_box"+postId);
-    if(num == 0){
-        commentArea.setAttribute('class','comment_box');
-        commentArea.setAttribute("id","comment_box"+postId);
-        target.setAttribute('onclick','show_comment_box('+postId+',1,this)');
-        //commentArea.setAttribute('onclick','show_comment_box('+postId+',1)');
-        commentArea.style.display ='block';
-    }else if(num == 1){
-        commentArea.setAttribute('class','comment_box');
-        commentArea.setAttribute("id","comment_box"+postId);
-        target.setAttribute('onclick','show_comment_box('+postId+',0,this)');
-        //commentArea.setAttribute('onclick','show_comment_box('+postId+',0)');
-        commentArea.style.display ='none';
-    }
-}*/
 
 // 더보기 메뉴
 function show_menu(postId,num) {
@@ -243,6 +210,15 @@ function show_all_comment(postId, loginNickname) {
     modal.style.display = 'flex';
     let replyCnt = 0;
 
+/*    const img = document.getElementsByClassName("img");
+    for(let i=0;i<img.length;i++){
+        img[i].style.float ='left';
+        img[i].style.listStyle = 'none';
+        img[i].style.position = 'relative';
+        img[i].style.width ='489.333px';
+    }*/
+
+
     // 해당 게시물의 댓글 정보 가져오기
     $.ajax({
         type:"get",
@@ -260,7 +236,7 @@ function show_all_comment(postId, loginNickname) {
                 //console.log(data[i].user_Nickname);
                 if(data[i].level == 1) {
                     replyCnt = reply_comment_cnt(data[i].commentId);
-                    let comment_content = "<div id='comment" + postId + "'>";
+                    let comment_content = "<div class='comment" + postId + "'>";
                     comment_content += "<div class='modal_comment_box'>";
                     comment_content += "<div class='modal_comment_profileImage'>";
                     comment_content += "<a href='/main/profile/userProfile.do?userNickname=" + data[i].user_Nickname + "'>";
@@ -276,6 +252,7 @@ function show_all_comment(postId, loginNickname) {
                     // 로그인닉네임과 작성자가 같으면 휴지통 아이콘
                     if(data[i].user_Nickname === loginNickname){
                         comment_content += "onClick='reply_comment_btn(\"" + data[i].user_Nickname + "\"," + postId + "," + data[i].commentId + ",\"" + loginNickname + "\" ,"+data[i].level+")'>답글달기..";
+                        console.log(loginNickname);
                         comment_content += "</p><i onclick='deleteComment("+data[i].commentId+","+postId+",\""+loginNickname +"\")' class=\'fa-solid fa-trash-can\' style='margin-left: 10px;color: #A9A9A9;font-size: 13px;padding-top: 4px;cursor: pointer;'></i></div>";
                     }else{
                         comment_content += "onClick='reply_comment_btn(\"" + data[i].user_Nickname + "\"," + postId + "," + data[i].commentId + ",\"" + loginNickname + "\" ,"+data[i].level+")'>답글달기..</p>";
@@ -290,9 +267,7 @@ function show_all_comment(postId, loginNickname) {
                     }else{
                         comment_content += "</div> </div> </div>";
                     }
-         /*           if(commentNo.includes(data[i].commentId)){
-                        replyCommentCtn.push(replyCnt);
-                    }*/
+
                     content += comment_content;
                 }else {
                     let comment_content = "<div id='reply" + postId + "'>";
@@ -312,8 +287,14 @@ function show_all_comment(postId, loginNickname) {
                         }
                     }
                     comment_content += "<span class='modal_comment'>" + data[i].postComment + "</span>";
-                    comment_content += "<p class='modal_replycomment' onclick='reply_comment_btn(\"" + data[i].user_Nickname + "\"," + postId + "," + data[i].commentId + ",\"" + loginNickname + "\")'>답글달기..</p>";
-                    comment_content += "</div></div></div>";
+                    if(data[i].user_Nickname === loginNickname){
+                        comment_content += "<div style='display: flex'><p class='modal_replycomment' onclick='reply_comment_btn(\"" + data[i].user_Nickname + "\"," + postId + "," + data[i].commentId + ",\"" + loginNickname + "\")'>답글달기..</p>";
+                        comment_content += "<i onclick='deleteComment("+data[i].commentId+","+postId+",\""+loginNickname +"\")' class=\'fa-solid fa-trash-can\' style='margin-left: 10px;color: #A9A9A9;font-size: 13px;padding-top: 4px;cursor: pointer;'></i></div>";
+                        comment_content += "</div></div></div>";
+                    }else{
+                        comment_content += "<p class='modal_replycomment' onclick='reply_comment_btn(\"" + data[i].user_Nickname + "\"," + postId + "," + data[i].commentId + ",\"" + loginNickname + "\")'>답글달기..</p>";
+                        comment_content += "</div></div></div>";
+                    }
                     content += comment_content;
                 }
             }
@@ -338,12 +319,20 @@ function show_all_comment(postId, loginNickname) {
 
 
 // 모달창 닫기
-function close_modal(postId) {
+function close_modal(postId,num) {
     const modal = document.querySelector("#modal" + postId);
     const body = document.getElementsByTagName('body');
-    body[0].style.overflow = 'auto';
-    modal.style.display = 'none';
-    commentNo =[];
+    const reply_comment = document.querySelector("#modal_inputComment" + postId);
+
+    if(num === 1){
+        location.href="/main/post/bookMark.do";
+        console.log(num);
+    }else if(num === 0){
+        body[0].style.overflow = 'auto';
+        modal.style.display = 'none';
+        commentNo =[];
+        reply_comment.value = "";
+    }
 }
 
 // 전체 댓글 모달창 열기
@@ -374,7 +363,7 @@ function reply_comment_btn(nickName, postId, commentId, loginNickname, level) {
         // 닉네임 기준으로 댓글 자르기
         let allcomment = reply_comment.value;
         var split_comment = allcomment.split(nickName);
-
+        console.log("add_reply_comment : " + loginNickname);
         if(split_comment.length == 1) {
             add_modal_Comment(postId, loginNickname);
         } else {
@@ -568,5 +557,64 @@ function reply_comment_btn(nickName, postId, commentId, loginNickname, level) {
         }else{
             return;
         }
-
     }
+
+    // 북마크 상세페이지 메뉴
+function show_detail_menu(postId,num) {
+    const wrap_menu = document.getElementById("detail_menuBtn"+postId);
+    if(num == 0){
+        wrap_menu.style.display = 'flex';
+    }else if(num == 1){
+        wrap_menu.style.display = 'none';
+    }
+}
+
+// 북마크 취소
+function bookMarkCancle(bookMarkId) {
+   console.log(bookMarkId);
+    $.ajax({
+        type:"get",
+        url:"/main/post/bookMarkCancle.do",
+        contentType:"application/json",
+        data: {
+            bookMarkId : bookMarkId
+        },
+        success:function (res){
+            alert("북마크 목록에서 삭제되었습니다.")
+            location.href="/main/post/bookMark.do";
+        },
+        error:function (XMLHttpRequest, textStatus, errorThrown) {
+            alert("댓글 삭제 실패");
+        }
+    });
+}
+
+function show_follow_menu(postId,num) {
+    const wrap_menu = document.getElementById("detail_menuBtn"+postId);
+    if(num == 0){
+        wrap_menu.style.display = 'flex';
+    }else if(num == 1){
+        wrap_menu.style.display = 'none';
+    }
+}
+
+function followCancle(loginNickname,followerUserId) {
+    if(confirm("팔로우를 취소 하시겠습니까?") === true){
+        $.ajax({
+            type:"get",
+            url:"/main/post/followCancle.do",
+            contentType:"application/json",
+            data: {
+                loginNickname : loginNickname,
+                followerUserId : followerUserId
+            },
+            success:function (res){
+                alert("팔로우가 취소되었습니다.")
+                location.href ="/main/post/followPost.do";
+            },
+            error:function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("팔로우 취소 실패");
+            }
+        });
+    }
+}

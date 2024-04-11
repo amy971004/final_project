@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import org.example.post.dto.*;
 import org.example.post.service.PostService;
 import org.example.profile.dto.ProfileDTO;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,10 +18,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Date;
 import java.util.*;
 
 // 클래스 선언부입니다. @Controller 애노테이션을 사용하여 이 클래스가 컨트롤러임을 나타냅니다.
@@ -62,13 +65,13 @@ public class PostControllerImpl implements PostController {
         int postNo = service.selectPostId();
 
         // 지정 경로에 폴더가 없으면 자동생성.
-        File directory = new File(IMAGE_PATH + '/' + postNo);
+        File directory = new File(IMAGE_PATH + '\\' + postNo);
         if (!directory.exists()) {
             boolean isCreated = directory.mkdirs(); // 디렉터리 생성 시도
             if (!isCreated) {
                 // 디렉터리 생성 실패에 대한 처리
                 // 예: 로깅, 예외 던지기 등
-                throw new IOException("Failed to create directory: " + IMAGE_PATH + '/' + postNo);
+                throw new IOException("Failed to create directory: " + IMAGE_PATH + '\\' + postNo);
             }
         }
 
@@ -80,7 +83,7 @@ public class PostControllerImpl implements PostController {
                 UUID uuid = UUID.randomUUID();
                 fileName = uuid + "_" + fileName;
                 // 파일 저장 경로 정의
-                String path = Paths.get(IMAGE_PATH + '/' + postNo + '/' + fileName).toString();
+                String path = Paths.get(IMAGE_PATH + '\\' + postNo + '\\' + fileName).toString();
                 // 이미지 객체 생성 / 정보 저장
                 ImageDTO image = new ImageDTO();
                 image.setFileName(fileName);
@@ -118,7 +121,7 @@ public class PostControllerImpl implements PostController {
             // 예외 발생 시 이미지 파일 삭제
             if(imageFileInfo != null && imageFileInfo.size() != 0){
                 for(ImageDTO imageDTO : imageFileInfo){
-                    Path filePath = Paths.get(IMAGE_PATH + '/' + postNo + '/' + imageDTO.getFileName());
+                    Path filePath = Paths.get(IMAGE_PATH + '\\' + postNo + '\\' + imageDTO.getFileName());
                     Files.delete(filePath);
                     System.out.println(imageDTO.getFileName());
                 }
@@ -130,7 +133,7 @@ public class PostControllerImpl implements PostController {
                 PrintWriter out = response.getWriter();
                 out.println("<script>");
                 out.println("alert('업로드 실패');");
-                out.println("location.href='/main';");
+                out.println("location.href='/main/post/mainPost.do';");
                 out.println("</script>");
                 out.close();
                 e.printStackTrace();
@@ -183,6 +186,9 @@ public class PostControllerImpl implements PostController {
             tagDTO.setHashTag(tag);
             tagsList.add(tagDTO);
 
+            String date = post.getUploadDate().toString();
+            String d = getString(date);
+            post.setDate(d);
         }
         ModelAndView mav = new ModelAndView("main");
         //postMap.put("tagsMap",tagsMap);
@@ -195,6 +201,26 @@ public class PostControllerImpl implements PostController {
         mav.addObject("loginNickname", loginNickname);
 
         return mav;
+    }
+
+    @NotNull
+    private static String getString(String date) {
+        String d = null;
+        char month = date.charAt(5);
+        char day = date.charAt(8);
+/*        System.out.println("month:"+month);
+        System.out.println("day:"+day);
+        System.out.println(date);*/
+        if((month=='0') && (day=='0')){
+              d = date.substring(6,7)+"월 "+ date.substring(9,10)+"일";
+          }else if((month!='0') && (day!='0')){
+              d = date.substring(5,7)+"월 "+ date.substring(8,10)+"일";
+          }else if(month != '0'){
+              d = date.substring(5,7)+"월 "+ date.substring(9,10)+"일";
+          }else{
+              d = date.substring(6,7)+"월 "+ date.substring(8,10)+"일";
+          }
+        return d;
     }
 
     // 로그인된 계정의 닉네임 가져오기
@@ -407,8 +433,149 @@ public class PostControllerImpl implements PostController {
         HttpSession session = request.getSession();
         String accountId = (String) session.getAttribute("accountID");
         String loginNickname = loginNickname(accountId);
+        // 북마크 정보를 저장하는 리스트
+        List<BookMarkDTO2> bookMarkDTOList = new ArrayList<>();
+
+        // 북마크한 PostId 가져오기
+        List<Integer> bookMarkPostId = service.getBookMarkPostId(loginNickname);
+
+        List<ImageDTO> postImageList = service.getPostImage(bookMarkPostId);
+
+        for(int postId : bookMarkPostId){
+
+            BookMarkDTO2 bookMarkDTO = new BookMarkDTO2();
+
+            // 북마크 아이디 가져오기
+            int bookMarkId = service.getBookMarkId(loginNickname,postId);
+
+            // 저장된 파일의 첫번째 이미지이름 가져오기
+            String firtstFileName = service.getFirstFileName(postId);
+
+            // 게시물의 댓글 수 가져오기
+            int commentCnt = service.getCommentCnt(postId);
+
+            // 게시물의 좋아요 수 가져오기
+            int likeCnt = service.likeCnt(postId);
+
+            // 작성자 닉네임 가져오기
+            String userNickname = service.getUserNickname(postId);
+
+            // 작성 날짜 가져오기
+            Date wirteDate = service.getWriteDate(postId);
+
+            String date = wirteDate.toString();
+            String d = getString(date);
+            bookMarkDTO.setDate(d);
 
 
-        return new ModelAndView("bookMark");
+            bookMarkDTO.setPostId(postId);
+            bookMarkDTO.setFileName(firtstFileName);
+            bookMarkDTO.setCommentCnt(commentCnt);
+            bookMarkDTO.setLikeCnt(likeCnt);
+            bookMarkDTO.setUserNickname(userNickname);
+            bookMarkDTO.setWriteDate(wirteDate);
+            bookMarkDTO.setBookMarkId(bookMarkId);
+
+
+            bookMarkDTOList.add(bookMarkDTO);
+
+        }
+
+        ModelAndView mav = new ModelAndView("bookMark");
+        mav.addObject("bookMarkDTOList",bookMarkDTOList);
+        mav.addObject("postImageList", postImageList);
+        mav.addObject("loginNickname",loginNickname);
+
+        return mav;
+    }
+
+    // 북마크 페이지 -> 북마크 취소 메서드
+    @ResponseBody
+    @RequestMapping(value = "/bookMarkCancle.do", method = RequestMethod.GET)
+    public void bookMarkCancle (int bookMarkId){
+        System.out.println(bookMarkId);
+        service.bookMarkCancle(bookMarkId);
+
+    }
+
+    // 팔로우한 게시물 출력
+    @RequestMapping("/followPost.do")
+    public ModelAndView followPost(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        ModelAndView mav = new ModelAndView();
+        // 로그인된 계정의 닉네임 가져오기
+        HttpSession session = request.getSession();
+        String accountId = (String) session.getAttribute("accountID");
+        String loginNickname = loginNickname(accountId);
+        // 팔로우한 목록 가져오기
+        List<String> followList = service.getfollowList(loginNickname);
+
+        if(followList.size() != 0){
+
+        // 팔로우한 게시물 가져오기
+        List<PostDTO> follow_postList = service.follow_postList(followList); // 기본 게시물 리스트
+
+        /*List<ImageDTO> imageList = service.getImageList(); // 전체 이미지 정보 가져오기*/
+
+        List<TagDTO> tagsList = new ArrayList<>(); //태그 저장하는 리스트
+        List<likeBookDTO> likeBookList = new ArrayList<>(); // 좋아요 북마크 저장하는 리스트
+        Map<String, Object> postMap = new HashMap<>(); // 게시물 전체정보 저장하는 map
+        List<Integer> postId = new ArrayList<>(); // 포스트 번호를 저장할 리스트
+
+        int contentNo = 0;
+        for (PostDTO post : follow_postList) {
+            System.out.println(post.getUserNickname());
+            System.out.println(post.getContent());
+            System.out.println(post.getUploadDate());
+            System.out.println(post.getPostId());
+
+            postId.add(post.getPostId());
+            /*contentNo = post.getPostId();*/
+            likeBookDTO likebook = new likeBookDTO();
+            // 좋아요 여부 (0,1)
+            likebook.setContentNo(post.getPostId());
+            likebook.setLikeCheck(service.likeCheck(loginNickname, post.getPostId()));
+            // 좋아요 갯수
+            likebook.setLikeCnt(service.likeCnt(post.getPostId()));
+            // 북마크 여부 (0,1)
+            likebook.setBookmarkCheck(service.bookmarkCheck(loginNickname, post.getPostId()));
+            likeBookList.add(likebook);
+
+            // 태그 가져오기
+            List<String> tag = service.getTag(post.getPostId());
+            TagDTO tagDTO = new TagDTO();
+            tagDTO.setPostId(post.getPostId());
+            tagDTO.setHashTag(tag);
+            tagsList.add(tagDTO);
+
+            String date = post.getUploadDate().toString();
+            String d = getString(date);
+            post.setDate(d);
+            System.out.println(d);
+
+        }
+        List<ImageDTO> postImageList = service.getPostImage(postId);
+        mav = new ModelAndView("followPost");
+        postMap.put("postList", follow_postList); // 게시물리스트
+        postMap.put("tagsList", tagsList); // 태그리스트
+        postMap.put("likeBookList", likeBookList); // 좋아요, 북마크 여부 리스트
+        //  postMap.put("commentList", commentList); //전체 댓글 리스트
+        postMap.put("imageList", postImageList); // 전체 이미지 정보
+        mav.addObject("postMap", postMap);
+        mav.addObject("loginNickname", loginNickname);
+        }else {
+            mav = new ModelAndView("noneFollow");
+        }
+
+        return mav;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/followCancle.do",method = RequestMethod.GET)
+    public void followCancle (String loginNickname, String followerUserId){
+        Map<String,Object> followInfo = new HashMap<>();
+        followInfo.put("loginNickname",loginNickname);
+        followInfo.put("followerUserId",followerUserId);
+
+        service.followCancle(followInfo);
     }
 }
