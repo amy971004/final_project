@@ -91,6 +91,12 @@
 <body>
 <main>
     <c:forEach var="post" items="${postMap.postList}">
+        <div class="follow_menu_modal" id="detail_menuBtn${post.postId}">
+            <div id="follow_menu${post.postId}" class="follow_menu">
+                <div class="followCancle-menu" onclick="followCancle('${loginNickname}','${post.userNickname}')">팔로우 취소</div>
+                <div class="cancle-menu" onclick="show_detail_menu(${post.postId},1)">취소</div>
+            </div>
+        </div>
         <!--좋아요 모달창 -->
         <div class="like_modal" id="like_modal${post.postId}">
             <div class="like_modal_content">
@@ -150,7 +156,7 @@
                         <div id="menu_box${post.postId}" class="wrap-menu">
                             <div class="modify-menu">
                                 <div class="modify-img"><i class="fa-regular fa-pen-to-square"></i></div>
-                                <a href="${contextPath}/main/post/postDetail.do?postId=${post.postId}" class="modify-btn"><p class="modify-word">수정</p></a>
+                                <p class="modify-word">수정</p>
                             </div>
                             <div class="delete-menu" onclick="deletePost('/main/post/deletePost.do',${post.postId})">
                                 <div class="delete-img"><i class="fa-regular fa-trash-can"></i></div>
@@ -172,7 +178,7 @@
                             <p class="location-feed">${post.date}</p>
                         </div>
                     </div>
-                    <span id="more${post.postId}" class="icon-more" onclick="show_menu(${post.postId},0)">
+                    <span id="more${post.postId}" class="icon-more" onclick="show_follow_menu(${post.postId},0)">
                         <i class="fa-solid fa-ellipsis"></i>
                     </span>
                 </div>
