@@ -2,9 +2,15 @@ plugins {
     id("java")
     id("war")
     kotlin("jvm")
-}
-
-
+} 
+// 인텔리제이 커뮤니티 버전만 아래 주석 풀기
+/*tasks {
+    val warTask = named<War>("war")
+    val explodedWar by registering(Copy::class) {
+        into("$buildDir/exploded")
+        from(warTask.map { it.archiveFile.get() })
+    }
+}*/
 
 group = "org.example"
 version = "1.0-SNAPSHOT"
@@ -56,7 +62,8 @@ dependencies {
 
     // JSON 처리
     // implementation("com.googlecode.json-simple:json-simple:1.1.1")
-    implementation("com.google.code.gson:gson:2.10.1")
+    // implementation("com.google.code.gson:gson:2.10.1")
+    implementation("org.json:json:20240303")
 
     // SLF4J - 로깅 추상화 레이어
     implementation ("org.slf4j:slf4j-api:2.0.3")
@@ -83,6 +90,14 @@ dependencies {
     // Log4j
     implementation("log4j:log4j:1.2.17")
 
+
+    // jackson
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.0")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.17.0")
+
+
+    implementation("com.fasterxml.jackson.core:jackson-core:2.9.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.9.2")
 
 
 // 주석 처리된 의존성은 프로젝트 요구에 따라 해제하여 사용

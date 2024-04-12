@@ -2,6 +2,8 @@ package org.example.member.dao;
 
 import org.example.member.dto.MemberDTO;
 
+import java.util.List;
+
 public interface MemberDAO {
 
     // 로그인 part1
@@ -46,4 +48,7 @@ public interface MemberDAO {
 
     // 전달받은 accountId로 일치하는 회원정보 가져오기
     MemberDTO findMemberByAccountId(String accountId);
+
+    List<MemberDTO> searchUser(String userName);
+
 }

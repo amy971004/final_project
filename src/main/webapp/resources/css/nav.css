@@ -1,10 +1,10 @@
 body {
     margin: 0;
+    padding: 0;
     font-family: "Open Sans", Arial, sans-serif;
     min-height: 100vh;
     background-color: #fafafa;
     color: #262626;
-    padding-bottom: 3rem;
 }
 .sideBar {
     display: flex; /* Flexbox 사용 */
@@ -18,6 +18,7 @@ body {
     background-color: #f0f0f0; /* 배경 색상 */
     padding: 20px 0; /* 상단과 하단 여백 */
     box-shadow: 2px 0px 5px rgba(0,0,0,0.1); /* 사이드바에 그림자 추가 */
+    z-index: 1;
 }
 
 .side_icon {
@@ -57,4 +58,5 @@ body {
 }
 #mainContents {
     margin-left: 80px;
+    min-height: 100vh;
 }

@@ -1,11 +1,12 @@
 package org.example.member.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.example.member.dto.MemberDTO;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 // 회원 컨트롤러 인터페이스
 public interface MemberController {
@@ -22,7 +23,7 @@ public interface MemberController {
     // 회원가입
     // 가입정보를 입력받은 후 회원가입
     @PostMapping("/member/addMember.do")
-    ModelAndView addMember(@RequestParam("file") MultipartFile file, @RequestParam("userId") String userId, MemberDTO member, HttpServletRequest request) throws Exception;
+    ModelAndView addMember(@RequestParam(name = "kakaoImg", required = false) String img, @RequestParam("file") MultipartFile file, @RequestParam("userId") String userId, MemberDTO member, HttpServletRequest request) throws Exception;
 
     // 회원가입 유효성 검증 (아이디 중복 확인) - javascript - JQuery AJAX
     // 회원 ID중 입력받은 ID와 일치하는 정보가 있으면 (이미 사용중이면) false, 없으면 (사용 가능하면) true
@@ -65,4 +66,9 @@ public interface MemberController {
     @ResponseBody
     @RequestMapping("/emailSend.do")
     String sendMail(String userEmail, String userName) throws Exception;
+
+    // 검색기능
+    @ResponseBody
+    @RequestMapping("/main/post/search.do")
+    List<MemberDTO> search(String userName) throws Exception;
 }

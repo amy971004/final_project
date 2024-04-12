@@ -87,7 +87,7 @@ $(document).ready(function() {
 
         // 모든 클라이언트 측 유효성 검사를 통과했을 때만 서버로 중복 검사 요청
         $.ajax({
-            url: "/profile/checkId.do",
+            url: "/main/profile/checkId.do",
             type: "GET",
             data: { userId: inputVal },
             success: function(response) {
@@ -328,7 +328,7 @@ $(document).ready(function() {
 
             // AJAX 요청을 시작합니다.
             $.ajax({
-                url: "/profile/checkNickname.do", // 서버의 URL, 사용자 닉네임 중복 검사를 처리할 주소
+                url: "/main/profile/checkNickname.do", // 서버의 URL, 사용자 닉네임 중복 검사를 처리할 주소
                 type: "GET", // HTTP 요청 방식
                 data: { userNickname: userNickname }, // 서버로 보낼 데이터, 사용자가 입력한 닉네임
                 success: function(response) {

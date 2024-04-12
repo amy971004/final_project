@@ -39,6 +39,11 @@
                 <div id="find" style="margin-top: 26px">
                     <a type="button" id="findById">forget ID?</a> / <a type="button" id="findByPw">forget PW?</a>
                 </div>
+                <%-- 카카오톡 로그인 api --%>
+                <div id="kakao" style="text-align: center; margin-top: 26px; cursor: pointer">
+                    <img src="../../resources/img/kakao_login_medium_narrow.png" alt=""
+                         onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=52a452682eb9c6ca55aa5147006d7da1&redirect_uri=http://localhost:8081/app/login/kakao&response_type=code'">
+                </div>
             </form>
         </div>
     </div>
@@ -114,7 +119,9 @@
             </form>
         </div>
         <input type="button" value="Go" id="pwChangeBtn" class="btn1" disabled>
+
     </div>
+
 
     <%-- 비회원 오류창 --%>
     <div id="loginWarningDialog" title="알림" style="display:none;">

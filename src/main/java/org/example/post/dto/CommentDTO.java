@@ -9,10 +9,9 @@ public class CommentDTO {
     private String user_Nickname;
     private int postId;
     private int level;
-    private int articleNo;
+    private int commentId;
     private int parentNo;
     private String postComment;
     private Date writeDate;
-
 
 }

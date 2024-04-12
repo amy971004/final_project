@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>관리자 페이지</title>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 </head>
 <body>

@@ -5,13 +5,24 @@
     <resultMap id="roomResult" type="org.example.message.dto.RoomDTO">
         <result property="roomId" column="ROOM_ID" />
         <result property="roomName" column="ROOM_NAME" />
-        <result property="roomMetaName" column="ROOM_MEATNAME" />
+        <result property="roomMetaName" column="ROOM_METANAME" />
+        <result property="roomReceiverName" column="ROOM_RECEIVERNAME" />
         <result property="createdAt" column="CREATED_AT" />
     </resultMap>
 
     <resultMap id="memberResult" type="org.example.member.dto.MemberDTO">
         <result property="accountID" column="ACCOUNT_ID" />
         <result property="userId" column="USER_ID" />
+        <result property="userPw" column="USER_PW" />
+        <result property="userNickname" column="USER_NICKNAME" />
+        <result property="userName" column="USER_NAME" />
+        <result property="userEmail" column="USER_EMAIL" />
+        <result property="userBirthday" column="USER_BIRTHDAY" />
+        <result property="userPhoneNumber" column="USER_PHONENUMBER" />
+        <result property="userJoinDate" column="USER_JOINDATE" />
+        <result property="profileImg" column="PROFILEIMG" />
+        <result property="introduction" column="INTRODUCTION" />
+        <result property="ROLE" column="USER_ROLE" />
     </resultMap>
 
     <select id="findReceiverAccountId" parameterType="String" resultType="String">
@@ -21,29 +32,88 @@
     </select>
 
     <!-- 두 사용자의 accountId로 채팅방 조회 -->
-    <select id="findRoomByUserIds" parameterType="map" resultMap="roomResult">
+    <select id="findRoomByUserIds" parameterType="String" resultMap="roomResult">
         SELECT * FROM ROOM
         WHERE ROOM_METANAME = #{roomMetaName}
     </select>
 
     <!-- 새로운 채팅방 정보를 DB에 저장 -->
-    <insert id="createRoom" parameterType="org.example.message.dto.RoomDTO">
-        INSERT INTO ROOM (ROOM_NAME, ROOM_METANAME, CREATED_AT)
-        VALUES (#{roomName}, #{roomMetaName}, CURRENT_TIMESTAMP)
+    <insert id="createRoom" parameterType="RoomDTO">
+        INSERT INTO ROOM (ROOM_NAME, ROOM_METANAME, ROOM_RECEIVERNAME, CREATED_AT)
+        VALUES (#{roomName}, #{roomMetaName}, #{roomReceiverName}, CURRENT_TIMESTAMP)
     </insert>
 
     <!-- 채팅방 참여자 추가 -->
     <insert id="addParticipant" parameterType="map" useGeneratedKeys="true" keyProperty="roomId">
-        INSERT INTO PARTICIPANTS (ROOM_ID, ACCOUNT_ID, USER_ID, USER_NAME, JOINED_AT)
-        VALUES (#{roomId}, #{accountId}, #{userId}, #{userName}, CURRENT_TIMESTAMP)
+        INSERT INTO PARTICIPANTS (ROOM_ID, ACCOUNT_ID, USER_ID, USER_NAME)
+        VALUES ('${roomId}', '${accountId}', '${userId}', '${userName}')
     </insert>
 
     <!-- 발신자 accountId로 참여하고 있는 모든 채팅방 조회 -->
+    <!--    <select id="findAllRoomsByAccountId" parameterType="String" resultMap="roomResult">-->
+    <!--        SELECT r.* FROM ROOM r-->
+    <!--        JOIN PARTICIPANTS rp ON r.room_id = rp.room_id-->
+    <!--        WHERE rp.account_id = #{senderAccountId}-->
+    <!--        ORDER BY r.created_at DESC-->
+    <!--    </select>-->
     <select id="findAllRoomsByAccountId" parameterType="String" resultMap="roomResult">
-        SELECT r.* FROM ROOM r
-        JOIN PARTICIPANTS rp ON r.room_id = rp.room_id
-        WHERE rp.account_id = #{senderAccountId}
-        ORDER BY r.created_at DESC
+        SELECT r.*, p.user_name AS opponentName, p.ACCOUNT_ID AS opponentAccountId
+        FROM room r
+                 JOIN participants p ON r.room_id = p.room_id
+        WHERE p.account_id != #{senderAccountId}
+          AND r.room_id IN (
+            SELECT room_id FROM participants WHERE account_id = #{senderAccountId}
+        )
     </select>
+
+    <select id="findOpponentName" parameterType="map" resultType="String">
+        SELECT p.user_name
+        FROM participants p
+        WHERE p.room_id = ${roomId}
+          AND p.account_id != ${myAccountId}
+          AND ROWNUM = 1
+    </select>
+
+    <!-- Room 정보 조회 By RoomID-->
+    <select id="getRoomByRoomId" parameterType="String" resultMap="roomResult">
+        SELECT * FROM ROOM WHERE ROOM_ID = #{roomId}
+    </select>
+
+    <!-- 채팅 메시지 삭제 -->
+    <delete id="deleteMessages" parameterType="string">
+        DELETE FROM MESSAGES WHERE ROOM_ID = #{roomId}
+    </delete>
+
+    <!-- 채팅방 참가자 삭제 -->
+    <delete id="deleteParticipants" parameterType="string">
+        DELETE FROM PARTICIPANTS WHERE ROOM_ID = #{roomId}
+    </delete>
+
+    <!-- 채팅방 삭제 -->
+    <delete id="deleteRoom" parameterType="string">
+        DELETE FROM ROOM WHERE ROOM_ID = #{roomId}
+    </delete>
+
+    <!-- 참가자 확인 -->
+    <select id="findParticipantsByRoomId" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM PARTICIPANTS
+        WHERE ROOM_ID = #{roomId}
+    </select>
+
+    <select id="findReceiver" parameterType="String" resultType="String">
+        SELECT p.ACCOUNT_ID
+        FROM room r
+                 JOIN participants p ON r.room_id = p.room_id
+        WHERE p.account_id != #{senderAccountId}
+          AND r.room_id IN (
+            SELECT room_id FROM participants WHERE account_id = #{senderAccountId}
+        )
+    </select>
+
+    <select id="selectReceiver" parameterType="String" resultMap="memberResult">
+        select * from USERS where ACCOUNT_ID=#{accountId}
+    </select>
+
 
 </mapper>

@@ -22,9 +22,9 @@ public class HomeController {
             String role = (String) session.getAttribute("ROLE");
             if (role != null){
                 if(role.equals("ADMIN")){
-                    return new ModelAndView("redirect:/main?warning=logoutRequest");
+                    return new ModelAndView("redirect:/main/post/mainPost.do?warning=logoutRequest");
                 } else if (role.equals("USER")){
-                    return new ModelAndView("redirect:/main?warning=logoutRequest");
+                    return new ModelAndView("redirect:/main/post/mainPost.do?warning=logoutRequest");
                 }
             } else {
                 return new ModelAndView("login");
@@ -56,7 +56,7 @@ public class HomeController {
             }
             // 권한이 회원일 때
             else if ("USER".equals(role)) {
-                return new ModelAndView("main");
+                return new ModelAndView("main/post/mainPost.do");
             }
 
         }

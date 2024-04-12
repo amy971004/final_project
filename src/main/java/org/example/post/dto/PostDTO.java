@@ -10,4 +10,6 @@ public class PostDTO {
     private String userNickname;
     private String content;
     private Date uploadDate;
+    private String date;
+
 }

@@ -1,8 +1,10 @@
 package org.example.profile.dao;
 
+import org.example.post.dto.*;
 import org.example.profile.dto.ProfileDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ProfileDAO {
     ProfileDTO profileView(String accountID);
@@ -15,4 +17,22 @@ public interface ProfileDAO {
     int updateProfile(ProfileDTO dto);
 
     int upload(ProfileDTO dto);
+
+    List<PostDTO> postView(String userNickname);
+
+    List<ImageDTO> imageView();
+
+    List<CommentDTO> commentView();
+
+    List<LikeDTO> likeView();
+
+    List<LikeDTO> likes(String postId);
+
+    List<FollowDTO> followView(String nickname);
+
+    List<FollowDTO> followingView(String userNickname);
+
+    String findAccountId(String userNickname);
+
+    int deletePost(int postId);
 }

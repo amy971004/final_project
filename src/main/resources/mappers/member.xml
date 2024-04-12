@@ -91,4 +91,9 @@
         DELETE FROM users WHERE USER_ID = #{userId}
     </delete>
 
+    <!-- 사용자 이름으로 사용자 정보 조회 -->
+    <select id="searchUser" parameterType="String" resultMap="memResult">
+        SELECT * FROM users WHERE USER_NAME = #{userName}
+    </select>
+
 </mapper>

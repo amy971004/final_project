@@ -1,5 +1,6 @@
 package org.example.message.service;
 
+import org.example.member.dto.MemberDTO;
 import org.example.message.dto.RoomDTO;
 
 import java.util.List;
@@ -14,4 +15,6 @@ public interface RoomService {
 
     // 발신자 accountId로 내가 참여하고있는 모든 채팅방 불러오기
     List<RoomDTO> findAllRoomsByAccountId(String userId);
+
+    List<String> findReceiver(String senderAccountId);
 }

@@ -14,12 +14,10 @@ import java.util.List;
 @Service
 public class RoomServiceImpl implements RoomService {
     private final RoomDAO dao;
-    private final MemberDAO memberDAO;
 
     @Autowired
     public RoomServiceImpl(RoomDAO dao, MemberDAO memberDAO) {
         this.dao = dao;
-        this.memberDAO = memberDAO;
     }
 
     // 전달받은 receiverId로 receiverAccountId 찾기
@@ -57,18 +55,24 @@ public class RoomServiceImpl implements RoomService {
         // roomName, roomMetaName 설정
         newRoom.setRoomName("'" + senderName + "'님과 '" + receiverName + "'님의 채팅방");
         newRoom.setRoomMetaName(roomMetaName);
+        newRoom.setRoomReceiverName(receiverName);
 
         // DB에 채팅방 정보 저장
         dao.createRoom(newRoom);
 
         // 새로 생성된 채팅방 정보를 반환합니다.
-        return newRoom;
+        return dao.findRoomByUserIds(roomMetaName);
     }
 
     // 발신자 accountId로 내가 참여하고있는 모든 채팅방 불러오기
     @Override
     public List<RoomDTO> findAllRoomsByAccountId(String senderAccountId) {
-        return dao.findAllRoomsByAccountId(senderAccountId);
+        return dao.findAllRoomsWithLastMessage(senderAccountId);
+    }
+
+    @Override
+    public List<String> findReceiver(String senderAccountId) {
+        return dao.findReceiver(senderAccountId);
     }
 
 }

@@ -27,6 +27,7 @@ CREATE TABLE room (
                       room_id VARCHAR2(32) DEFAULT RAWTOHEX(SYS_GUID()) PRIMARY KEY, -- 채팅방의 고유 식별자. 각 채팅방을 구분하기 위해 사용됩니다.
                       room_name VARCHAR2(100), -- 채팅방의 이름. 1:1 채팅에서는 사용하지 않을 수도 있지만, 그룹 채팅의 경우 채팅방의 이름으로 사용됩니다.
                       room_metaName VARCHAR2(200),
+                      room_receiverName VARCHAR2(50),
                       created_at DATE DEFAULT SYSDATE NOT NULL -- 채팅방이 생성된 시각. 채팅방의 생성 순서를 파악하거나, 최신 채팅방을 표시하는 데 사용됩니다.
 );
 
@@ -44,11 +45,15 @@ CREATE TABLE participants (
 
 메시지 테이블
 CREATE TABLE Messages (
-                          message_id VARCHAR2(32) DEFAULT RAWTOHEX(SYS_GUID()) PRIMARY KEY, -- 메시지의 고유 식별자. 각 메시지를 구분하기 위해 사용됩니다.
+                          message_id VARCHAR2(32) DEFAULT RAWTOHEX(SYS_GUID()), -- 메시지의 고유 식별자. 각 메시지를 구분하기 위해 사용됩니다.
                           room_id VARCHAR2(32) NOT NULL, -- 메시지가 속한 채팅방의 ID. 어떤 채팅방의 메시지인지를 나타냅니다.
-                          sender_id VARCHAR2(32) NOT NULL, -- 메시지를 보낸 사용자의 ID. 메시지의 발신자를 식별하는 데 사용됩니다.
+                          sender_id VARCHAR2(32) NOT NULL, -- 메시지를 보낸 사용자의 식별자 ID. 메시지의 발신자를 식별하는 데 사용됩니다.
+                          sender_userId VARCHAR2(32) NOT NULL, -- 메시지를 보낸 사용자의 ID. 메시지의 발신자를 식별하는 데 사용됩니다.
+                          sender_userName VARCHAR2(32) NOT NULL, -- 메시지를 보낸 사용자의 이름. 메시지의 발신자를 식별하는 데 사용됩니다.
                           message_text VARCHAR2(4000) NOT NULL, -- 메시지의 내용. 사용자 간에 교환된 실제 메시지 텍스트를 저장합니다.
                           sent_at DATE DEFAULT SYSDATE NOT NULL, -- 메시지가 전송된 시각. 메시지의 순서를 정렬하거나, 메시지가 언제 보내졌는지를 표시하는 데 사용됩니다.
+                          read_status VARCHAR2(1) DEFAULT 'N' NOT NULL, -- 읽음 여부를 나타내는 컬럼. 'Y' 또는 'N'으로 표시할 수 있습니다.
+                          PRIMARY KEY (message_id), -- message_id를 기본 키로 사용합니다.
                           FOREIGN KEY (room_id) REFERENCES ROOM(ROOM_ID), -- ROOM 테이블의 ROOM_ID를 참조하는 외래 키입니다.
                           FOREIGN KEY (sender_id) REFERENCES USERS(ACCOUNT_ID) -- USERS 테이블의 ACCOUNT_ID를 참조하는 외래 키입니다.
 );
@@ -57,21 +62,14 @@ CREATE TABLE Messages (
 commit;
 
 ####################################### 게시물 테이블 #######################################
-
-// 게시물 번호 시퀀스
-CREATE SEQUENCE postId_seq START WITH 1 INCREMENT BY 1;
-// 시퀀스 삭제 (게시물 테이블 삭제 시 같이 삭제)
-drop sequence postId_seq;
-
 // 게시물 테이블
 CREATE TABLE  sns_POST(
-              postId number default postId_seq.nextval PRIMARY KEY,
+              postId number PRIMARY KEY,
               user_Nickname varchar2(50) not null,
-              content varchar2(2000),
+              content varchar2(4000),
               uploadDate Date default sysdate not null,
               foreign key (user_Nickname)
                   references users(user_nickName) on delete cascade
-
 );
 // 이미지 테이블
 create table sns_image(
@@ -93,7 +91,18 @@ CREATE TABLE SNS_COMMENT (
     POSTCOMMENT VARCHAR2(500) NOT NULL,
     WRITEDATE DATE DEFAULT SYSDATE NOT NULL,
     FOREIGN KEY (POSTID) REFERENCES sns_post(POSTID) ON DELETE CASCADE,
-    FOREIGN KEY (USER_NICKNAME) REFERENCES USERS(USER_NICKNAME) ON DELETE CASCADE
+    FOREIGN KEY (USER_NICKNAME) REFERENCES USERS(USER_NICKNAME) ON DELETE CASCADE on update cascade
+);
+위에 오류나서 수정
+CREATE TABLE SNS_COMMENT (
+                             COMMENTID NUMBER PRIMARY KEY,
+                             PARENTNO NUMBER,
+                             POSTID NUMBER,
+                             USER_NICKNAME VARCHAR2(20),
+                             POSTCOMMENT VARCHAR2(500) NOT NULL,
+                             WRITEDATE DATE DEFAULT SYSDATE NOT NULL,
+                             FOREIGN KEY (POSTID) REFERENCES sns_post(POSTID) ON DELETE CASCADE,
+                             FOREIGN KEY (USER_NICKNAME) REFERENCES USERS(USER_NICKNAME) ON DELETE CASCADE
 );
 
 // 북마크 테이블
@@ -131,3 +140,15 @@ create table SNS_TAG (
     HASHTAG VARCHAR2(50) NOT NULL,
     FOREIGN KEY (POSTID) REFERENCES SNS_POST(POSTID) ON DELETE CASCADE
 );
+
+-- 닉네임 업데이트 트리거 --
+CREATE OR REPLACE TRIGGER update_nickname
+    AFTER UPDATE of USER_NICKNAME ON users FOR EACH ROW
+BEGIN
+    UPDATE SNS_FOLLOW SET FOLLOWERUSERID=:NEW.USER_NICKNAME WHERE FOLLOWERUSERID=:OLD.USER_NICKNAME;
+    UPDATE SNS_FOLLOW SET USER_NICKNAME=:NEW.USER_NICKNAME WHERE USER_NICKNAME=:OLD.USER_NICKNAME;
+    UPDATE SNS_LIKE SET USER_NICKNAME=:NEW.USER_NICKNAME WHERE USER_NICKNAME=:OLD.USER_NICKNAME;
+    UPDATE SNS_BOOKMARK SET USER_NICKNAME=:NEW.USER_NICKNAME WHERE USER_NICKNAME=:OLD.USER_NICKNAME;
+    UPDATE SNS_COMMENT SET USER_NICKNAME=:NEW.USER_NICKNAME WHERE USER_NICKNAME=:OLD.USER_NICKNAME;
+    UPDATE SNS_POST SET USER_NICKNAME=:NEW.USER_NICKNAME WHERE USER_NICKNAME=:OLD.USER_NICKNAME;
+END;

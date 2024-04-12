@@ -2,11 +2,15 @@ package org.example.profile.dao;
 
 import org.apache.ibatis.session.SqlSession;
 import org.example.member.dto.MemberDTO;
+import org.example.post.dto.*;
 import org.example.profile.dto.ProfileDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class ProfileDAOImpl implements ProfileDAO{
@@ -38,4 +42,50 @@ public class ProfileDAOImpl implements ProfileDAO{
     public int upload(ProfileDTO dto) {
         return sqlSession.update("mapper.profile.upload", dto);
     }
+
+    @Override
+    public List<PostDTO> postView(String userNickname) {
+        return sqlSession.selectList("mapper.profile.postView", userNickname);
+    }
+
+    @Override
+    public List<ImageDTO> imageView() {
+        return sqlSession.selectList("mapper.profile.imageView");
+    }
+
+    @Override
+    public List<CommentDTO> commentView() {
+        return sqlSession.selectList("mapper.profile.commentView");
+    }
+
+    @Override
+    public List<LikeDTO> likeView() {
+        return sqlSession.selectList("mapper.profile.likeView");
+    }
+
+    @Override
+    public List<LikeDTO> likes(String postId) {
+        return sqlSession.selectList("mapper.profile.likes", postId);
+    }
+
+    @Override
+    public List<FollowDTO> followView(String nickname) {
+        return sqlSession.selectList("mapper.profile.followView", nickname);
+    }
+
+    @Override
+    public List<FollowDTO> followingView(String userNickname) {
+        return sqlSession.selectList("mapper.profile.followingView", userNickname);
+    }
+
+    @Override
+    public String findAccountId(String userNickname) {
+        return sqlSession.selectOne("mapper.profile.findUserAccountId", userNickname);
+    }
+
+    @Override
+    public int deletePost(int postId) {
+        return sqlSession.delete("mapper.post.deletePost",postId);
+    }
+
 }
