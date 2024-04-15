@@ -271,6 +271,7 @@
     </select>
 
     <!-- 게시물 전체 댓글 수 -->
+
     <select id="getCommentCnt" parameterType="int" resultType="int">
         <![CDATA[
         select count(*) from SNS_COMMENT where POSTID=#{postId}

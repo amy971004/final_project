@@ -525,7 +525,7 @@ public class PostControllerImpl implements PostController {
         List<ImageDTO> postImageList = service.getPostImage(bookMarkPostId);
 
         for(int postId : bookMarkPostId){
-
+            System.out.println(postId);
             BookMarkDTO2 bookMarkDTO = new BookMarkDTO2();
 
             // 북마크 아이디 가져오기
